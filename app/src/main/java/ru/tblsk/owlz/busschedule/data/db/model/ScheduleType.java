@@ -11,77 +11,77 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class JourneyType {
+public class ScheduleType {
     @Id
-    private long JourneyTypePK;
+    private long ScheduleTypePK;
 
     @NotNull
-    private String JourneyTypeName;
+    private String ScheduleTypeName;
 
-    @ToMany(referencedJoinProperty = "JourneyTypeFK")
-    private List<Journey> journeys;
+    @ToMany(referencedJoinProperty = "ScheduleTypeFK")
+    private List<Schedule> schedules;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    @Generated(hash = 1215605968)
-    private transient JourneyTypeDao myDao;
+    @Generated(hash = 1056866477)
+    private transient ScheduleTypeDao myDao;
 
-    @Generated(hash = 1020900786)
-    public JourneyType(long JourneyTypePK, @NotNull String JourneyTypeName) {
-        this.JourneyTypePK = JourneyTypePK;
-        this.JourneyTypeName = JourneyTypeName;
+    @Generated(hash = 2019536456)
+    public ScheduleType(long ScheduleTypePK, @NotNull String ScheduleTypeName) {
+        this.ScheduleTypePK = ScheduleTypePK;
+        this.ScheduleTypeName = ScheduleTypeName;
     }
 
-    @Generated(hash = 147593267)
-    public JourneyType() {
+    @Generated(hash = 770820158)
+    public ScheduleType() {
     }
 
-    public long getJourneyTypePK() {
-        return this.JourneyTypePK;
+    public long getScheduleTypePK() {
+        return this.ScheduleTypePK;
     }
 
-    public void setJourneyTypePK(long JourneyTypePK) {
-        this.JourneyTypePK = JourneyTypePK;
+    public void setScheduleTypePK(long ScheduleTypePK) {
+        this.ScheduleTypePK = ScheduleTypePK;
     }
 
-    public String getJourneyTypeName() {
-        return this.JourneyTypeName;
+    public String getScheduleTypeName() {
+        return this.ScheduleTypeName;
     }
 
-    public void setJourneyTypeName(String JourneyTypeName) {
-        this.JourneyTypeName = JourneyTypeName;
+    public void setScheduleTypeName(String ScheduleTypeName) {
+        this.ScheduleTypeName = ScheduleTypeName;
     }
 
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 220500115)
-    public List<Journey> getJourneys() {
-        if (journeys == null) {
+    @Generated(hash = 1843474335)
+    public List<Schedule> getSchedules() {
+        if (schedules == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            JourneyDao targetDao = daoSession.getJourneyDao();
-            List<Journey> journeysNew = targetDao
-                    ._queryJourneyType_Journeys(JourneyTypePK);
+            ScheduleDao targetDao = daoSession.getScheduleDao();
+            List<Schedule> schedulesNew = targetDao
+                    ._queryScheduleType_Schedules(ScheduleTypePK);
             synchronized (this) {
-                if (journeys == null) {
-                    journeys = journeysNew;
+                if (schedules == null) {
+                    schedules = schedulesNew;
                 }
             }
         }
-        return journeys;
+        return schedules;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 1407158211)
-    public synchronized void resetJourneys() {
-        journeys = null;
+    @Generated(hash = 283382071)
+    public synchronized void resetSchedules() {
+        schedules = null;
     }
 
     /**
@@ -121,9 +121,9 @@ public class JourneyType {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 825192144)
+    @Generated(hash = 632208713)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getJourneyTypeDao() : null;
+        myDao = daoSession != null ? daoSession.getScheduleTypeDao() : null;
     }
 }

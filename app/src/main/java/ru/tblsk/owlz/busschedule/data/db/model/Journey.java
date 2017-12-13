@@ -11,77 +11,89 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class JourneyType {
+public class Journey {
     @Id
-    private long JourneyTypePK;
+    private long JourneyPK;
+
+    private long JourneyTypeFK;
 
     @NotNull
-    private String JourneyTypeName;
+    private String JourneyNumber;
 
-    @ToMany(referencedJoinProperty = "JourneyTypeFK")
-    private List<Journey> journeys;
+    @ToMany(referencedJoinProperty = "JourneyFK")
+    private List<Direction> directions;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    @Generated(hash = 1215605968)
-    private transient JourneyTypeDao myDao;
+    @Generated(hash = 1285991799)
+    private transient JourneyDao myDao;
 
-    @Generated(hash = 1020900786)
-    public JourneyType(long JourneyTypePK, @NotNull String JourneyTypeName) {
-        this.JourneyTypePK = JourneyTypePK;
-        this.JourneyTypeName = JourneyTypeName;
+    @Generated(hash = 2125406133)
+    public Journey(long JourneyPK, long JourneyTypeFK,
+            @NotNull String JourneyNumber) {
+        this.JourneyPK = JourneyPK;
+        this.JourneyTypeFK = JourneyTypeFK;
+        this.JourneyNumber = JourneyNumber;
     }
 
-    @Generated(hash = 147593267)
-    public JourneyType() {
+    @Generated(hash = 411349523)
+    public Journey() {
     }
 
-    public long getJourneyTypePK() {
-        return this.JourneyTypePK;
+    public long getJourneyPK() {
+        return this.JourneyPK;
     }
 
-    public void setJourneyTypePK(long JourneyTypePK) {
-        this.JourneyTypePK = JourneyTypePK;
+    public void setJourneyPK(long JourneyPK) {
+        this.JourneyPK = JourneyPK;
     }
 
-    public String getJourneyTypeName() {
-        return this.JourneyTypeName;
+    public long getJourneyTypeFK() {
+        return this.JourneyTypeFK;
     }
 
-    public void setJourneyTypeName(String JourneyTypeName) {
-        this.JourneyTypeName = JourneyTypeName;
+    public void setJourneyTypeFK(long JourneyTypeFK) {
+        this.JourneyTypeFK = JourneyTypeFK;
+    }
+
+    public String getJourneyNumber() {
+        return this.JourneyNumber;
+    }
+
+    public void setJourneyNumber(String JourneyNumber) {
+        this.JourneyNumber = JourneyNumber;
     }
 
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 220500115)
-    public List<Journey> getJourneys() {
-        if (journeys == null) {
+    @Generated(hash = 220564001)
+    public List<Direction> getDirections() {
+        if (directions == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            JourneyDao targetDao = daoSession.getJourneyDao();
-            List<Journey> journeysNew = targetDao
-                    ._queryJourneyType_Journeys(JourneyTypePK);
+            DirectionDao targetDao = daoSession.getDirectionDao();
+            List<Direction> directionsNew = targetDao
+                    ._queryJourney_Directions(JourneyPK);
             synchronized (this) {
-                if (journeys == null) {
-                    journeys = journeysNew;
+                if (directions == null) {
+                    directions = directionsNew;
                 }
             }
         }
-        return journeys;
+        return directions;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 1407158211)
-    public synchronized void resetJourneys() {
-        journeys = null;
+    @Generated(hash = 513642470)
+    public synchronized void resetDirections() {
+        directions = null;
     }
 
     /**
@@ -121,9 +133,9 @@ public class JourneyType {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 825192144)
+    @Generated(hash = 1567024630)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getJourneyTypeDao() : null;
+        myDao = daoSession != null ? daoSession.getJourneyDao() : null;
     }
 }
