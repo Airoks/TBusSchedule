@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -13,14 +15,16 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Stop {
+    @SerializedName("id")
     @Id
-    private long StopPK;
+    private long stopId;
 
+    @SerializedName("stop_name")
     @NotNull
-    private String StopName;
+    private String stopName;
 
-    @ToMany(referencedJoinProperty = "StopFK")
-    @OrderBy("StopsOnRoutsQuetch ASC")
+    @ToMany(referencedJoinProperty = "stopId")
+    @OrderBy("stopPosition ASC")
     private List<StopsOnRouts> stopsOnRouts;
 
     /** Used to resolve relations */
@@ -31,37 +35,20 @@ public class Stop {
     @Generated(hash = 1582113218)
     private transient StopDao myDao;
 
-    @Generated(hash = 694708322)
-    public Stop(long StopPK, @NotNull String StopName) {
-        this.StopPK = StopPK;
-        this.StopName = StopName;
+    @Generated(hash = 943860405)
+    public Stop(long stopId, @NotNull String stopName) {
+        this.stopId = stopId;
+        this.stopName = stopName;
     }
 
     @Generated(hash = 362110707)
     public Stop() {
     }
-
-    public long getStopPK() {
-        return this.StopPK;
-    }
-
-    public void setStopPK(long StopPK) {
-        this.StopPK = StopPK;
-    }
-
-    public String getStopName() {
-        return this.StopName;
-    }
-
-    public void setStopName(String StopName) {
-        this.StopName = StopName;
-    }
-
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1164857080)
+    @Generated(hash = 1259130255)
     public List<StopsOnRouts> getStopsOnRouts() {
         if (stopsOnRouts == null) {
             final DaoSession daoSession = this.daoSession;
@@ -69,8 +56,7 @@ public class Stop {
                 throw new DaoException("Entity is detached from DAO context");
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
-            List<StopsOnRouts> stopsOnRoutsNew = targetDao
-                    ._queryStop_StopsOnRouts(StopPK);
+            List<StopsOnRouts> stopsOnRoutsNew = targetDao._queryStop_StopsOnRouts(stopId);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -120,6 +106,22 @@ public class Stop {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public long getStopId() {
+        return this.stopId;
+    }
+
+    public void setStopId(long stopId) {
+        this.stopId = stopId;
+    }
+
+    public String getStopName() {
+        return this.stopName;
+    }
+
+    public void setStopName(String stopName) {
+        this.stopName = stopName;
     }
 
     /** called by internal mechanisms, do not call yourself. */

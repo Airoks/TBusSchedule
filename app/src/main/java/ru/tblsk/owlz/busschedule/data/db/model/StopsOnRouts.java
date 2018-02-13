@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
@@ -11,16 +13,20 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class StopsOnRouts {
+    @SerializedName("id")
     @Id
-    private long StopOnRoutsPK;
+    private long stopOnRoutsId;
 
-    private long DirectionFK;
+    @SerializedName("direction_fk")
+    private long directionId;
 
-    private long StopFK;
+    @SerializedName("stop_fk")
+    private long stopId;
 
-    private int StopsOnRoutsQuetch;
+    @SerializedName("stop_position")
+    private int stopPosition;
 
-    @ToMany(referencedJoinProperty = "StopsOnRoutsFK")
+    @ToMany(referencedJoinProperty = "stopsOnRoutsId")
     private List<Schedule> schedules;
 
     /** Used to resolve relations */
@@ -31,56 +37,25 @@ public class StopsOnRouts {
     @Generated(hash = 2025255696)
     private transient StopsOnRoutsDao myDao;
 
-    @Generated(hash = 468729794)
-    public StopsOnRouts(long StopOnRoutsPK, long DirectionFK, long StopFK,
-            int StopsOnRoutsQuetch) {
-        this.StopOnRoutsPK = StopOnRoutsPK;
-        this.DirectionFK = DirectionFK;
-        this.StopFK = StopFK;
-        this.StopsOnRoutsQuetch = StopsOnRoutsQuetch;
+    @Generated(hash = 503886166)
+    public StopsOnRouts(long stopOnRoutsId, long directionId, long stopId, int stopPosition) {
+        this.stopOnRoutsId = stopOnRoutsId;
+        this.directionId = directionId;
+        this.stopId = stopId;
+        this.stopPosition = stopPosition;
     }
 
     @Generated(hash = 38000403)
     public StopsOnRouts() {
     }
 
-    public long getStopOnRoutsPK() {
-        return this.StopOnRoutsPK;
-    }
 
-    public void setStopOnRoutsPK(long StopOnRoutsPK) {
-        this.StopOnRoutsPK = StopOnRoutsPK;
-    }
-
-    public long getDirectionFK() {
-        return this.DirectionFK;
-    }
-
-    public void setDirectionFK(long DirectionFK) {
-        this.DirectionFK = DirectionFK;
-    }
-
-    public long getStopFK() {
-        return this.StopFK;
-    }
-
-    public void setStopFK(long StopFK) {
-        this.StopFK = StopFK;
-    }
-
-    public int getStopsOnRoutsQuetch() {
-        return this.StopsOnRoutsQuetch;
-    }
-
-    public void setStopsOnRoutsQuetch(int StopsOnRoutsQuetch) {
-        this.StopsOnRoutsQuetch = StopsOnRoutsQuetch;
-    }
 
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 944540073)
+    @Generated(hash = 2864580)
     public List<Schedule> getSchedules() {
         if (schedules == null) {
             final DaoSession daoSession = this.daoSession;
@@ -88,8 +63,7 @@ public class StopsOnRouts {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
-            List<Schedule> schedulesNew = targetDao
-                    ._queryStopsOnRouts_Schedules(StopOnRoutsPK);
+            List<Schedule> schedulesNew = targetDao._queryStopsOnRouts_Schedules(stopOnRoutsId);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -139,6 +113,38 @@ public class StopsOnRouts {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public long getStopOnRoutsId() {
+        return this.stopOnRoutsId;
+    }
+
+    public void setStopOnRoutsId(long stopOnRoutsId) {
+        this.stopOnRoutsId = stopOnRoutsId;
+    }
+
+    public long getDirectionId() {
+        return this.directionId;
+    }
+
+    public void setDirectionId(long directionId) {
+        this.directionId = directionId;
+    }
+
+    public long getStopId() {
+        return this.stopId;
+    }
+
+    public void setStopId(long stopId) {
+        this.stopId = stopId;
+    }
+
+    public int getStopPosition() {
+        return this.stopPosition;
+    }
+
+    public void setStopPosition(int stopPosition) {
+        this.stopPosition = stopPosition;
     }
 
     /** called by internal mechanisms, do not call yourself. */

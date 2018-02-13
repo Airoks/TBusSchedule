@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -12,13 +14,15 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class ScheduleType {
+    @SerializedName("id")
     @Id
-    private long ScheduleTypePK;
+    private long scheduleTypeId;
 
+    @SerializedName("schedule_type_name")
     @NotNull
-    private String ScheduleTypeName;
+    private String scheduleTypeName;
 
-    @ToMany(referencedJoinProperty = "ScheduleTypeFK")
+    @ToMany(referencedJoinProperty = "scheduleTypeId")
     private List<Schedule> schedules;
 
     /** Used to resolve relations */
@@ -29,37 +33,20 @@ public class ScheduleType {
     @Generated(hash = 1056866477)
     private transient ScheduleTypeDao myDao;
 
-    @Generated(hash = 2019536456)
-    public ScheduleType(long ScheduleTypePK, @NotNull String ScheduleTypeName) {
-        this.ScheduleTypePK = ScheduleTypePK;
-        this.ScheduleTypeName = ScheduleTypeName;
+    @Generated(hash = 787472946)
+    public ScheduleType(long scheduleTypeId, @NotNull String scheduleTypeName) {
+        this.scheduleTypeId = scheduleTypeId;
+        this.scheduleTypeName = scheduleTypeName;
     }
 
     @Generated(hash = 770820158)
     public ScheduleType() {
     }
-
-    public long getScheduleTypePK() {
-        return this.ScheduleTypePK;
-    }
-
-    public void setScheduleTypePK(long ScheduleTypePK) {
-        this.ScheduleTypePK = ScheduleTypePK;
-    }
-
-    public String getScheduleTypeName() {
-        return this.ScheduleTypeName;
-    }
-
-    public void setScheduleTypeName(String ScheduleTypeName) {
-        this.ScheduleTypeName = ScheduleTypeName;
-    }
-
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1843474335)
+    @Generated(hash = 1257662466)
     public List<Schedule> getSchedules() {
         if (schedules == null) {
             final DaoSession daoSession = this.daoSession;
@@ -67,8 +54,7 @@ public class ScheduleType {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
-            List<Schedule> schedulesNew = targetDao
-                    ._queryScheduleType_Schedules(ScheduleTypePK);
+            List<Schedule> schedulesNew = targetDao._queryScheduleType_Schedules(scheduleTypeId);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -118,6 +104,22 @@ public class ScheduleType {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public long getScheduleTypeId() {
+        return this.scheduleTypeId;
+    }
+
+    public void setScheduleTypeId(long scheduleTypeId) {
+        this.scheduleTypeId = scheduleTypeId;
+    }
+
+    public String getScheduleTypeName() {
+        return this.scheduleTypeName;
+    }
+
+    public void setScheduleTypeName(String scheduleTypeName) {
+        this.scheduleTypeName = scheduleTypeName;
     }
 
     /** called by internal mechanisms, do not call yourself. */

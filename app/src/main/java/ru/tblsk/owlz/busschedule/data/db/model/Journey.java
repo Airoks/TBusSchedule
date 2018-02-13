@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -12,15 +14,18 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Journey {
+    @SerializedName("id")
     @Id
-    private long JourneyPK;
+    private long journeyId;
 
-    private long JourneyTypeFK;
+    @SerializedName("journey_type_fk")
+    private long journeyTypeId;
 
+    @SerializedName("journey_number")
     @NotNull
-    private String JourneyNumber;
+    private String journeyNumber;
 
-    @ToMany(referencedJoinProperty = "JourneyFK")
+    @ToMany(referencedJoinProperty = "journeyId")
     private List<Direction> directions;
 
     /** Used to resolve relations */
@@ -31,47 +36,21 @@ public class Journey {
     @Generated(hash = 1285991799)
     private transient JourneyDao myDao;
 
-    @Generated(hash = 2125406133)
-    public Journey(long JourneyPK, long JourneyTypeFK,
-            @NotNull String JourneyNumber) {
-        this.JourneyPK = JourneyPK;
-        this.JourneyTypeFK = JourneyTypeFK;
-        this.JourneyNumber = JourneyNumber;
+    @Generated(hash = 440850978)
+    public Journey(long journeyId, long journeyTypeId, @NotNull String journeyNumber) {
+        this.journeyId = journeyId;
+        this.journeyTypeId = journeyTypeId;
+        this.journeyNumber = journeyNumber;
     }
 
     @Generated(hash = 411349523)
     public Journey() {
     }
-
-    public long getJourneyPK() {
-        return this.JourneyPK;
-    }
-
-    public void setJourneyPK(long JourneyPK) {
-        this.JourneyPK = JourneyPK;
-    }
-
-    public long getJourneyTypeFK() {
-        return this.JourneyTypeFK;
-    }
-
-    public void setJourneyTypeFK(long JourneyTypeFK) {
-        this.JourneyTypeFK = JourneyTypeFK;
-    }
-
-    public String getJourneyNumber() {
-        return this.JourneyNumber;
-    }
-
-    public void setJourneyNumber(String JourneyNumber) {
-        this.JourneyNumber = JourneyNumber;
-    }
-
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 220564001)
+    @Generated(hash = 258309062)
     public List<Direction> getDirections() {
         if (directions == null) {
             final DaoSession daoSession = this.daoSession;
@@ -79,8 +58,7 @@ public class Journey {
                 throw new DaoException("Entity is detached from DAO context");
             }
             DirectionDao targetDao = daoSession.getDirectionDao();
-            List<Direction> directionsNew = targetDao
-                    ._queryJourney_Directions(JourneyPK);
+            List<Direction> directionsNew = targetDao._queryJourney_Directions(journeyId);
             synchronized (this) {
                 if (directions == null) {
                     directions = directionsNew;
@@ -130,6 +108,30 @@ public class Journey {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public long getJourneyId() {
+        return this.journeyId;
+    }
+
+    public void setJourneyId(long journeyId) {
+        this.journeyId = journeyId;
+    }
+
+    public long getJourneyTypeId() {
+        return this.journeyTypeId;
+    }
+
+    public void setJourneyTypeId(long journeyTypeId) {
+        this.journeyTypeId = journeyTypeId;
+    }
+
+    public String getJourneyNumber() {
+        return this.journeyNumber;
+    }
+
+    public void setJourneyNumber(String journeyNumber) {
+        this.journeyNumber = journeyNumber;
     }
 
     /** called by internal mechanisms, do not call yourself. */

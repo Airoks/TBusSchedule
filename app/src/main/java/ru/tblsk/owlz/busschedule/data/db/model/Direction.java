@@ -1,6 +1,9 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -13,16 +16,22 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Direction {
+    @SerializedName("id")
     @Id
-    private long DirectionPK;
+    private long directionId;
 
-    private long JourneyFK;
+    @SerializedName("journey_fk")
+    private long journeyId;
 
+    @SerializedName("direction_type_fk")
+    private long directionTypeId;
+
+    @SerializedName("direction_name")
     @NotNull
-    private String DerectionName;
+    private String directionName;
 
-    @ToMany(referencedJoinProperty = "DirectionFK")
-    @OrderBy("StopsOnRoutsQuetch ASC")
+    @ToMany(referencedJoinProperty = "directionId")
+    @OrderBy("stopPosition ASC")
     private List<StopsOnRouts> stopsOnRouts;
 
     /** Used to resolve relations */
@@ -33,47 +42,23 @@ public class Direction {
     @Generated(hash = 1467317006)
     private transient DirectionDao myDao;
 
-    @Generated(hash = 353660240)
-    public Direction(long DirectionPK, long JourneyFK,
-            @NotNull String DerectionName) {
-        this.DirectionPK = DirectionPK;
-        this.JourneyFK = JourneyFK;
-        this.DerectionName = DerectionName;
+    @Generated(hash = 779214049)
+    public Direction(long directionId, long journeyId, long directionTypeId,
+            @NotNull String directionName) {
+        this.directionId = directionId;
+        this.journeyId = journeyId;
+        this.directionTypeId = directionTypeId;
+        this.directionName = directionName;
     }
 
     @Generated(hash = 1390953800)
     public Direction() {
     }
-
-    public long getDirectionPK() {
-        return this.DirectionPK;
-    }
-
-    public void setDirectionPK(long DirectionPK) {
-        this.DirectionPK = DirectionPK;
-    }
-
-    public long getJourneyFK() {
-        return this.JourneyFK;
-    }
-
-    public void setJourneyFK(long JourneyFK) {
-        this.JourneyFK = JourneyFK;
-    }
-
-    public String getDerectionName() {
-        return this.DerectionName;
-    }
-
-    public void setDerectionName(String DerectionName) {
-        this.DerectionName = DerectionName;
-    }
-
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 2087944885)
+    @Generated(hash = 1097042181)
     public List<StopsOnRouts> getStopsOnRouts() {
         if (stopsOnRouts == null) {
             final DaoSession daoSession = this.daoSession;
@@ -81,8 +66,7 @@ public class Direction {
                 throw new DaoException("Entity is detached from DAO context");
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
-            List<StopsOnRouts> stopsOnRoutsNew = targetDao
-                    ._queryDirection_StopsOnRouts(DirectionPK);
+            List<StopsOnRouts> stopsOnRoutsNew = targetDao._queryDirection_StopsOnRouts(directionId);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -132,6 +116,38 @@ public class Direction {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public long getDirectionId() {
+        return this.directionId;
+    }
+
+    public void setDirectionId(long directionId) {
+        this.directionId = directionId;
+    }
+
+    public long getJourneyId() {
+        return this.journeyId;
+    }
+
+    public void setJourneyId(long journeyId) {
+        this.journeyId = journeyId;
+    }
+
+    public long getDirectionTypeId() {
+        return this.directionTypeId;
+    }
+
+    public void setDirectionTypeId(long directionTypeId) {
+        this.directionTypeId = directionTypeId;
+    }
+
+    public String getDirectionName() {
+        return this.directionName;
+    }
+
+    public void setDirectionName(String directionName) {
+        this.directionName = directionName;
     }
 
     /** called by internal mechanisms, do not call yourself. */
