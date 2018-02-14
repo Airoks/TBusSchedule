@@ -1,0 +1,10 @@
+[
+	{
+		"id": 0,
+		"journey_type_name": "urban"
+	},
+	{
+		"id": 1,
+		"journey_type_name": "suburban"
+	}
+]

@@ -1,0 +1,10 @@
+[
+	{
+		"id": 0,
+		"schedule_type_name": "workday"
+	},
+	{
+		"id": 1,
+		"schedule_type_name": "weekend"
+	}
+]
