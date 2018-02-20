@@ -45,6 +45,39 @@ public class Schedule {
     @Generated(hash = 729319394)
     public Schedule() {
     }
+
+    public long getScheduleId() {
+        return this.scheduleId;
+    }
+
+    public void setScheduleId(long scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public long getStopsOnRoutsId() {
+        return this.stopsOnRoutsId;
+    }
+
+    public void setStopsOnRoutsId(long stopsOnRoutsId) {
+        this.stopsOnRoutsId = stopsOnRoutsId;
+    }
+
+    public long getScheduleTypeId() {
+        return this.scheduleTypeId;
+    }
+
+    public void setScheduleTypeId(long scheduleTypeId) {
+        this.scheduleTypeId = scheduleTypeId;
+    }
+
+    public String getScheduleJson() {
+        return this.scheduleJson;
+    }
+
+    public void setScheduleJson(String scheduleJson) {
+        this.scheduleJson = scheduleJson;
+    }
+
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
      * Entity must attached to an entity context.
@@ -81,42 +114,12 @@ public class Schedule {
         myDao.update(this);
     }
 
-    public long getScheduleId() {
-        return this.scheduleId;
-    }
-
-    public void setScheduleId(long scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public long getStopsOnRoutsId() {
-        return this.stopsOnRoutsId;
-    }
-
-    public void setStopsOnRoutsId(long stopsOnRoutsId) {
-        this.stopsOnRoutsId = stopsOnRoutsId;
-    }
-
-    public long getScheduleTypeId() {
-        return this.scheduleTypeId;
-    }
-
-    public void setScheduleTypeId(long scheduleTypeId) {
-        this.scheduleTypeId = scheduleTypeId;
-    }
-
-    public String getScheduleJson() {
-        return this.scheduleJson;
-    }
-
-    public void setScheduleJson(String scheduleJson) {
-        this.scheduleJson = scheduleJson;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 502317300)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleDao() : null;
     }
+
+
 }

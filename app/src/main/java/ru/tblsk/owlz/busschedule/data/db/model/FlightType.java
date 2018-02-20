@@ -13,65 +13,79 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class Journey {
+public class FlightType {
     @SerializedName("id")
     @Id
-    private long journeyId;
+    private long flightTypeId;
 
-    @SerializedName("journey_type_fk")
-    private long journeyTypeId;
-
-    @SerializedName("journey_number")
+    @SerializedName("flight_type_name")
     @NotNull
-    private String journeyNumber;
+    private String flightTypeName;
 
-    @ToMany(referencedJoinProperty = "journeyId")
-    private List<Direction> directions;
+    @ToMany(referencedJoinProperty = "flightTypeId")
+    private List<Flight> flights;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    @Generated(hash = 1285991799)
-    private transient JourneyDao myDao;
+    @Generated(hash = 1377307004)
+    private transient FlightTypeDao myDao;
 
-    @Generated(hash = 440850978)
-    public Journey(long journeyId, long journeyTypeId, @NotNull String journeyNumber) {
-        this.journeyId = journeyId;
-        this.journeyTypeId = journeyTypeId;
-        this.journeyNumber = journeyNumber;
+    @Generated(hash = 804054836)
+    public FlightType(long flightTypeId, @NotNull String flightTypeName) {
+        this.flightTypeId = flightTypeId;
+        this.flightTypeName = flightTypeName;
     }
 
-    @Generated(hash = 411349523)
-    public Journey() {
+    @Generated(hash = 2059853375)
+    public FlightType() {
     }
+
+    public long getFlightTypeId() {
+        return this.flightTypeId;
+    }
+
+    public void setFlightTypeId(long flightTypeId) {
+        this.flightTypeId = flightTypeId;
+    }
+
+    public String getFlightTypeName() {
+        return this.flightTypeName;
+    }
+
+    public void setFlightTypeName(String flightTypeName) {
+        this.flightTypeName = flightTypeName;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 258309062)
-    public List<Direction> getDirections() {
-        if (directions == null) {
+    @Generated(hash = 862549233)
+    public List<Flight> getFlights() {
+        if (flights == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            DirectionDao targetDao = daoSession.getDirectionDao();
-            List<Direction> directionsNew = targetDao._queryJourney_Directions(journeyId);
+            FlightDao targetDao = daoSession.getFlightDao();
+            List<Flight> flightsNew = targetDao
+                    ._queryFlightType_Flights(flightTypeId);
             synchronized (this) {
-                if (directions == null) {
-                    directions = directionsNew;
+                if (flights == null) {
+                    flights = flightsNew;
                 }
             }
         }
-        return directions;
+        return flights;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 513642470)
-    public synchronized void resetDirections() {
-        directions = null;
+    @Generated(hash = 1831633566)
+    public synchronized void resetFlights() {
+        flights = null;
     }
 
     /**
@@ -110,34 +124,12 @@ public class Journey {
         myDao.update(this);
     }
 
-    public long getJourneyId() {
-        return this.journeyId;
-    }
-
-    public void setJourneyId(long journeyId) {
-        this.journeyId = journeyId;
-    }
-
-    public long getJourneyTypeId() {
-        return this.journeyTypeId;
-    }
-
-    public void setJourneyTypeId(long journeyTypeId) {
-        this.journeyTypeId = journeyTypeId;
-    }
-
-    public String getJourneyNumber() {
-        return this.journeyNumber;
-    }
-
-    public void setJourneyNumber(String journeyNumber) {
-        this.journeyNumber = journeyNumber;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1567024630)
+    @Generated(hash = 1289739846)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getJourneyDao() : null;
+        myDao = daoSession != null ? daoSession.getFlightTypeDao() : null;
     }
+
+
 }

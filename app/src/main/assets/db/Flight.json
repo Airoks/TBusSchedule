@@ -1,0 +1,127 @@
+[
+	{
+		"id": 0,
+		"flight_type_fk": 0,
+		"flight_number": "1"
+	},
+	{
+		"id": 1,
+		"flight_type_fk": 0,
+		"flight_number": "2"
+	},
+	{
+		"id": 2,
+		"flight_type_fk": 0,
+		"flight_number": "3"
+	},
+	{
+		"id": 3,
+		"flight_type_fk": 0,
+		"flight_number": "3Д"
+	},
+	{
+		"id": 4,
+		"flight_type_fk": 0,
+		"flight_number": "4"
+	},
+	{
+		"id": 5,
+		"flight_type_fk": 0,
+		"flight_number": "5"
+	},
+	{
+		"id": 6,
+		"flight_type_fk": 0,
+		"flight_number": "6П"
+	},
+	{
+		"id": 7,
+		"flight_type_fk": 0,
+		"flight_number": "6Р"
+	},
+	{
+		"id": 8,
+		"flight_type_fk": 0,
+		"flight_number": "8"
+	},
+	{
+		"id": 9,
+		"flight_type_fk": 0,
+		"flight_number": "8А"
+	},
+	{
+		"id": 10,
+		"flight_type_fk": 0,
+		"flight_number": "8К"
+	},
+	{
+		"id": 11,
+		"flight_type_fk": 0,
+		"flight_number": "9"
+	},
+	{
+		"id": 12,
+		"flight_type_fk": 0,
+		"flight_number": "10"
+	},
+	{
+		"id": 13,
+		"flight_type_fk": 0,
+		"flight_number": "10А"
+	},
+	{
+		"id": 14,
+		"flight_type_fk": 0,
+		"flight_number": "12"
+	},
+	{
+		"id": 15,
+		"flight_type_fk": 0,
+		"flight_number": "15"
+	},
+	{
+		"id": 16,
+		"flight_type_fk": 0,
+		"flight_number": "15Б"
+	},
+	{
+		"id": 17,
+		"flight_type_fk": 0,
+		"flight_number": "16"
+	},
+	{
+		"id": 18,
+		"flight_type_fk": 0,
+		"flight_number": "19"
+	},
+	{
+		"id": 19,
+		"flight_type_fk": 0,
+		"flight_number": "20"
+	},
+	{
+		"id": 20,
+		"flight_type_fk": 0,
+		"flight_number": "21"
+	},
+	{
+		"id": 21,
+		"flight_type_fk": 0,
+		"flight_number": "22"
+	},
+	{
+		"id": 22,
+		"flight_type_fk": 0,
+		"flight_number": "24"
+	},
+	{
+		"id": 23,
+		"flight_type_fk": 0,
+		"flight_number": "25"
+	},
+	{
+		"id": 24,
+		"flight_type_fk": 0,
+		"flight_number": "26"
+	}
+]

@@ -38,7 +38,8 @@ public class StopsOnRouts {
     private transient StopsOnRoutsDao myDao;
 
     @Generated(hash = 503886166)
-    public StopsOnRouts(long stopOnRoutsId, long directionId, long stopId, int stopPosition) {
+    public StopsOnRouts(long stopOnRoutsId, long directionId, long stopId,
+            int stopPosition) {
         this.stopOnRoutsId = stopOnRoutsId;
         this.directionId = directionId;
         this.stopId = stopId;
@@ -49,7 +50,37 @@ public class StopsOnRouts {
     public StopsOnRouts() {
     }
 
+    public long getStopOnRoutsId() {
+        return this.stopOnRoutsId;
+    }
 
+    public void setStopOnRoutsId(long stopOnRoutsId) {
+        this.stopOnRoutsId = stopOnRoutsId;
+    }
+
+    public long getDirectionId() {
+        return this.directionId;
+    }
+
+    public void setDirectionId(long directionId) {
+        this.directionId = directionId;
+    }
+
+    public long getStopId() {
+        return this.stopId;
+    }
+
+    public void setStopId(long stopId) {
+        this.stopId = stopId;
+    }
+
+    public int getStopPosition() {
+        return this.stopPosition;
+    }
+
+    public void setStopPosition(int stopPosition) {
+        this.stopPosition = stopPosition;
+    }
 
     /**
      * To-many relationship, resolved on first access (and after reset).
@@ -63,7 +94,8 @@ public class StopsOnRouts {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
-            List<Schedule> schedulesNew = targetDao._queryStopsOnRouts_Schedules(stopOnRoutsId);
+            List<Schedule> schedulesNew = targetDao
+                    ._queryStopsOnRouts_Schedules(stopOnRoutsId);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -115,42 +147,12 @@ public class StopsOnRouts {
         myDao.update(this);
     }
 
-    public long getStopOnRoutsId() {
-        return this.stopOnRoutsId;
-    }
-
-    public void setStopOnRoutsId(long stopOnRoutsId) {
-        this.stopOnRoutsId = stopOnRoutsId;
-    }
-
-    public long getDirectionId() {
-        return this.directionId;
-    }
-
-    public void setDirectionId(long directionId) {
-        this.directionId = directionId;
-    }
-
-    public long getStopId() {
-        return this.stopId;
-    }
-
-    public void setStopId(long stopId) {
-        this.stopId = stopId;
-    }
-
-    public int getStopPosition() {
-        return this.stopPosition;
-    }
-
-    public void setStopPosition(int stopPosition) {
-        this.stopPosition = stopPosition;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1395389195)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getStopsOnRoutsDao() : null;
     }
+
+
 }

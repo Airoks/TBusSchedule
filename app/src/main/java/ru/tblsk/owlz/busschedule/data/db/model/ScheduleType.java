@@ -42,6 +42,23 @@ public class ScheduleType {
     @Generated(hash = 770820158)
     public ScheduleType() {
     }
+
+    public long getScheduleTypeId() {
+        return this.scheduleTypeId;
+    }
+
+    public void setScheduleTypeId(long scheduleTypeId) {
+        this.scheduleTypeId = scheduleTypeId;
+    }
+
+    public String getScheduleTypeName() {
+        return this.scheduleTypeName;
+    }
+
+    public void setScheduleTypeName(String scheduleTypeName) {
+        this.scheduleTypeName = scheduleTypeName;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -54,7 +71,8 @@ public class ScheduleType {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
-            List<Schedule> schedulesNew = targetDao._queryScheduleType_Schedules(scheduleTypeId);
+            List<Schedule> schedulesNew = targetDao
+                    ._queryScheduleType_Schedules(scheduleTypeId);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -106,26 +124,12 @@ public class ScheduleType {
         myDao.update(this);
     }
 
-    public long getScheduleTypeId() {
-        return this.scheduleTypeId;
-    }
-
-    public void setScheduleTypeId(long scheduleTypeId) {
-        this.scheduleTypeId = scheduleTypeId;
-    }
-
-    public String getScheduleTypeName() {
-        return this.scheduleTypeName;
-    }
-
-    public void setScheduleTypeName(String scheduleTypeName) {
-        this.scheduleTypeName = scheduleTypeName;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 632208713)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleTypeDao() : null;
     }
+
+
 }

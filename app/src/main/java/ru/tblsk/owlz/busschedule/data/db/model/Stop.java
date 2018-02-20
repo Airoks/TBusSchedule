@@ -44,6 +44,23 @@ public class Stop {
     @Generated(hash = 362110707)
     public Stop() {
     }
+
+    public long getStopId() {
+        return this.stopId;
+    }
+
+    public void setStopId(long stopId) {
+        this.stopId = stopId;
+    }
+
+    public String getStopName() {
+        return this.stopName;
+    }
+
+    public void setStopName(String stopName) {
+        this.stopName = stopName;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -56,7 +73,8 @@ public class Stop {
                 throw new DaoException("Entity is detached from DAO context");
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
-            List<StopsOnRouts> stopsOnRoutsNew = targetDao._queryStop_StopsOnRouts(stopId);
+            List<StopsOnRouts> stopsOnRoutsNew = targetDao
+                    ._queryStop_StopsOnRouts(stopId);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -108,26 +126,12 @@ public class Stop {
         myDao.update(this);
     }
 
-    public long getStopId() {
-        return this.stopId;
-    }
-
-    public void setStopId(long stopId) {
-        this.stopId = stopId;
-    }
-
-    public String getStopName() {
-        return this.stopName;
-    }
-
-    public void setStopName(String stopName) {
-        this.stopName = stopName;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 788229606)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getStopDao() : null;
     }
+
+
 }

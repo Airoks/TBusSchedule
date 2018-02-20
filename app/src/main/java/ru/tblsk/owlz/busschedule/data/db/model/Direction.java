@@ -20,8 +20,8 @@ public class Direction {
     @Id
     private long directionId;
 
-    @SerializedName("journey_fk")
-    private long journeyId;
+    @SerializedName("flight_fk")
+    private long flightId;
 
     @SerializedName("direction_type_fk")
     private long directionTypeId;
@@ -42,11 +42,11 @@ public class Direction {
     @Generated(hash = 1467317006)
     private transient DirectionDao myDao;
 
-    @Generated(hash = 779214049)
-    public Direction(long directionId, long journeyId, long directionTypeId,
+    @Generated(hash = 1015974179)
+    public Direction(long directionId, long flightId, long directionTypeId,
             @NotNull String directionName) {
         this.directionId = directionId;
-        this.journeyId = journeyId;
+        this.flightId = flightId;
         this.directionTypeId = directionTypeId;
         this.directionName = directionName;
     }
@@ -54,6 +54,39 @@ public class Direction {
     @Generated(hash = 1390953800)
     public Direction() {
     }
+
+    public long getDirectionId() {
+        return this.directionId;
+    }
+
+    public void setDirectionId(long directionId) {
+        this.directionId = directionId;
+    }
+
+    public long getFlightId() {
+        return this.flightId;
+    }
+
+    public void setFlightId(long flightId) {
+        this.flightId = flightId;
+    }
+
+    public long getDirectionTypeId() {
+        return this.directionTypeId;
+    }
+
+    public void setDirectionTypeId(long directionTypeId) {
+        this.directionTypeId = directionTypeId;
+    }
+
+    public String getDirectionName() {
+        return this.directionName;
+    }
+
+    public void setDirectionName(String directionName) {
+        this.directionName = directionName;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -66,7 +99,8 @@ public class Direction {
                 throw new DaoException("Entity is detached from DAO context");
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
-            List<StopsOnRouts> stopsOnRoutsNew = targetDao._queryDirection_StopsOnRouts(directionId);
+            List<StopsOnRouts> stopsOnRoutsNew = targetDao
+                    ._queryDirection_StopsOnRouts(directionId);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -118,42 +152,12 @@ public class Direction {
         myDao.update(this);
     }
 
-    public long getDirectionId() {
-        return this.directionId;
-    }
-
-    public void setDirectionId(long directionId) {
-        this.directionId = directionId;
-    }
-
-    public long getJourneyId() {
-        return this.journeyId;
-    }
-
-    public void setJourneyId(long journeyId) {
-        this.journeyId = journeyId;
-    }
-
-    public long getDirectionTypeId() {
-        return this.directionTypeId;
-    }
-
-    public void setDirectionTypeId(long directionTypeId) {
-        this.directionTypeId = directionTypeId;
-    }
-
-    public String getDirectionName() {
-        return this.directionName;
-    }
-
-    public void setDirectionName(String directionName) {
-        this.directionName = directionName;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1082205904)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionDao() : null;
     }
+
+
 }

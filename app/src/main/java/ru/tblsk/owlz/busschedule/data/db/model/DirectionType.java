@@ -42,6 +42,23 @@ public class DirectionType {
     @Generated(hash = 85717541)
     public DirectionType() {
     }
+
+    public long getDirectionTypeId() {
+        return this.directionTypeId;
+    }
+
+    public void setDirectionTypeId(long directionTypeId) {
+        this.directionTypeId = directionTypeId;
+    }
+
+    public String getDirectionTypeName() {
+        return this.directionTypeName;
+    }
+
+    public void setDirectionTypeName(String directionTypeName) {
+        this.directionTypeName = directionTypeName;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -54,7 +71,8 @@ public class DirectionType {
                 throw new DaoException("Entity is detached from DAO context");
             }
             DirectionDao targetDao = daoSession.getDirectionDao();
-            List<Direction> directionsNew = targetDao._queryDirectionType_Directions(directionTypeId);
+            List<Direction> directionsNew = targetDao
+                    ._queryDirectionType_Directions(directionTypeId);
             synchronized (this) {
                 if (directions == null) {
                     directions = directionsNew;
@@ -106,26 +124,12 @@ public class DirectionType {
         myDao.update(this);
     }
 
-    public long getDirectionTypeId() {
-        return this.directionTypeId;
-    }
-
-    public void setDirectionTypeId(long directionTypeId) {
-        this.directionTypeId = directionTypeId;
-    }
-
-    public String getDirectionTypeName() {
-        return this.directionTypeName;
-    }
-
-    public void setDirectionTypeName(String directionTypeName) {
-        this.directionTypeName = directionTypeName;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 325215784)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionTypeDao() : null;
     }
+
+
 }

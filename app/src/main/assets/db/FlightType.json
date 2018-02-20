@@ -1,0 +1,10 @@
+[
+	{
+		"id": 0,
+		"flight_type_name": "urban"
+	},
+	{
+		"id": 1,
+		"flight_type_name": "suburban"
+	}
+]

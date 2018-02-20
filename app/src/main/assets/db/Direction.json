@@ -1,289 +1,289 @@
 [
 	{
 		"id": 0,
-		"journey_fk": 0,
+		"flight_fk": 0,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - ул. Пушкина"
 	},
 	{
 		"id": 1,
-		"journey_fk": 0,
+		"flight_fk": 0,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Пушкина - ЗАГС"
 	},
 	{
 		"id": 2,
-		"journey_fk": 1,
+		"flight_fk": 1,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - ул. Чехова"
 	},
 	{
 		"id": 3,
-		"journey_fk": 1,
+		"flight_fk": 1,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Чехова - Кремль"
 	},
 	{
 		"id": 4,
-		"journey_fk": 2,
+		"flight_fk": 2,
 		"direction_type_fk": 0,
 		"direction_name": "Гостиный дом - ДОЗ"
 	},
 	{
 		"id": 5,
-		"journey_fk": 2,
+		"flight_fk": 2,
 		"direction_type_fk": 1,
 		"direction_name": "ДОЗ - Гостиный дом"
 	},
 	{
 		"id": 6,
-		"journey_fk": 4,
+		"flight_fk": 4,
 		"direction_type_fk": 0,
 		"direction_name": "Больничный комплекс - Микрорайон Менделеево"
 	},
 	{
 		"id": 7,
-		"journey_fk": 4,
+		"flight_fk": 4,
 		"direction_type_fk": 1,
 		"direction_name": "Микрорайон Менделеево - Больничный комплекс"
 	},
 	{
 		"id": 8,
-		"journey_fk": 5,
+		"flight_fk": 5,
 		"direction_type_fk": 0,
 		"direction_name": "Ж/д вокзал - Автовокзал - Кремль"
 	},
 	{
 		"id": 9,
-		"journey_fk": 5,
+		"flight_fk": 5,
 		"direction_type_fk": 1,
 		"direction_name": "Кремль - Автовокзал - Ж/д вокзал"
 	},
 	{
 		"id": 10,
-		"journey_fk": 6,
+		"flight_fk": 6,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - ул. Омская"
 	},
 	{
 		"id": 11,
-		"journey_fk": 6,
+		"flight_fk": 6,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Омская - Кремль"
 	},
 	{
 		"id": 12,
-		"journey_fk": 7,
+		"flight_fk": 7,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - Речпорт"
 	},
 	{
 		"id": 13,
-		"journey_fk": 7,
+		"flight_fk": 7,
 		"direction_type_fk": 1,
 		"direction_name": "Речпорт - Кремль"
 	},
 	{
 		"id": 14,
-		"journey_fk": 8,
+		"flight_fk": 8,
 		"direction_type_fk": 0,
 		"direction_name": "пер. Озёрный - Стадион Тобол"
 	},
 	{
 		"id": 15,
-		"journey_fk": 8,
+		"flight_fk": 8,
 		"direction_type_fk": 1,
 		"direction_name": "Стадион Тобол - пер. Озёрный"
 	},
 	{
 		"id": 16,
-		"journey_fk": 9,
+		"flight_fk": 9,
 		"direction_type_fk": 0,
 		"direction_name": "Гостиный дом - Кремль"
 	},
 	{
 		"id": 17,
-		"journey_fk": 9,
+		"flight_fk": 9,
 		"direction_type_fk": 1,
 		"direction_name": "Кремль - Гостинный дом"
 	},
 	{
 		"id": 18,
-		"journey_fk": 10,
+		"flight_fk": 10,
 		"direction_type_fk": 0,
 		"direction_name": "Гостиный дом - Стадион Тобол"
 	},
 	{
 		"id": 19,
-		"journey_fk": 10,
+		"flight_fk": 10,
 		"direction_type_fk": 1,
 		"direction_name": "Стадион Тобол - Гостиный дом"
 	},
 	{
 		"id": 20,
-		"journey_fk": 11,
+		"flight_fk": 11,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - Гостиница Нефтехимик"
 	},
 	{
 		"id": 21,
-		"journey_fk": 11,
+		"flight_fk": 11,
 		"direction_type_fk": 1,
 		"direction_name": "7-й микрорайон - Кремль"
 	},
 	{
 		"id": 22,
-		"journey_fk": 12,
+		"flight_fk": 12,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - ул. Урицкого"
 	},
 	{
 		"id": 23,
-		"journey_fk": 12,
+		"flight_fk": 12,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Урицкого - ЗАГС"
 	},
 	{
 		"id": 24,
-		"journey_fk": 13,
+		"flight_fk": 13,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - ул. Алябьева"
 	},
 	{
 		"id": 25,
-		"journey_fk": 13,
+		"flight_fk": 13,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Алябьева - ЗАГС"
 	},
 	{
 		"id": 26,
-		"journey_fk": 14,
+		"flight_fk": 14,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - Переправа"
 	},
 	{
 		"id": 27,
-		"journey_fk": 14,
+		"flight_fk": 14,
 		"direction_type_fk": 1,
 		"direction_name": "Переправа - ЗАГС"
 	},
 	{
 		"id": 28,
-		"journey_fk": 15,
+		"flight_fk": 15,
 		"direction_type_fk": 0,
 		"direction_name": "Автовокзал - Панин бугор - Жуковка"
 	},
 	{
 		"id": 29,
-		"journey_fk": 15,
+		"flight_fk": 15,
 		"direction_type_fk": 1,
 		"direction_name": "Жуковка - Панин бугор - Автовокзал"
 	},
 	{
 		"id": 30,
-		"journey_fk": 16,
+		"flight_fk": 16,
 		"direction_type_fk": 0,
 		"direction_name": "Автовокзал - ДЭУ - Жуковка"
 	},
 	{
 		"id": 31,
-		"journey_fk": 16,
+		"flight_fk": 16,
 		"direction_type_fk": 1,
 		"direction_name": "Жуковка - ДЭУ - Автовокзал"
 	},
 	{
 		"id": 32,
-		"journey_fk": 17,
+		"flight_fk": 17,
 		"direction_type_fk": 0,
 		"direction_name": "Гостиный дом - Кремль"
 	},
 	{
 		"id": 33,
-		"journey_fk": 17,
+		"flight_fk": 17,
 		"direction_type_fk": 1,
 		"direction_name": "Кремль - Гостинный дом"
 	},
 	{
 		"id": 34,
-		"journey_fk": 18,
+		"flight_fk": 18,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - ул. Омская"
 	},
 	{
 		"id": 35,
-		"journey_fk": 18,
+		"flight_fk": 18,
 		"direction_type_fk": 1,
 		"direction_name": "ул. Омская - Кремль"
 	},
 	{
 		"id": 36,
-		"journey_fk": 19,
+		"flight_fk": 19,
 		"direction_type_fk": 0,
 		"direction_name": "Кремль - Микрорайон Менделеево"
 	},
 	{
 		"id": 37,
-		"journey_fk": 19,
+		"flight_fk": 19,
 		"direction_type_fk": 1,
 		"direction_name": "Микрорайон Менделеево - Кремль"
 	},
 	{
 		"id": 38,
-		"journey_fk": 20,
+		"flight_fk": 20,
 		"direction_type_fk": 0,
 		"direction_name": "ТК Ермак - Промкомзона"
 	},
 	{
 		"id": 39,
-		"journey_fk": 20,
+		"flight_fk": 20,
 		"direction_type_fk": 1,
 		"direction_name": "Промкомзона - ТК Ермак"
 	},
 	{
 		"id": 40,
-		"journey_fk": 21,
+		"flight_fk": 21,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - Ершовка"
 	},
 	{
 		"id": 41,
-		"journey_fk": 21,
+		"flight_fk": 21,
 		"direction_type_fk": 1,
 		"direction_name": "Ершовка - ЗАГС"
 	},
 	{
 		"id": 42,
-		"journey_fk": 22,
+		"flight_fk": 22,
 		"direction_type_fk": 0,
 		"direction_name": "Гостиный дом - ТЭЦ"
 	},
 	{
 		"id": 43,
-		"journey_fk": 22,
+		"flight_fk": 22,
 		"direction_type_fk": 1,
 		"direction_name": "ТЭЦ - Гостиный дом"
 	},
 	{
 		"id": 44,
-		"journey_fk": 23,
+		"flight_fk": 23,
 		"direction_type_fk": 0,
 		"direction_name": "7-й микрорайон - Алемасовское кладбище"
 	},
 	{
 		"id": 45,
-		"journey_fk": 23,
+		"flight_fk": 23,
 		"direction_type_fk": 1,
 		"direction_name": "Алемасовское кладбище - 7-й микрорайон"
 	},
 	{
 		"id": 46,
-		"journey_fk": 24,
+		"flight_fk": 24,
 		"direction_type_fk": 0,
 		"direction_name": "Рыбзавод - ЦУМ"
 	},
 	{
 		"id": 47,
-		"journey_fk": 24,
+		"flight_fk": 24,
 		"direction_type_fk": 1,
 		"direction_name": "ЦУМ - Рыбзавод"
 	}
