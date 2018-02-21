@@ -25,9 +25,9 @@ public interface DbHelper {
     Observable<Boolean> saveScheduleTypeList(List<ScheduleType> scheduleTypeList);
 
     Observable<List<Stop>> getAllStops();
-    Observable<List<Flight>> getFlightByType(String journeyType);
-    Observable<List<Direction>> getDirectionByStop(int stopId);
-    Observable<List<Schedule>> getSchedule(int stopId, int directionId);
-    Observable<List<Stop>> getAllStopsOnRouts(int directionId);
+    Observable<List<Flight>> getFlightByType(String flightType);
+    Observable<List<Direction>> getDirectionByStop(long stopId);
+    Observable<List<Schedule>> getSchedule(long stopId, long directionId);
+    Observable<List<Stop>> getAllStopsOnRouts(long directionId);
 
 }
