@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoSession;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -38,8 +39,8 @@ public class AppDbHelper implements DbHelper {
         mDaoSession = new DaoMaster(dbOpenHelper.getWritableDb()).newSession();
     }
     @Override
-    public Observable<Boolean> saveFlightTypeList(final List<FlightType> flightTypeList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveFlightTypeList(final List<FlightType> flightTypeList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getFlightTypeDao().insertInTx(flightTypeList);
@@ -49,8 +50,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveFlightList(final List<Flight> flightList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveFlightList(final List<Flight> flightList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getFlightDao().insertInTx(flightList);
@@ -60,8 +61,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveDirectionTypeList(final List<DirectionType> directionTypeList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveDirectionTypeList(final List<DirectionType> directionTypeList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getDirectionTypeDao().insertInTx(directionTypeList);
@@ -71,8 +72,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveDirectionList(final List<Direction> directionList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveDirectionList(final List<Direction> directionList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getDirectionDao().insertInTx(directionList);
@@ -82,8 +83,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveStopsOnRoutsList(final List<StopsOnRouts> stopsOnRoutsList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveStopsOnRoutsList(final List<StopsOnRouts> stopsOnRoutsList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getStopsOnRoutsDao().insertInTx(stopsOnRoutsList);
@@ -93,8 +94,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveStopList(final List<Stop> stopList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveStopList(final List<Stop> stopList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getStopDao().insertInTx(stopList);
@@ -104,8 +105,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveScheduleList(final List<Schedule> scheduleList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveScheduleList(final List<Schedule> scheduleList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getScheduleDao().insertInTx(scheduleList);
@@ -115,12 +116,92 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveScheduleTypeList(final List<ScheduleType> scheduleTypeList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> saveScheduleTypeList(final List<ScheduleType> scheduleTypeList) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 mDaoSession.getScheduleTypeDao().insertInTx(scheduleTypeList);
                 return true;
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyDirection() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getDirectionDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyDirectionType() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getDirectionTypeDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyFlight() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getFlightDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyFlightType() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getFlightTypeDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptySchedule() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getScheduleDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyScheduleType() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getScheduleTypeDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyStop() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getStopDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyStopsOnRouts() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return !(mDaoSession.getStopsOnRoutsDao().count() > 0);
             }
         });
     }
@@ -206,8 +287,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> insertFavoriteStops(final long stopId, final long directionId) {
-        return Observable.fromCallable(new Callable<Long>() {
+    public Single<Long> insertFavoriteStops(final long stopId, final long directionId) {
+        return Single.fromCallable(new Callable<Long>() {
             @Override
             public Long call() throws Exception {
                 long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
@@ -265,8 +346,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<String> getFlightNumber(final long flightId) {
-        return Observable.fromCallable(new Callable<String>() {
+    public Single<String> getFlightNumber(final long flightId) {
+        return Single.fromCallable(new Callable<String>() {
             @Override
             public String call() throws Exception {
                 return mDaoSession.getFlightDao().queryBuilder()
