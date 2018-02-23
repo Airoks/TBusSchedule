@@ -1,9 +1,11 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.DaoSession;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionDao;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
+import ru.tblsk.owlz.busschedule.data.db.model.FavoriteStops;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightDao;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
@@ -198,6 +201,76 @@ public class AppDbHelper implements DbHelper {
                     .where(StopDao.Properties.StopId.eq(id)).unique());
                 }
                 return stops;
+            }
+        });
+    }
+
+    @Override
+    public Observable<Long> insertFavoriteStops(final long stopId, final long directionId) {
+        return Observable.fromCallable(new Callable<Long>() {
+            @Override
+            public Long call() throws Exception {
+                long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                        .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
+                                .unique().getStopOnRoutsId();
+                FavoriteStops favoriteStops = new FavoriteStops();
+                favoriteStops.setStopsOnRoutsId(stopsOnRoutsId);
+                return mDaoSession.getFavoriteStopsDao().insert(favoriteStops);
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Stop>> getFavoriteStop() {
+        return Observable.fromCallable(new Callable<List<Stop>>() {
+            @Override
+            public List<Stop> call() throws Exception {
+                Set<Long> stopsId = new HashSet<>();
+                List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
+                List<Stop> stops = new ArrayList<>();
+
+                //search favoriteStopId
+                for(FavoriteStops favorite : favorites) {
+                    Long id = favorite.getStopsOnRouts().getStopId();
+                    stopsId.add(id);
+                }
+                for(Long id : stopsId) {
+                    stops.add(mDaoSession.getStopDao().queryBuilder()
+                    .where(StopDao.Properties.StopId.eq(id)).unique());
+                }
+                return stops;
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Direction>> getFavoriteDirection(final long stopId) {
+        return Observable.fromCallable(new Callable<List<Direction>>() {
+            @Override
+            public List<Direction> call() throws Exception {
+                List<Direction> directions = new ArrayList<>();
+                List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
+
+                for(FavoriteStops favorite : favorites) {
+                    Long id = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.StopOnRoutsId.eq(favorite.getFavoriteStopsId()),
+                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique().getDirectionId();
+                    directions.add(mDaoSession.getDirectionDao().queryBuilder()
+                    .where(DirectionDao.Properties.DirectionId.eq(id)).unique());
+                }
+                return directions;
+            }
+        });
+    }
+
+    @Override
+    public Observable<String> getFlightNumber(final long flightId) {
+        return Observable.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return mDaoSession.getFlightDao().queryBuilder()
+                        .where(FlightDao.Properties.FlightId.eq(flightId)).unique().getFlightNumber();
             }
         });
     }

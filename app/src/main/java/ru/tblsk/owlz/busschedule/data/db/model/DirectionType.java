@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import org.greenrobot.greendao.DaoException;
 @Entity(active = true)
 public class DirectionType {
     @SerializedName("id")
+    @Property(nameInDb = "direction_type_id")
     @Id
     private long directionTypeId;
 
     @SerializedName("direction_type_name")
+    @Property(nameInDb = "direction_type_name")
     @NotNull
     private String directionTypeName;
 

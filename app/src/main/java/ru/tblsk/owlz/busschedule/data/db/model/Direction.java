@@ -8,6 +8,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.OrderBy;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
@@ -17,16 +18,20 @@ import org.greenrobot.greendao.DaoException;
 @Entity(active = true)
 public class Direction {
     @SerializedName("id")
+    @Property(nameInDb = "direction_id")
     @Id
     private long directionId;
 
     @SerializedName("flight_fk")
+    @Property(nameInDb = "flight_fk")
     private long flightId;
 
     @SerializedName("direction_type_fk")
+    @Property(nameInDb = "direction_type_fk")
     private long directionTypeId;
 
     @SerializedName("direction_name")
+    @Property(nameInDb = "direction_name")
     @NotNull
     private String directionName;
 

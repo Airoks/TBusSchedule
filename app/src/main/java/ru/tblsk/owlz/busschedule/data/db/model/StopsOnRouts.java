@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
@@ -14,16 +15,20 @@ import org.greenrobot.greendao.DaoException;
 @Entity(active = true)
 public class StopsOnRouts {
     @SerializedName("id")
+    @Property(nameInDb = "stop_on_routs_id")
     @Id
     private long stopOnRoutsId;
 
     @SerializedName("direction_fk")
+    @Property(nameInDb = "direction_fk")
     private long directionId;
 
     @SerializedName("stop_fk")
+    @Property(nameInDb = "stop_fk")
     private long stopId;
 
     @SerializedName("stop_position")
+    @Property(nameInDb = "stop_position")
     private int stopPosition;
 
     @ToMany(referencedJoinProperty = "stopsOnRoutsId")

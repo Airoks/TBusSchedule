@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import org.greenrobot.greendao.DaoException;
 @Entity(active = true)
 public class FlightType {
     @SerializedName("id")
+    @Property(nameInDb = "flight_type_id")
     @Id
     private long flightTypeId;
 
     @SerializedName("flight_type_name")
+    @Property(nameInDb = "flight_type_name")
     @NotNull
     private String flightTypeName;
 

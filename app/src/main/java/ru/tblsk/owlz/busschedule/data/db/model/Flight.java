@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
@@ -16,13 +17,16 @@ import org.greenrobot.greendao.DaoException;
 @Entity(active = true)
 public class Flight {
     @SerializedName("id")
+    @Property(nameInDb = "flight_id")
     @Id
     private long flightId;
 
     @SerializedName("flight_type_fk")
+    @Property(nameInDb = "flight_type_fk")
     private long flightTypeId;
 
     @SerializedName("flight_number")
+    @Property(nameInDb = "flight_number")
     @NotNull
     private String flightNumber;
 

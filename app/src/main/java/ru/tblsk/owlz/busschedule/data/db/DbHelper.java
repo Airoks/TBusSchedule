@@ -30,4 +30,8 @@ public interface DbHelper {
     Observable<List<Schedule>> getSchedule(long stopId, long directionId);
     Observable<List<Stop>> getAllStopsOnRouts(long directionId);
 
+    Observable<Long> insertFavoriteStops(long stopId, long directionId);
+    Observable<List<Stop>> getFavoriteStop();
+    Observable<List<Direction>> getFavoriteDirection(long stopId);
+    Observable<String> getFlightNumber(long flightId);
 }

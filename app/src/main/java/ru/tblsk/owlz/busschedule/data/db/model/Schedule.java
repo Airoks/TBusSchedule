@@ -8,20 +8,25 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Property;
 
 @Entity(active = true)
 public class Schedule {
     @SerializedName("id")
+    @Property(nameInDb = "schedule_id")
     @Id
     private long scheduleId;
 
     @SerializedName("stops_on_routs_fk")
+    @Property(nameInDb = "stops_on_routs_fk")
     private long stopsOnRoutsId;
 
     @SerializedName("schedule_type_fk")
+    @Property(nameInDb = "schedule_type_fk")
     private long scheduleTypeId;
 
     @SerializedName("schedule_json")
+    @Property(nameInDb = "schedule_json")
     @NotNull
     private String scheduleJson;
 
