@@ -8,6 +8,5 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface PreferencesHelper {
-    Completable setFavoriteStops(long stopId, List<Long> directions);
-    Observable<Map<Long, List<Long>>> getFavoriteStops();
+
 }

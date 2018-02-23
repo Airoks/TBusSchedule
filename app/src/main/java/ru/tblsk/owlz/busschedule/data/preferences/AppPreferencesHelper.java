@@ -42,42 +42,6 @@ public class AppPreferencesHelper implements PreferencesHelper {
         return favorites.isEmpty();
     }
 
-    @Override
-    public Completable setFavoriteStops(final long stopId, final List<Long> directions) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                @SuppressLint("UseSparseArrays") Map<Long, List<Long>> newFavorites = new HashMap<>();
-                newFavorites.put(stopId, directions);
-                if(isEmptyFavorite()) {
-                    sharedPreferences.edit().remove(PREF_KEY_FAVORITE).apply();
-                    Type type = new TypeToken<Map<Long, List<Long>>>(){}.getType();
-                    String str = gson.toJson(newFavorites, type);
-                    sharedPreferences.edit().putString(PREF_KEY_FAVORITE, str).apply();
-                } else {
-                    String str = sharedPreferences.getString(PREF_KEY_FAVORITE, "");
-                    Type type = new TypeToken<Map<Long, List<Long>>>(){}.getType();
-                    Map<Long, List<Long>> favorites = gson.fromJson(str, type);
-                    favorites.putAll(newFavorites);
-                    sharedPreferences.edit().putString(PREF_KEY_FAVORITE,
-                            gson.toJson(favorites, type)).apply();
-                }
 
-            }
-        });
-
-    }
-
-    @Override
-    public Observable<Map<Long, List<Long>>> getFavoriteStops() {
-        return Observable.fromCallable(new Callable<Map<Long, List<Long>>>() {
-            @Override
-            public Map<Long, List<Long>> call() throws Exception {
-                String favorites = sharedPreferences.getString(PREF_KEY_FAVORITE, "");
-                Type type = new TypeToken<Map<Long, List<Long>>>(){}.getType();
-                return gson.fromJson(favorites, type);
-            }
-        });
-    }
 
 }
