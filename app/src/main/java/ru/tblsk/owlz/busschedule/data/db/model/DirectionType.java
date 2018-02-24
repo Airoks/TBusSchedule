@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -15,11 +16,13 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class DirectionType {
+    @Expose
     @SerializedName("id")
     @Property(nameInDb = "direction_type_id")
     @Id
     private long directionTypeId;
 
+    @Expose
     @SerializedName("direction_type_name")
     @Property(nameInDb = "direction_type_name")
     @NotNull

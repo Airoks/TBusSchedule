@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -16,11 +17,13 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Stop {
+    @Expose
     @SerializedName("id")
     @Property(nameInDb = "stop_id")
     @Id
     private long stopId;
 
+    @Expose
     @SerializedName("stop_name")
     @Property(nameInDb = "stop_name")
     @NotNull

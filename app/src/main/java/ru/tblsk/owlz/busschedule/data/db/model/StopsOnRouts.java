@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -14,19 +15,23 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class StopsOnRouts {
+    @Expose
     @SerializedName("id")
     @Property(nameInDb = "stop_on_routs_id")
     @Id
     private long stopOnRoutsId;
 
+    @Expose
     @SerializedName("direction_fk")
     @Property(nameInDb = "direction_fk")
     private long directionId;
 
+    @Expose
     @SerializedName("stop_fk")
     @Property(nameInDb = "stop_fk")
     private long stopId;
 
+    @Expose
     @SerializedName("stop_position")
     @Property(nameInDb = "stop_position")
     private int stopPosition;

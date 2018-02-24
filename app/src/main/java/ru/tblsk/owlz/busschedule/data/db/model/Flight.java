@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
@@ -16,15 +17,18 @@ import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Flight {
+    @Expose
     @SerializedName("id")
     @Property(nameInDb = "flight_id")
     @Id
     private long flightId;
 
+    @Expose
     @SerializedName("flight_type_fk")
     @Property(nameInDb = "flight_type_fk")
     private long flightTypeId;
 
+    @Expose
     @SerializedName("flight_number")
     @Property(nameInDb = "flight_number")
     @NotNull
