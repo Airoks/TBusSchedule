@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui;
+package ru.tblsk.owlz.busschedule.ui.main;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
