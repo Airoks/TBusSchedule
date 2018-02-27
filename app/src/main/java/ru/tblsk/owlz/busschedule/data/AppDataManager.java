@@ -16,7 +16,6 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
-import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;

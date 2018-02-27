@@ -34,9 +34,6 @@ public interface DbHelper {
     Single<Boolean> isEmptyStop();
     Single<Boolean> isEmptyStopsOnRouts();
 
-
-
-
     Observable<List<Stop>> getAllStops();
     Observable<List<Flight>> getFlightByType(String flightType);
     Observable<List<Direction>> getDirectionByStop(long stopId);
