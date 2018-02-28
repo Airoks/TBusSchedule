@@ -31,7 +31,7 @@ import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 
 public class AppDataManager implements DataManager {
-    private final Context context;
+    private final Context mContext;
     private final DbHelper dbHelper;
     private final PreferencesHelper preferencesHelper;
 
@@ -39,7 +39,7 @@ public class AppDataManager implements DataManager {
     public AppDataManager(@ApplicationContext Context context,
                           DbHelper dbHelper,
                           PreferencesHelper preferencesHelper) {
-        this.context = context;
+        this.mContext = context;
         this.dbHelper = dbHelper;
         this.preferencesHelper = preferencesHelper;
     }
@@ -180,7 +180,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<FlightType>>(){}.getType();
                             List<FlightType> flightTypes = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_FLIGHT_TYPES),type);
                             return saveFlightTypeList(flightTypes);
                         }
@@ -200,7 +200,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Flight>>(){}.getType();
                             List<Flight> flights = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_FLIGHTS),type);
                             return saveFlightList(flights);
                         }
@@ -220,7 +220,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Direction>>(){}.getType();
                             List<Direction> directions = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_DIRECTIONS), type);
                             return saveDirectionList(directions);
                         }
@@ -240,7 +240,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<DirectionType>>(){}.getType();
                             List<DirectionType> directionTypes = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_DIRECTION_TYPES), type);
                             return saveDirectionTypeList(directionTypes);
                         }
@@ -260,7 +260,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<StopsOnRouts>>(){}.getType();
                             List<StopsOnRouts> stopsOnRouts = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_STOPS_ON_ROUTS), type);
                             return saveStopsOnRoutsList(stopsOnRouts);
                         }
@@ -280,7 +280,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Stop>>(){}.getType();
                             List<Stop> stops = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_STOPS), type);
                             return saveStopList(stops);
                         }
@@ -300,7 +300,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Schedule>>(){}.getType();
                             List<Schedule> schedules = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_SCHEDULES), type);
                             return saveScheduleList(schedules);
                         }
@@ -320,7 +320,7 @@ public class AppDataManager implements DataManager {
                         if(isEmpty) {
                             Type type = new TypeToken<List<ScheduleType>>(){}.getType();
                             List<ScheduleType> scheduleTypes = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(context,
+                                    CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_SCHEDULE_TYPES), type);
                             return saveScheduleTypeList(scheduleTypes);
                         }

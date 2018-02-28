@@ -7,6 +7,6 @@ import ru.tblsk.owlz.busschedule.di.module.ActivityModule;
 
 @PerActivity
 @Subcomponent(modules = ActivityModule.class)
-public class ActivityComponent {
+public interface ActivityComponent {
     //inject
 }

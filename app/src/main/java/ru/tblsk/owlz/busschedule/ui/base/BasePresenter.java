@@ -3,23 +3,23 @@ package ru.tblsk.owlz.busschedule.ui.base;
 
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
-    private V mvpView;
+    private V mMvpView;
 
     @Override
     public void attachView(V mvpView) {
-        this.mvpView = mvpView;
+        this.mMvpView = mvpView;
     }
 
     @Override
     public void detachView() {
-        this.mvpView = null;
+        this.mMvpView = null;
     }
 
     public boolean isViewAttached() {
-        return this.mvpView != null;
+        return this.mMvpView != null;
     }
 
     public V getMvpView() {
-        return this.mvpView;
+        return this.mMvpView;
     }
 }

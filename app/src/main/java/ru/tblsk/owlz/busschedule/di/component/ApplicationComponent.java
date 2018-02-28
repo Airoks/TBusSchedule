@@ -10,5 +10,5 @@ import ru.tblsk.owlz.busschedule.di.module.ApplicationModule;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-    ActivityComponent activityComponent(ActivityModule activityModule);
+    //что мы хотим получить из AppModule ?
 }
