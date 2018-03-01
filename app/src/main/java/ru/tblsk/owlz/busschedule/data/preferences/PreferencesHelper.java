@@ -8,5 +8,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public interface PreferencesHelper {
+    void setFirstRunVariable(boolean value);
+    boolean getFirstRunVariable();
 
 }

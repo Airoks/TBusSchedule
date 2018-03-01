@@ -349,4 +349,14 @@ public class AppDataManager implements DataManager {
         completableSources.add(seedDatabaseSchedules());
         return completableSources;
     }
+
+    @Override
+    public void setFirstRunVariable(boolean value) {
+        preferencesHelper.setFirstRunVariable(value);
+    }
+
+    @Override
+    public boolean getFirstRunVariable() {
+        return preferencesHelper.getFirstRunVariable();
+    }
 }
