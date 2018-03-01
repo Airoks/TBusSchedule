@@ -14,4 +14,6 @@ public interface DataManager extends DbHelper, PreferencesHelper{
     Completable seedDatabaseStops();
     Completable seedDatabaseSchedules();
     Completable seedDatabaseScheduleTypes();
+
+    Completable seedAllTables();
 }

@@ -3,10 +3,8 @@ package ru.tblsk.owlz.busschedule;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Inject;
-
-import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.di.component.ApplicationComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.module.ApplicationModule;
 
 
@@ -16,8 +14,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mApplicationComponent = DaggerApplicationComponent.build()
-                .applicationModule(new ApplicationModule(this)).buid();
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this)).build();
     }
 
     public static App getApp(Context context) {

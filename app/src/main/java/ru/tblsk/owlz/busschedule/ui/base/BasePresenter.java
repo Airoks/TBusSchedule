@@ -1,9 +1,39 @@
 package ru.tblsk.owlz.busschedule.ui.base;
 
 
+import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
+import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     private V mMvpView;
+
+    private final DataManager mDataManager;
+    private final CompositeDisposable mCompositeDisposable;
+    private final SchedulerProvider mSchedulerProvider;
+
+    @Inject
+    public BasePresenter(DataManager dataManager,
+                         CompositeDisposable compositeDisposable,
+                         SchedulerProvider schedulerProvider) {
+        this.mDataManager = dataManager;
+        this.mCompositeDisposable = compositeDisposable;
+        this.mSchedulerProvider = schedulerProvider;
+    }
+
+    public DataManager getDataManager() {
+        return this.mDataManager;
+    }
+
+    public CompositeDisposable getCompositeDisposable() {
+        return this.mCompositeDisposable;
+    }
+
+    public SchedulerProvider getSchedulerProvider() {
+        return this.mSchedulerProvider;
+    }
 
     @Override
     public void attachView(V mvpView) {

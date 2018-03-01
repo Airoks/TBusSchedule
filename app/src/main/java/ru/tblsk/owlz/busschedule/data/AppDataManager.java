@@ -333,6 +333,7 @@ public class AppDataManager implements DataManager {
                 });
     }
 
+    @Override
     public Completable seedAllTables() {
         return Completable.concat(getListCompletable());
     }

@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.di.component.ActivityComponent;
 import ru.tblsk.owlz.busschedule.di.component.ConfigPersistentComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerConfigPersistentComponent;
 import ru.tblsk.owlz.busschedule.di.module.ActivityModule;
+import ru.tblsk.owlz.busschedule.di.module.ConfigPersistentModule;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {
@@ -33,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
 
         if(configPersistentComponent == null) {
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
+                    .configPersistentModule(new ConfigPersistentModule())
                     .applicationComponent(App.getApp(this).getApplicationComponent())
                     .build();
             sComponent.put(mActivityId, configPersistentComponent);

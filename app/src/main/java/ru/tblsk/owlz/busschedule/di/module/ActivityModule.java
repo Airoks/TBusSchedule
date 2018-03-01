@@ -13,7 +13,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 public class ActivityModule {
     private AppCompatActivity appCompatActivity;
 
-    ActivityModule(AppCompatActivity appCompatActivity) {
+    public ActivityModule(AppCompatActivity appCompatActivity) {
         this.appCompatActivity = appCompatActivity;
     }
 
@@ -26,10 +26,5 @@ public class ActivityModule {
     @Provides
     public AppCompatActivity provideActivity() {
         return this.appCompatActivity;
-    }
-
-    @Provides
-    CompositeDisposable provideCompositeDisposable() {
-        return new CompositeDisposable();
     }
 }
