@@ -8,13 +8,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -45,42 +48,42 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Boolean> saveFlightTypeList(List<FlightType> flightTypeList) {
+    public Completable saveFlightTypeList(List<FlightType> flightTypeList) {
         return dbHelper.saveFlightTypeList(flightTypeList);
     }
 
     @Override
-    public Single<Boolean> saveFlightList(List<Flight> flightList) {
+    public Completable saveFlightList(List<Flight> flightList) {
         return dbHelper.saveFlightList(flightList);
     }
 
     @Override
-    public Single<Boolean> saveDirectionTypeList(List<DirectionType> directionTypeList) {
+    public Completable saveDirectionTypeList(List<DirectionType> directionTypeList) {
         return dbHelper.saveDirectionTypeList(directionTypeList);
     }
 
     @Override
-    public Single<Boolean> saveDirectionList(List<Direction> directionList) {
+    public Completable saveDirectionList(List<Direction> directionList) {
         return dbHelper.saveDirectionList(directionList);
     }
 
     @Override
-    public Single<Boolean> saveStopsOnRoutsList(List<StopsOnRouts> stopsOnRoutsList) {
+    public Completable saveStopsOnRoutsList(List<StopsOnRouts> stopsOnRoutsList) {
         return dbHelper.saveStopsOnRoutsList(stopsOnRoutsList);
     }
 
     @Override
-    public Single<Boolean> saveStopList(List<Stop> stopList) {
+    public Completable saveStopList(List<Stop> stopList) {
         return dbHelper.saveStopList(stopList);
     }
 
     @Override
-    public Single<Boolean> saveScheduleList(List<Schedule> scheduleList) {
+    public Completable saveScheduleList(List<Schedule> scheduleList) {
         return dbHelper.saveScheduleList(scheduleList);
     }
 
     @Override
-    public Single<Boolean> saveScheduleTypeList(List<ScheduleType> scheduleTypeList) {
+    public Completable saveScheduleTypeList(List<ScheduleType> scheduleTypeList) {
         return dbHelper.saveScheduleTypeList(scheduleTypeList);
     }
 
@@ -170,33 +173,34 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Boolean> seedDatabaseFlightTypes() {
+    public Completable seedDatabaseFlightTypes() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyFlightType()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(Boolean isEmpty) throws Exception {
                         if(isEmpty) {
-                            Type type = new TypeToken<List<FlightType>>(){}.getType();
+                            Type type = new TypeToken<List<FlightType>>() {
+                            }.getType();
                             List<FlightType> flightTypes = gson.fromJson(
                                     CommonUtils.loadJSONFromAsset(mContext,
-                                            AppConstants.SEED_DB_FLIGHT_TYPES),type);
+                                            AppConstants.SEED_DB_FLIGHT_TYPES), type);
                             return saveFlightTypeList(flightTypes);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseFlights() {
+    public Completable seedDatabaseFlights() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyFlight()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Flight>>(){}.getType();
                             List<Flight> flights = gson.fromJson(
@@ -204,19 +208,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_FLIGHTS),type);
                             return saveFlightList(flights);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseDirections() {
+    public Completable seedDatabaseDirections() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyDirection()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Direction>>(){}.getType();
                             List<Direction> directions = gson.fromJson(
@@ -224,19 +228,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_DIRECTIONS), type);
                             return saveDirectionList(directions);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseDirectionTypes() {
+    public Completable seedDatabaseDirectionTypes() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyDirectionType()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<DirectionType>>(){}.getType();
                             List<DirectionType> directionTypes = gson.fromJson(
@@ -244,19 +248,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_DIRECTION_TYPES), type);
                             return saveDirectionTypeList(directionTypes);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseStopsOnRouts() {
+    public Completable seedDatabaseStopsOnRouts() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyStopsOnRouts()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<StopsOnRouts>>(){}.getType();
                             List<StopsOnRouts> stopsOnRouts = gson.fromJson(
@@ -264,19 +268,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_STOPS_ON_ROUTS), type);
                             return saveStopsOnRoutsList(stopsOnRouts);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseStops() {
+    public Completable seedDatabaseStops() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyStop()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Stop>>(){}.getType();
                             List<Stop> stops = gson.fromJson(
@@ -284,19 +288,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_STOPS), type);
                             return saveStopList(stops);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseSchedules() {
+    public Completable seedDatabaseSchedules() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptySchedule()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<Schedule>>(){}.getType();
                             List<Schedule> schedules = gson.fromJson(
@@ -304,19 +308,19 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_SCHEDULES), type);
                             return saveScheduleList(schedules);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
     }
 
     @Override
-    public Single<Boolean> seedDatabaseScheduleTypes() {
+    public Completable seedDatabaseScheduleTypes() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         return dbHelper.isEmptyScheduleType()
-                .flatMap(new Function<Boolean, SingleSource<? extends Boolean>>() {
+                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
-                    public SingleSource<? extends Boolean> apply(Boolean isEmpty) throws Exception {
+                    public CompletableSource apply(Boolean isEmpty) throws Exception {
                         if(isEmpty) {
                             Type type = new TypeToken<List<ScheduleType>>(){}.getType();
                             List<ScheduleType> scheduleTypes = gson.fromJson(
@@ -324,8 +328,25 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DB_SCHEDULE_TYPES), type);
                             return saveScheduleTypeList(scheduleTypes);
                         }
-                        return Single.just(false);
+                        return Completable.complete();
                     }
                 });
+    }
+
+    public Completable seedAllTables() {
+        return Completable.concat(getListCompletable());
+    }
+
+    public Iterable<CompletableSource> getListCompletable() {
+        List<CompletableSource> completableSources = new ArrayList<>();
+        completableSources.add(seedDatabaseFlightTypes());
+        completableSources.add(seedDatabaseFlights());
+        completableSources.add(seedDatabaseDirectionTypes());
+        completableSources.add(seedDatabaseDirections());
+        completableSources.add(seedDatabaseStops());
+        completableSources.add(seedDatabaseStopsOnRouts());
+        completableSources.add(seedDatabaseScheduleTypes());
+        completableSources.add(seedDatabaseSchedules());
+        return completableSources;
     }
 }

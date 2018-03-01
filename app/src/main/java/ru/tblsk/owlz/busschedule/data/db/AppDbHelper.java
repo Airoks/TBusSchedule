@@ -11,8 +11,10 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoSession;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -39,89 +41,81 @@ public class AppDbHelper implements DbHelper {
         mDaoSession = new DaoMaster(dbOpenHelper.getWritableDb()).newSession();
     }
     @Override
-    public Single<Boolean> saveFlightTypeList(final List<FlightType> flightTypeList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveFlightTypeList(final List<FlightType> flightTypeList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getFlightTypeDao().insertInTx(flightTypeList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveFlightList(final List<Flight> flightList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveFlightList(final List<Flight> flightList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getFlightDao().insertInTx(flightList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveDirectionTypeList(final List<DirectionType> directionTypeList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveDirectionTypeList(final List<DirectionType> directionTypeList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getDirectionTypeDao().insertInTx(directionTypeList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveDirectionList(final List<Direction> directionList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveDirectionList(final List<Direction> directionList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getDirectionDao().insertInTx(directionList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveStopsOnRoutsList(final List<StopsOnRouts> stopsOnRoutsList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveStopsOnRoutsList(final List<StopsOnRouts> stopsOnRoutsList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getStopsOnRoutsDao().insertInTx(stopsOnRoutsList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveStopList(final List<Stop> stopList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveStopList(final List<Stop> stopList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getStopDao().insertInTx(stopList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveScheduleList(final List<Schedule> scheduleList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveScheduleList(final List<Schedule> scheduleList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getScheduleDao().insertInTx(scheduleList);
-                return true;
             }
         });
     }
 
     @Override
-    public Single<Boolean> saveScheduleTypeList(final List<ScheduleType> scheduleTypeList) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Completable saveScheduleTypeList(final List<ScheduleType> scheduleTypeList) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Boolean call() throws Exception {
+            public void run() throws Exception {
                 mDaoSession.getScheduleTypeDao().insertInTx(scheduleTypeList);
-                return true;
             }
         });
     }
