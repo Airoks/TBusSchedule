@@ -16,6 +16,7 @@ public class FavoriteStops {
     private long favoriteStopsId;
 
     @Property(nameInDb = "stops_on_routs_fk")
+    @NotNull
     private  long stopsOnRoutsId;
 
     @ToOne(joinProperty = "stopsOnRoutsId")

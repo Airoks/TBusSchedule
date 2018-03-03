@@ -22,11 +22,13 @@ public class Schedule {
     @Expose
     @SerializedName("stops_on_routs_fk")
     @Property(nameInDb = "stops_on_routs_fk")
+    @NotNull
     private long stopsOnRoutsId;
 
     @Expose
     @SerializedName("schedule_type_fk")
     @Property(nameInDb = "schedule_type_fk")
+    @NotNull
     private long scheduleTypeId;
 
     @Expose

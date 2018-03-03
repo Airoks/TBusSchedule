@@ -27,11 +27,13 @@ public class Direction {
     @Expose
     @SerializedName("flight_fk")
     @Property(nameInDb = "flight_fk")
+    @NotNull
     private long flightId;
 
     @Expose
     @SerializedName("direction_type_fk")
     @Property(nameInDb = "direction_type_fk")
+    @NotNull
     private long directionTypeId;
 
     @Expose

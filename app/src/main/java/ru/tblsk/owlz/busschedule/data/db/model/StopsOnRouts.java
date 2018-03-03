@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
@@ -24,16 +25,19 @@ public class StopsOnRouts {
     @Expose
     @SerializedName("direction_fk")
     @Property(nameInDb = "direction_fk")
+    @NotNull
     private long directionId;
 
     @Expose
     @SerializedName("stop_fk")
     @Property(nameInDb = "stop_fk")
+    @NotNull
     private long stopId;
 
     @Expose
     @SerializedName("stop_position")
     @Property(nameInDb = "stop_position")
+    @NotNull
     private int stopPosition;
 
     @ToMany(referencedJoinProperty = "stopsOnRoutsId")

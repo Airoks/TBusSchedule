@@ -26,6 +26,7 @@ public class Flight {
     @Expose
     @SerializedName("flight_type_fk")
     @Property(nameInDb = "flight_type_fk")
+    @NotNull
     private long flightTypeId;
 
     @Expose
