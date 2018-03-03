@@ -24,7 +24,7 @@ public class Stop {
     private long stopId;
 
     @Expose
-    @SerializedName("stop_name")
+    @SerializedName("name_of_stop")
     @Property(nameInDb = "stop_name")
     @NotNull
     private String stopName;

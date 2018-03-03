@@ -58,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         super.onDestroy();
     }
 
-    private ActivityComponent getActivityComponent() {
+    public ActivityComponent getActivityComponent() {
         return this.mActivityComponent;
     }
 

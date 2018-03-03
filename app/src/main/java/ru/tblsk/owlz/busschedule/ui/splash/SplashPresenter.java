@@ -29,7 +29,7 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
     @Override
     public void attachView(V mvpView) {
         super.attachView(mvpView);
-        if(getDataManager().getFirstRunVariable()) {
+        //if(getDataManager().getFirstRunVariable()) {
             getCompositeDisposable().add(getDataManager()
                     .seedAllTables()
                     .subscribeOn(getSchedulerProvider().io())
@@ -37,16 +37,19 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
                     .subscribe(new Action() {
                         @Override
                         public void run() throws Exception {
+                            Log.d("SplashPresenter: ","Complete");
                             getDataManager().setFirstRunVariable(false);
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
                             //как то обработать
-                            Log.d("Seeding DataBase: ","Error!");
+                            String error = throwable.getMessage();
+                            Log.d("Seeding DataBase: ", error);
+                            throwable.printStackTrace();
                         }
                     }));
-        }
+        //}
         getMvpView().openMainActivity();
     }
 }

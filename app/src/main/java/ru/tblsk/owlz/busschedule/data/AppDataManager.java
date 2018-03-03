@@ -338,7 +338,7 @@ public class AppDataManager implements DataManager {
         return Completable.concat(getListCompletable());
     }
 
-    public Iterable<CompletableSource> getListCompletable() {
+    private Iterable<CompletableSource> getListCompletable() {
         List<CompletableSource> completableSources = new ArrayList<>();
         completableSources.add(seedDatabaseFlightTypes());
         completableSources.add(seedDatabaseFlights());

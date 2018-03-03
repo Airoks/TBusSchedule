@@ -8,6 +8,8 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 @Module
 public class ActivityModule {
@@ -27,4 +29,5 @@ public class ActivityModule {
     public AppCompatActivity provideActivity() {
         return this.appCompatActivity;
     }
+
 }
