@@ -11,4 +11,6 @@
     <string name="stops">Остановки</string>
     <string name="routs">Маршруты</string>
     <string name="main">Главная</string>
+
+    <string name="error">Произошла ошибка!</string>
 </resources>
