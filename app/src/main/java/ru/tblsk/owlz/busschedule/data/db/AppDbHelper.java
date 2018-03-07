@@ -27,6 +27,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.FlightTypeDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStops;
+import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStopsDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopDao;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
@@ -285,11 +286,19 @@ public class AppDbHelper implements DbHelper {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                SearchHistoryStops searchHistoryStops = new SearchHistoryStops();
-                searchHistoryStops.setStopId(stopId);
-                mDaoSession.getSearchHistoryStopsDao().insert(searchHistoryStops);
+                if(!containsStop(stopId)) {
+                    SearchHistoryStops searchHistoryStops = new SearchHistoryStops();
+                    searchHistoryStops.setStopId(stopId);
+                    mDaoSession.getSearchHistoryStopsDao().insert(searchHistoryStops);
+                }
             }
         });
+    }
+
+    private boolean containsStop(long stopId) {
+        SearchHistoryStops searchHS = mDaoSession.getSearchHistoryStopsDao().queryBuilder()
+                .where(SearchHistoryStopsDao.Properties.StopId.eq(stopId)).unique();
+        return searchHS != null;
     }
 
     @Override
