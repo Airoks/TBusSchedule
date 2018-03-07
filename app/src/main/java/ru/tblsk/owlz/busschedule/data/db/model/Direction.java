@@ -22,7 +22,7 @@ public class Direction {
     @SerializedName("id")
     @Property(nameInDb = "direction_id")
     @Id
-    private long directionId;
+    private long id;
 
     @Expose
     @SerializedName("flight_fk")
@@ -54,10 +54,10 @@ public class Direction {
     @Generated(hash = 1467317006)
     private transient DirectionDao myDao;
 
-    @Generated(hash = 1015974179)
-    public Direction(long directionId, long flightId, long directionTypeId,
+    @Generated(hash = 473241049)
+    public Direction(long id, long flightId, long directionTypeId,
             @NotNull String directionName) {
-        this.directionId = directionId;
+        this.id = id;
         this.flightId = flightId;
         this.directionTypeId = directionTypeId;
         this.directionName = directionName;
@@ -67,12 +67,12 @@ public class Direction {
     public Direction() {
     }
 
-    public long getDirectionId() {
-        return this.directionId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setDirectionId(long directionId) {
-        this.directionId = directionId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getFlightId() {
@@ -103,7 +103,7 @@ public class Direction {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1097042181)
+    @Generated(hash = 1568510142)
     public List<StopsOnRouts> getStopsOnRouts() {
         if (stopsOnRouts == null) {
             final DaoSession daoSession = this.daoSession;
@@ -112,7 +112,7 @@ public class Direction {
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
             List<StopsOnRouts> stopsOnRoutsNew = targetDao
-                    ._queryDirection_StopsOnRouts(directionId);
+                    ._queryDirection_StopsOnRouts(id);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -170,6 +170,5 @@ public class Direction {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionDao() : null;
     }
-
 
 }

@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
@@ -21,7 +20,7 @@ public class Flight {
     @SerializedName("id")
     @Property(nameInDb = "flight_id")
     @Id
-    private long flightId;
+    private long id;
 
     @Expose
     @SerializedName("flight_type_fk")
@@ -46,9 +45,9 @@ public class Flight {
     @Generated(hash = 1011557899)
     private transient FlightDao myDao;
 
-    @Generated(hash = 131522700)
-    public Flight(long flightId, long flightTypeId, @NotNull String flightNumber) {
-        this.flightId = flightId;
+    @Generated(hash = 1661740774)
+    public Flight(long id, long flightTypeId, @NotNull String flightNumber) {
+        this.id = id;
         this.flightTypeId = flightTypeId;
         this.flightNumber = flightNumber;
     }
@@ -57,12 +56,12 @@ public class Flight {
     public Flight() {
     }
 
-    public long getFlightId() {
-        return this.flightId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setFlightId(long flightId) {
-        this.flightId = flightId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getFlightTypeId() {
@@ -85,7 +84,7 @@ public class Flight {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1036898601)
+    @Generated(hash = 1386518190)
     public List<Direction> getDirections() {
         if (directions == null) {
             final DaoSession daoSession = this.daoSession;
@@ -93,8 +92,7 @@ public class Flight {
                 throw new DaoException("Entity is detached from DAO context");
             }
             DirectionDao targetDao = daoSession.getDirectionDao();
-            List<Direction> directionsNew = targetDao
-                    ._queryFlight_Directions(flightId);
+            List<Direction> directionsNew = targetDao._queryFlight_Directions(id);
             synchronized (this) {
                 if (directions == null) {
                     directions = directionsNew;
@@ -152,6 +150,4 @@ public class Flight {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getFlightDao() : null;
     }
-
-
 }

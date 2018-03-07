@@ -20,7 +20,7 @@ public class DirectionType {
     @SerializedName("id")
     @Property(nameInDb = "direction_type_id")
     @Id
-    private long directionTypeId;
+    private long id;
 
     @Expose
     @SerializedName("direction_type_name")
@@ -39,9 +39,9 @@ public class DirectionType {
     @Generated(hash = 857977871)
     private transient DirectionTypeDao myDao;
 
-    @Generated(hash = 1993002389)
-    public DirectionType(long directionTypeId, @NotNull String directionTypeName) {
-        this.directionTypeId = directionTypeId;
+    @Generated(hash = 10033365)
+    public DirectionType(long id, @NotNull String directionTypeName) {
+        this.id = id;
         this.directionTypeName = directionTypeName;
     }
 
@@ -49,12 +49,12 @@ public class DirectionType {
     public DirectionType() {
     }
 
-    public long getDirectionTypeId() {
-        return this.directionTypeId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setDirectionTypeId(long directionTypeId) {
-        this.directionTypeId = directionTypeId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDirectionTypeName() {
@@ -69,7 +69,7 @@ public class DirectionType {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1237214477)
+    @Generated(hash = 747571097)
     public List<Direction> getDirections() {
         if (directions == null) {
             final DaoSession daoSession = this.daoSession;
@@ -78,7 +78,7 @@ public class DirectionType {
             }
             DirectionDao targetDao = daoSession.getDirectionDao();
             List<Direction> directionsNew = targetDao
-                    ._queryDirectionType_Directions(directionTypeId);
+                    ._queryDirectionType_Directions(id);
             synchronized (this) {
                 if (directions == null) {
                     directions = directionsNew;
@@ -136,6 +136,5 @@ public class DirectionType {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionTypeDao() : null;
     }
-
 
 }

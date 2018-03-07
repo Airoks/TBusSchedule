@@ -3,41 +3,41 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.NotNull;
 
 @Entity(active = true)
-public class FavoriteStops {
+public class SearchHistoryStops {
     @Id(autoincrement = true)
-    @Property(nameInDb = "favorite_stops_id")
+    @Property(nameInDb = "search_history_stop_id")
     private long id;
 
-    @Property(nameInDb = "stops_on_routs_fk")
+    @Property(nameInDb = "stop_fk")
     @NotNull
-    private  long stopsOnRoutsId;
+    private long stopId;
 
-    @ToOne(joinProperty = "stopsOnRoutsId")
-    private StopsOnRouts stopsOnRouts;
+    @ToOne(joinProperty = "stopId")
+    private Stop stop;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    @Generated(hash = 986649151)
-    private transient FavoriteStopsDao myDao;
+    @Generated(hash = 1886775999)
+    private transient SearchHistoryStopsDao myDao;
 
-    @Generated(hash = 1241474591)
-    public FavoriteStops(long id, long stopsOnRoutsId) {
+    @Generated(hash = 1906981172)
+    public SearchHistoryStops(long id, long stopId) {
         this.id = id;
-        this.stopsOnRoutsId = stopsOnRoutsId;
+        this.stopId = stopId;
     }
 
-    @Generated(hash = 1306421919)
-    public FavoriteStops() {
+    @Generated(hash = 882008364)
+    public SearchHistoryStops() {
     }
 
     public long getId() {
@@ -48,48 +48,47 @@ public class FavoriteStops {
         this.id = id;
     }
 
-    public long getStopsOnRoutsId() {
-        return this.stopsOnRoutsId;
+    public long getStopId() {
+        return this.stopId;
     }
 
-    public void setStopsOnRoutsId(long stopsOnRoutsId) {
-        this.stopsOnRoutsId = stopsOnRoutsId;
+    public void setStopId(long stopId) {
+        this.stopId = stopId;
     }
 
-    @Generated(hash = 454586668)
-    private transient Long stopsOnRouts__resolvedKey;
+    @Generated(hash = 2041608776)
+    private transient Long stop__resolvedKey;
 
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1038426212)
-    public StopsOnRouts getStopsOnRouts() {
-        long __key = this.stopsOnRoutsId;
-        if (stopsOnRouts__resolvedKey == null
-                || !stopsOnRouts__resolvedKey.equals(__key)) {
+    @Generated(hash = 1233391797)
+    public Stop getStop() {
+        long __key = this.stopId;
+        if (stop__resolvedKey == null || !stop__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
-            StopsOnRouts stopsOnRoutsNew = targetDao.load(__key);
+            StopDao targetDao = daoSession.getStopDao();
+            Stop stopNew = targetDao.load(__key);
             synchronized (this) {
-                stopsOnRouts = stopsOnRoutsNew;
-                stopsOnRouts__resolvedKey = __key;
+                stop = stopNew;
+                stop__resolvedKey = __key;
             }
         }
-        return stopsOnRouts;
+        return stop;
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1716570295)
-    public void setStopsOnRouts(@NotNull StopsOnRouts stopsOnRouts) {
-        if (stopsOnRouts == null) {
+    @Generated(hash = 1924622999)
+    public void setStop(@NotNull Stop stop) {
+        if (stop == null) {
             throw new DaoException(
-                    "To-one property 'stopsOnRoutsId' has not-null constraint; cannot set to-one to null");
+                    "To-one property 'stopId' has not-null constraint; cannot set to-one to null");
         }
         synchronized (this) {
-            this.stopsOnRouts = stopsOnRouts;
-            stopsOnRoutsId = stopsOnRouts.getId();
-            stopsOnRouts__resolvedKey = stopsOnRoutsId;
+            this.stop = stop;
+            stopId = stop.getId();
+            stop__resolvedKey = stopId;
         }
     }
 
@@ -130,9 +129,9 @@ public class FavoriteStops {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 144552758)
+    @Generated(hash = 357236580)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getFavoriteStopsDao() : null;
+        myDao = daoSession != null ? daoSession.getSearchHistoryStopsDao() : null;
     }
 }

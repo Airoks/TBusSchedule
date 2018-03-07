@@ -5,6 +5,9 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.di.annotation.ConfigPersistent;
+import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpView;
+import ru.tblsk.owlz.busschedule.ui.main.stops.StopsPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
@@ -28,7 +31,14 @@ public class ConfigPersistentModule {
     }
 
     @Provides
-    public SchedulerProvider provideScheduler() {
+    @ConfigPersistent
+    StopsMvpPresenter<StopsMvpView> provideStopsPresenter(
+            StopsPresenter<StopsMvpView> stopsPresenter) {
+        return stopsPresenter;
+    }
+
+    @Provides
+    SchedulerProvider provideScheduler() {
         return new AppSchedulerProvider();
     }
 }

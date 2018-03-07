@@ -17,7 +17,7 @@ public class Schedule {
     @SerializedName("id")
     @Property(nameInDb = "schedule_id")
     @Id
-    private long scheduleId;
+    private long id;
 
     @Expose
     @SerializedName("stops_on_routs_fk")
@@ -45,10 +45,10 @@ public class Schedule {
     @Generated(hash = 1493574644)
     private transient ScheduleDao myDao;
 
-    @Generated(hash = 1917555176)
-    public Schedule(long scheduleId, long stopsOnRoutsId, long scheduleTypeId,
+    @Generated(hash = 95821828)
+    public Schedule(long id, long stopsOnRoutsId, long scheduleTypeId,
             @NotNull String scheduleJson) {
-        this.scheduleId = scheduleId;
+        this.id = id;
         this.stopsOnRoutsId = stopsOnRoutsId;
         this.scheduleTypeId = scheduleTypeId;
         this.scheduleJson = scheduleJson;
@@ -58,12 +58,12 @@ public class Schedule {
     public Schedule() {
     }
 
-    public long getScheduleId() {
-        return this.scheduleId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setScheduleId(long scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getStopsOnRoutsId() {
@@ -132,6 +132,4 @@ public class Schedule {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleDao() : null;
     }
-
-
 }

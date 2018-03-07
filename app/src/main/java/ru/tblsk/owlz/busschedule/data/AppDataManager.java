@@ -15,9 +15,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -128,42 +126,52 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<List<Stop>> getAllStops() {
+    public Single<List<Stop>> getAllStops() {
         return dbHelper.getAllStops();
     }
 
     @Override
-    public Observable<List<Flight>> getFlightByType(String flightType) {
+    public Single<List<Flight>> getFlightByType(String flightType) {
         return dbHelper.getFlightByType(flightType);
     }
 
     @Override
-    public Observable<List<Direction>> getDirectionByStop(long stopId) {
+    public Single<List<Direction>> getDirectionByStop(long stopId) {
         return dbHelper.getDirectionByStop(stopId);
     }
 
     @Override
-    public Observable<List<Schedule>> getSchedule(long stopId, long directionId) {
+    public Single<List<Schedule>> getSchedule(long stopId, long directionId) {
         return dbHelper.getSchedule(stopId, directionId);
     }
 
     @Override
-    public Observable<List<Stop>> getAllStopsOnRouts(long directionId) {
+    public Single<List<Stop>> getAllStopsOnRouts(long directionId) {
         return dbHelper.getAllStopsOnRouts(directionId);
     }
 
     @Override
-    public Single<Long> insertFavoriteStops(long stopId, long directionId) {
+    public Completable insertSearchHistoryStops(long stopId) {
+        return dbHelper.insertSearchHistoryStops(stopId);
+    }
+
+    @Override
+    public Single<List<Stop>> getSearchHistoryStops() {
+        return dbHelper.getSearchHistoryStops();
+    }
+
+    @Override
+    public Completable insertFavoriteStops(long stopId, long directionId) {
         return dbHelper.insertFavoriteStops(stopId, directionId);
     }
 
     @Override
-    public Observable<List<Stop>> getFavoriteStop() {
+    public Single<List<Stop>> getFavoriteStop() {
         return dbHelper.getFavoriteStop();
     }
 
     @Override
-    public Observable<List<Direction>> getFavoriteDirection(long stopId) {
+    public Single<List<Direction>> getFavoriteDirection(long stopId) {
         return dbHelper.getFavoriteDirection(stopId);
     }
 

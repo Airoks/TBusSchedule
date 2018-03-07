@@ -21,7 +21,7 @@ public class Stop {
     @SerializedName("id")
     @Property(nameInDb = "stop_id")
     @Id
-    private long stopId;
+    private long id;
 
     @Expose
     @SerializedName("name_of_stop")
@@ -41,9 +41,9 @@ public class Stop {
     @Generated(hash = 1582113218)
     private transient StopDao myDao;
 
-    @Generated(hash = 943860405)
-    public Stop(long stopId, @NotNull String stopName) {
-        this.stopId = stopId;
+    @Generated(hash = 1077600994)
+    public Stop(long id, @NotNull String stopName) {
+        this.id = id;
         this.stopName = stopName;
     }
 
@@ -51,12 +51,12 @@ public class Stop {
     public Stop() {
     }
 
-    public long getStopId() {
-        return this.stopId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setStopId(long stopId) {
-        this.stopId = stopId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getStopName() {
@@ -71,7 +71,7 @@ public class Stop {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1259130255)
+    @Generated(hash = 429317435)
     public List<StopsOnRouts> getStopsOnRouts() {
         if (stopsOnRouts == null) {
             final DaoSession daoSession = this.daoSession;
@@ -80,7 +80,7 @@ public class Stop {
             }
             StopsOnRoutsDao targetDao = daoSession.getStopsOnRoutsDao();
             List<StopsOnRouts> stopsOnRoutsNew = targetDao
-                    ._queryStop_StopsOnRouts(stopId);
+                    ._queryStop_StopsOnRouts(id);
             synchronized (this) {
                 if (stopsOnRouts == null) {
                     stopsOnRouts = stopsOnRoutsNew;
@@ -138,6 +138,4 @@ public class Stop {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getStopDao() : null;
     }
-
-
 }

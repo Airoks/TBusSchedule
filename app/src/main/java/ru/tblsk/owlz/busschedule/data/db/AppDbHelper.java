@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
@@ -27,6 +26,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightTypeDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
+import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStops;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopDao;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
@@ -201,8 +201,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Stop>> getAllStops() {
-        return Observable.fromCallable(new Callable<List<Stop>>() {
+    public Single<List<Stop>> getAllStops() {
+        return Single.fromCallable(new Callable<List<Stop>>() {
             @Override
             public List<Stop> call() throws Exception {
                 return mDaoSession.getStopDao().loadAll();
@@ -211,14 +211,14 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Flight>> getFlightByType(final String flightType) {
-        return Observable.fromCallable(new Callable<List<Flight>>() {
+    public Single<List<Flight>> getFlightByType(final String flightType) {
+        return Single.fromCallable(new Callable<List<Flight>>() {
             @Override
             public List<Flight> call() throws Exception {
                 List<Flight> flights;
                 long flightTypeId = mDaoSession.getFlightTypeDao().queryBuilder()
-                        .where(FlightTypeDao.Properties.FlightTypeId.eq(flightType))
-                        .unique().getFlightTypeId();
+                        .where(FlightTypeDao.Properties.FlightTypeName.eq(flightType))
+                        .unique().getId();
                 flights = mDaoSession.getFlightDao().queryBuilder()
                         .where(FlightDao.Properties.FlightTypeId.eq(flightTypeId))
                         .list();
@@ -228,17 +228,17 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Direction>> getDirectionByStop(final long stopId) {
-        return Observable.fromCallable(new Callable<List<Direction>>() {
+    public Single<List<Direction>> getDirectionByStop(final long stopId) {
+        return Single.fromCallable(new Callable<List<Direction>>() {
             @Override
             public List<Direction> call() throws Exception {
-                List<Direction> directions = Collections.emptyList();
+                List<Direction> directions = new ArrayList<>();
                 List<StopsOnRouts> stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.StopId.eq(stopId)).list();
                 for(StopsOnRouts routs : stopsOnRouts) {
-                    long id = routs.getDirectionId();
+                    long directionId = routs.getDirectionId();
                     directions.add(mDaoSession.getDirectionDao().queryBuilder()
-                    .where(DirectionDao.Properties.DirectionId.eq(id)).unique());
+                    .where(DirectionDao.Properties.Id.eq(directionId)).unique());
                 }
                 return directions;
             }
@@ -246,11 +246,11 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Schedule>> getSchedule(final long stopId, final long directionId) {
-        return Observable.fromCallable(new Callable<List<Schedule>>() {
+    public Single<List<Schedule>> getSchedule(final long stopId, final long directionId) {
+        return Single.fromCallable(new Callable<List<Schedule>>() {
             @Override
             public List<Schedule> call() throws Exception {
-                List<Schedule> schedules;
+                List<Schedule> schedules = new ArrayList<>();
                 StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
                                 StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
@@ -262,8 +262,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Stop>> getAllStopsOnRouts(final long directionId) {
-        return Observable.fromCallable(new Callable<List<Stop>>() {
+    public Single<List<Stop>> getAllStopsOnRouts(final long directionId) {
+        return Single.fromCallable(new Callable<List<Stop>>() {
             @Override
             public List<Stop> call() throws Exception {
                 List<Stop> stops = Collections.emptyList();
@@ -271,9 +271,9 @@ public class AppDbHelper implements DbHelper {
                         .where(StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
                         .orderAsc(StopsOnRoutsDao.Properties.StopPosition).list();
                 for(StopsOnRouts routs : stopsOnRouts) {
-                    long id = routs.getStopId();
+                    long stopId = routs.getStopId();
                     stops.add(mDaoSession.getStopDao().queryBuilder()
-                    .where(StopDao.Properties.StopId.eq(id)).unique());
+                    .where(StopDao.Properties.Id.eq(stopId)).unique());
                 }
                 return stops;
             }
@@ -281,24 +281,55 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<Long> insertFavoriteStops(final long stopId, final long directionId) {
-        return Single.fromCallable(new Callable<Long>() {
+    public Completable insertSearchHistoryStops(final long stopId) {
+        return Completable.fromAction(new Action() {
             @Override
-            public Long call() throws Exception {
-                long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                        .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
-                                StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
-                                .unique().getStopOnRoutsId();
-                FavoriteStops favoriteStops = new FavoriteStops();
-                favoriteStops.setStopsOnRoutsId(stopsOnRoutsId);
-                return mDaoSession.getFavoriteStopsDao().insert(favoriteStops);
+            public void run() throws Exception {
+                SearchHistoryStops searchHistoryStops = new SearchHistoryStops();
+                searchHistoryStops.setStopId(stopId);
+                mDaoSession.getSearchHistoryStopsDao().insert(searchHistoryStops);
             }
         });
     }
 
     @Override
-    public Observable<List<Stop>> getFavoriteStop() {
-        return Observable.fromCallable(new Callable<List<Stop>>() {
+    public Single<List<Stop>> getSearchHistoryStops() {
+        return Single.fromCallable(new Callable<List<Stop>>() {
+            @Override
+            public List<Stop> call() throws Exception {
+                List<Stop> stops = new ArrayList<>();
+                List<SearchHistoryStops> searchHistoryStops = mDaoSession
+                        .getSearchHistoryStopsDao().loadAll();
+                for(SearchHistoryStops searchHS : searchHistoryStops) {
+                    long id = searchHS.getId();
+                    stops.add(mDaoSession.getStopDao().queryBuilder()
+                            .where(StopDao.Properties.Id.eq(id)).unique());
+                }
+                return stops;
+            }
+        });
+    }
+
+    @Override
+    public Completable insertFavoriteStops(final long stopId, final long directionId) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                //сохраняем только остановку с оперделенным направлением
+                long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                        .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
+                        .unique().getId();
+                FavoriteStops favoriteStops = new FavoriteStops();
+                favoriteStops.setStopsOnRoutsId(stopsOnRoutsId);
+                mDaoSession.getFavoriteStopsDao().insert(favoriteStops);
+            }
+        });
+    }
+
+    @Override
+    public Single<List<Stop>> getFavoriteStop() {
+        return Single.fromCallable(new Callable<List<Stop>>() {
             @Override
             public List<Stop> call() throws Exception {
                 Set<Long> stopsId = new HashSet<>();
@@ -307,12 +338,12 @@ public class AppDbHelper implements DbHelper {
 
                 //search favoriteStopId
                 for(FavoriteStops favorite : favorites) {
-                    Long id = favorite.getStopsOnRouts().getStopId();
-                    stopsId.add(id);
+                    Long stopId = favorite.getStopsOnRouts().getStopId();
+                    stopsId.add(stopId);
                 }
-                for(Long id : stopsId) {
+                for(Long stopId : stopsId) {
                     stops.add(mDaoSession.getStopDao().queryBuilder()
-                    .where(StopDao.Properties.StopId.eq(id)).unique());
+                    .where(StopDao.Properties.Id.eq(stopId)).unique());
                 }
                 return stops;
             }
@@ -320,19 +351,20 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Direction>> getFavoriteDirection(final long stopId) {
-        return Observable.fromCallable(new Callable<List<Direction>>() {
+    public Single<List<Direction>> getFavoriteDirection(final long stopId) {
+        return Single.fromCallable(new Callable<List<Direction>>() {
             @Override
             public List<Direction> call() throws Exception {
+                //
                 List<Direction> directions = new ArrayList<>();
                 List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
 
                 for(FavoriteStops favorite : favorites) {
-                    Long id = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                            .where(StopsOnRoutsDao.Properties.StopOnRoutsId.eq(favorite.getFavoriteStopsId()),
+                    Long directionId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getId()),
                                     StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique().getDirectionId();
                     directions.add(mDaoSession.getDirectionDao().queryBuilder()
-                    .where(DirectionDao.Properties.DirectionId.eq(id)).unique());
+                    .where(DirectionDao.Properties.Id.eq(directionId)).unique());
                 }
                 return directions;
             }
@@ -345,7 +377,7 @@ public class AppDbHelper implements DbHelper {
             @Override
             public String call() throws Exception {
                 return mDaoSession.getFlightDao().queryBuilder()
-                        .where(FlightDao.Properties.FlightId.eq(flightId)).unique().getFlightNumber();
+                        .where(FlightDao.Properties.Id.eq(flightId)).unique().getFlightNumber();
             }
         });
     }

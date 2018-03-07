@@ -4,7 +4,6 @@ package ru.tblsk.owlz.busschedule.data.db;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
@@ -35,14 +34,17 @@ public interface DbHelper {
     Single<Boolean> isEmptyStop();
     Single<Boolean> isEmptyStopsOnRouts();
 
-    Observable<List<Stop>> getAllStops();
-    Observable<List<Flight>> getFlightByType(String flightType);
-    Observable<List<Direction>> getDirectionByStop(long stopId);
-    Observable<List<Schedule>> getSchedule(long stopId, long directionId);
-    Observable<List<Stop>> getAllStopsOnRouts(long directionId);
+    Single<List<Stop>> getAllStops();
+    Single<List<Flight>> getFlightByType(String flightType);
+    Single<List<Direction>> getDirectionByStop(long stopId);
+    Single<List<Schedule>> getSchedule(long stopId, long directionId);
+    Single<List<Stop>> getAllStopsOnRouts(long directionId);
 
-    Single<Long> insertFavoriteStops(long stopId, long directionId);
-    Observable<List<Stop>> getFavoriteStop();
-    Observable<List<Direction>> getFavoriteDirection(long stopId);
+    Completable insertSearchHistoryStops(long stopId);
+    Single<List<Stop>> getSearchHistoryStops();
+
+    Completable insertFavoriteStops(long stopId, long directionId);
+    Single<List<Stop>> getFavoriteStop();
+    Single<List<Direction>> getFavoriteDirection(long stopId);
     Single<String> getFlightNumber(long flightId);
 }

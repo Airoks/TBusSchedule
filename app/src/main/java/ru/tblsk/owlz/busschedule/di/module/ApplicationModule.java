@@ -29,37 +29,37 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationContext
-    public Context provideApplicationContext() {
+    Context provideApplicationContext() {
         return mApplication;
     }
 
     @Provides
     @DatabaseInfo
-    public String provideDatabaseName() {
+    String provideDatabaseName() {
         return AppConstants.DB_NAME;
     }
 
     @Provides
     @PreferencesInfo
-    public String providePreferencesName() {
+    String providePreferencesName() {
         return AppConstants.PREFERENCES_NAME;
     }
 
     @Provides
     @Singleton
-    public DataManager provideDataManager(AppDataManager appDataManager) {
+    DataManager provideDataManager(AppDataManager appDataManager) {
         return  appDataManager;
     }
 
     @Provides
     @Singleton
-    public DbHelper provideDbHelper(AppDbHelper appDbHelper) {
+    DbHelper provideDbHelper(AppDbHelper appDbHelper) {
         return appDbHelper;
     }
 
     @Provides
     @Singleton
-    public PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
+    PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
     }
 }

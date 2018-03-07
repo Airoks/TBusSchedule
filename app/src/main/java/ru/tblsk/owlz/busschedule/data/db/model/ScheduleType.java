@@ -20,7 +20,7 @@ public class ScheduleType {
     @SerializedName("id")
     @Property(nameInDb = "schedule_type_id")
     @Id
-    private long scheduleTypeId;
+    private long id;
 
     @Expose
     @SerializedName("schedule_type_name")
@@ -39,9 +39,9 @@ public class ScheduleType {
     @Generated(hash = 1056866477)
     private transient ScheduleTypeDao myDao;
 
-    @Generated(hash = 787472946)
-    public ScheduleType(long scheduleTypeId, @NotNull String scheduleTypeName) {
-        this.scheduleTypeId = scheduleTypeId;
+    @Generated(hash = 758904019)
+    public ScheduleType(long id, @NotNull String scheduleTypeName) {
+        this.id = id;
         this.scheduleTypeName = scheduleTypeName;
     }
 
@@ -49,12 +49,12 @@ public class ScheduleType {
     public ScheduleType() {
     }
 
-    public long getScheduleTypeId() {
-        return this.scheduleTypeId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setScheduleTypeId(long scheduleTypeId) {
-        this.scheduleTypeId = scheduleTypeId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getScheduleTypeName() {
@@ -69,7 +69,7 @@ public class ScheduleType {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1257662466)
+    @Generated(hash = 1341738165)
     public List<Schedule> getSchedules() {
         if (schedules == null) {
             final DaoSession daoSession = this.daoSession;
@@ -78,7 +78,7 @@ public class ScheduleType {
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
             List<Schedule> schedulesNew = targetDao
-                    ._queryScheduleType_Schedules(scheduleTypeId);
+                    ._queryScheduleType_Schedules(id);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -136,6 +136,4 @@ public class ScheduleType {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleTypeDao() : null;
     }
-
-
 }

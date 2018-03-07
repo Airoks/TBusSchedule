@@ -21,12 +21,12 @@ public class ActivityModule {
 
     @Provides
     @ActivityContext
-    public Context provideContext() {
+    Context provideContext() {
         return this.appCompatActivity;
     }
 
     @Provides
-    public AppCompatActivity provideActivity() {
+    AppCompatActivity provideActivity() {
         return this.appCompatActivity;
     }
 

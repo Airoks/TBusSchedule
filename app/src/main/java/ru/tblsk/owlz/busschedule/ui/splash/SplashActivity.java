@@ -13,7 +13,7 @@ import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 public class SplashActivity extends BaseActivity implements SplashMvpView {
 
     @Inject
-    SplashPresenter<SplashMvpView> splashPresenter;
+    SplashPresenter<SplashMvpView> mPresenter;
 
     @Override
     public void openMainActivity() {
@@ -27,12 +27,12 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
-        splashPresenter.attachView(this);
+        mPresenter.attachView(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        splashPresenter.detachView();
+        mPresenter.detachView();
     }
 }

@@ -20,7 +20,7 @@ public class StopsOnRouts {
     @SerializedName("id")
     @Property(nameInDb = "stop_on_routs_id")
     @Id
-    private long stopOnRoutsId;
+    private long id;
 
     @Expose
     @SerializedName("direction_fk")
@@ -51,10 +51,9 @@ public class StopsOnRouts {
     @Generated(hash = 2025255696)
     private transient StopsOnRoutsDao myDao;
 
-    @Generated(hash = 503886166)
-    public StopsOnRouts(long stopOnRoutsId, long directionId, long stopId,
-            int stopPosition) {
-        this.stopOnRoutsId = stopOnRoutsId;
+    @Generated(hash = 1336312087)
+    public StopsOnRouts(long id, long directionId, long stopId, int stopPosition) {
+        this.id = id;
         this.directionId = directionId;
         this.stopId = stopId;
         this.stopPosition = stopPosition;
@@ -64,12 +63,12 @@ public class StopsOnRouts {
     public StopsOnRouts() {
     }
 
-    public long getStopOnRoutsId() {
-        return this.stopOnRoutsId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setStopOnRoutsId(long stopOnRoutsId) {
-        this.stopOnRoutsId = stopOnRoutsId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getDirectionId() {
@@ -100,7 +99,7 @@ public class StopsOnRouts {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 2864580)
+    @Generated(hash = 1752148033)
     public List<Schedule> getSchedules() {
         if (schedules == null) {
             final DaoSession daoSession = this.daoSession;
@@ -109,7 +108,7 @@ public class StopsOnRouts {
             }
             ScheduleDao targetDao = daoSession.getScheduleDao();
             List<Schedule> schedulesNew = targetDao
-                    ._queryStopsOnRouts_Schedules(stopOnRoutsId);
+                    ._queryStopsOnRouts_Schedules(id);
             synchronized (this) {
                 if (schedules == null) {
                     schedules = schedulesNew;
@@ -167,6 +166,4 @@ public class StopsOnRouts {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getStopsOnRoutsDao() : null;
     }
-
-
 }

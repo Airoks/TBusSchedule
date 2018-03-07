@@ -20,7 +20,7 @@ public class FlightType {
     @SerializedName("id")
     @Property(nameInDb = "flight_type_id")
     @Id
-    private long flightTypeId;
+    private long id;
 
     @Expose
     @SerializedName("flight_type_name")
@@ -39,9 +39,9 @@ public class FlightType {
     @Generated(hash = 1377307004)
     private transient FlightTypeDao myDao;
 
-    @Generated(hash = 804054836)
-    public FlightType(long flightTypeId, @NotNull String flightTypeName) {
-        this.flightTypeId = flightTypeId;
+    @Generated(hash = 973145605)
+    public FlightType(long id, @NotNull String flightTypeName) {
+        this.id = id;
         this.flightTypeName = flightTypeName;
     }
 
@@ -49,12 +49,12 @@ public class FlightType {
     public FlightType() {
     }
 
-    public long getFlightTypeId() {
-        return this.flightTypeId;
+    public long getId() {
+        return this.id;
     }
 
-    public void setFlightTypeId(long flightTypeId) {
-        this.flightTypeId = flightTypeId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFlightTypeName() {
@@ -69,7 +69,7 @@ public class FlightType {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 862549233)
+    @Generated(hash = 293847103)
     public List<Flight> getFlights() {
         if (flights == null) {
             final DaoSession daoSession = this.daoSession;
@@ -77,8 +77,7 @@ public class FlightType {
                 throw new DaoException("Entity is detached from DAO context");
             }
             FlightDao targetDao = daoSession.getFlightDao();
-            List<Flight> flightsNew = targetDao
-                    ._queryFlightType_Flights(flightTypeId);
+            List<Flight> flightsNew = targetDao._queryFlightType_Flights(id);
             synchronized (this) {
                 if (flights == null) {
                     flights = flightsNew;
@@ -136,6 +135,4 @@ public class FlightType {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getFlightTypeDao() : null;
     }
-
-
 }
