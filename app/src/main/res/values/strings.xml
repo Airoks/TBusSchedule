@@ -13,4 +13,7 @@
     <string name="main">Главная</string>
 
     <string name="error">Произошла ошибка!</string>
+
+    <string name="all_stops">ВСЕ ОСТАНОВКИ</string>
+    <string name="history_stop">Недавние</string>
 </resources>
