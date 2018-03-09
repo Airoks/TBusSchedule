@@ -320,6 +320,17 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Completable deleteSearchHistory() {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                mDaoSession.getSearchHistoryStopsDao().deleteAll();
+                mDaoSession.getSearchHistoryStopsDao().detachAll();
+            }
+        });
+    }
+
+    @Override
     public Completable insertFavoriteStops(final long stopId, final long directionId) {
         return Completable.fromAction(new Action() {
             @Override

@@ -42,6 +42,7 @@ public interface DbHelper {
 
     Completable insertSearchHistoryStops(long stopId);
     Single<List<Stop>> getSearchHistoryStops();
+    Completable deleteSearchHistory();
 
     Completable insertFavoriteStops(long stopId, long directionId);
     Single<List<Stop>> getFavoriteStop();

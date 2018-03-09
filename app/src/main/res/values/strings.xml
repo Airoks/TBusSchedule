@@ -16,4 +16,6 @@
 
     <string name="all_stops">ВСЕ ОСТАНОВКИ</string>
     <string name="history_stop">Недавние</string>
+    <string name="description_drawer">Боковое меню</string>
+    <string name="delete_search_history">Удалить недавние остановки</string>
 </resources>

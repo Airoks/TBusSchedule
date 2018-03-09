@@ -161,6 +161,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable deleteSearchHistory() {
+        return dbHelper.deleteSearchHistory();
+    }
+
+    @Override
     public Completable insertFavoriteStops(long stopId, long directionId) {
         return dbHelper.insertFavoriteStops(stopId, directionId);
     }
