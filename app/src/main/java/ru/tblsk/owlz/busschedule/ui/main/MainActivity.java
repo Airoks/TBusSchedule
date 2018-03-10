@@ -3,18 +3,12 @@ package ru.tblsk.owlz.busschedule.ui.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,23 +18,67 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.main.stops.StopsFragment;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationView mBottomNavigationView;
     @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
+    DrawerLayout mDrawer;
     @BindView(R.id.nav_view)
-    NavigationView navigationView;
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setUp();
+    }
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
+    @Override
+    protected void setUp() {
+        setupNavView();
+        setupBottNavView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+    //Нет общего тулбара - разобраться
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    //Нет общего тулбара - разобраться
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void openDrawer() {
+        mDrawer.openDrawer(Gravity.START);
+    }
+
+    private void setupBottNavView() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -59,66 +97,29 @@ public class MainActivity extends BaseActivity
                         return false;
                     }
                 });
-
-        navigationView.setNavigationItemSelectedListener(this);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    public void openDrawer() {
-        drawer.openDrawer(Gravity.START);
+    private void setupNavView() {
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mDrawer.closeDrawer(GravityCompat.START);
+                switch (item.getItemId()) {
+                    case R.id.nav_camera:
+                        return true;
+                    case R.id.nav_gallery:
+                        return true;
+                    case R.id.nav_slideshow:
+                        return true;
+                    case R.id.nav_manage:
+                        return true;
+                    case R.id.nav_share:
+                        return true;
+                    case R.id.nav_send:
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 }

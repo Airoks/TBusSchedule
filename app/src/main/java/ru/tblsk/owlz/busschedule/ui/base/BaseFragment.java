@@ -1,7 +1,10 @@
 package ru.tblsk.owlz.busschedule.ui.base;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import butterknife.Unbinder;
 import ru.tblsk.owlz.busschedule.di.component.ActivityComponent;
@@ -21,6 +24,12 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         if(context instanceof BaseActivity) {
             mActivity = (BaseActivity) context;
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUp(view);
     }
 
     @Override
@@ -54,6 +63,8 @@ public abstract class BaseFragment extends Fragment implements MvpView {
             mActivity.onError(message);
         }
     }
+
+    protected abstract void setUp(View view);
 
     public interface Callback {
         //калбэки для взаимодествия между фрагментами

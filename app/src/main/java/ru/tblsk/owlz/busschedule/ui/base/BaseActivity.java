@@ -86,4 +86,6 @@ public abstract class BaseActivity extends AppCompatActivity
             showSnackBar(getString(R.string.error));
         }
     }
+
+    abstract protected void setUp();
 }
