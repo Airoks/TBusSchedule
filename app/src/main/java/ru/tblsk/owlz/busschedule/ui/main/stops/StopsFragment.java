@@ -47,7 +47,7 @@ public class StopsFragment extends BaseFragment implements StopsMvpView {
 
     @Override
     protected void setUp(View view) {
-
+        setupToolbar();
     }
 
     private void setupToolbar() {

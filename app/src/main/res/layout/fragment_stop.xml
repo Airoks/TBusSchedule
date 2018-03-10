@@ -74,8 +74,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/historyRv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="82dp"
                 app:layout_constraintTop_toBottomOf="@+id/allStopsButton">
 
             </android.support.v7.widget.RecyclerView>
