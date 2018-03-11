@@ -8,4 +8,5 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 
 public interface StopsMvpView extends MvpView{
     void updateStops(List<Stop> stops);
+    void deleteStops();
 }

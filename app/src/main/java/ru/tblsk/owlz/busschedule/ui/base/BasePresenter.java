@@ -27,11 +27,11 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
         return this.mDataManager;
     }
 
-    public CompositeDisposable getCompositeDisposable() {
+    protected CompositeDisposable getCompositeDisposable() {
         return this.mCompositeDisposable;
     }
 
-    public SchedulerProvider getSchedulerProvider() {
+    protected SchedulerProvider getSchedulerProvider() {
         return this.mSchedulerProvider;
     }
 
@@ -42,6 +42,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     @Override
     public void detachView() {
+        mCompositeDisposable.dispose();
         this.mMvpView = null;
     }
 

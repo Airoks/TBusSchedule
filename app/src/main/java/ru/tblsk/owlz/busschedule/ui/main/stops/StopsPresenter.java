@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
@@ -25,18 +26,40 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public void getStops() {
+    public void getSearchHistoryStops() {
         getCompositeDisposable().add(getDataManager()
-                .getAllStops()
+                .getSearchHistoryStops()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<Stop>>() {
                     @Override
                     public void accept(List<Stop> stops) throws Exception {
+                        //если что передадим пустой список
                         getMvpView().updateStops(stops);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Log.d("StopsPresenter: ",throwable.getMessage());
+
+                    }
+                }));
+    }
+
+    @Override
+    public void deleteSearchHistoryStops() {
+        getCompositeDisposable().add(getDataManager()
+                .deleteSearchHistory()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
                     }
                 }));
     }
