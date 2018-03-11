@@ -26,16 +26,15 @@ public class StopsFragment extends BaseFragment implements StopsMvpView {
     @Inject
     StopsMvpPresenter<StopsMvpView> mPresenter;
 
+    @Inject
+    StopsAdapter mStopsAdapter;
+
     @BindView(R.id.stopToolbar)
     Toolbar toolbar;
 
     @Override
     public void updateStops(List<Stop> stops) {
-        //Test
-        for(Stop stop : stops) {
-            String stopName = stop.getStopName();
-            System.out.println(stopName);
-        }
+        mStopsAdapter.addItems(stops);
     }
 
     @Override
@@ -89,6 +88,6 @@ public class StopsFragment extends BaseFragment implements StopsMvpView {
 
     @OnClick(R.id.allStopsButton)
     public void allStops() {
-
+        //транзакия для запуска фрагмента олстопс
     }
 }

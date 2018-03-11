@@ -1,7 +1,5 @@
 package ru.tblsk.owlz.busschedule.ui.main.stops;
 
-import android.util.Log;
-
 import java.util.List;
 
 import javax.inject.Inject;

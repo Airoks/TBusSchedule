@@ -1,10 +1,15 @@
 package ru.tblsk.owlz.busschedule.di.module;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
+import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.annotation.ConfigPersistent;
+import ru.tblsk.owlz.busschedule.ui.main.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpView;
 import ru.tblsk.owlz.busschedule.ui.main.stops.StopsPresenter;
@@ -40,5 +45,10 @@ public class ConfigPersistentModule {
     @Provides
     SchedulerProvider provideScheduler() {
         return new AppSchedulerProvider();
+    }
+
+    @Provides
+    StopsAdapter provideStopsAdapter() {
+        return new StopsAdapter(new ArrayList<Stop>());
     }
 }
