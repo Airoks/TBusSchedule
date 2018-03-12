@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.main.stops;
+package ru.tblsk.owlz.busschedule.ui.stops;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
 import java.util.List;
 
@@ -15,7 +17,8 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 
-public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>{
+public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
+        implements SectionTitleProvider{
 
     private List<Stop> mStops;
 
@@ -41,9 +44,17 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     public void addItems(List<Stop> stops) {
-        this.mStops.addAll(stops);
+        mStops.clear();
+        mStops.addAll(stops);
         notifyDataSetChanged();
     }
+
+    @Override
+    public String getSectionTitle(int position) {
+        String stopName = mStops.get(position).getStopName();
+        return stopName.substring(0, 1);
+    }
+
     class StopViewHolder extends BaseViewHolder {
         @BindView(R.id.stopTextView)
         TextView stopNameTextView;

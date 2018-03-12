@@ -1,21 +1,19 @@
 package ru.tblsk.owlz.busschedule.di.module;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.annotation.ConfigPersistent;
-import ru.tblsk.owlz.busschedule.ui.main.stops.StopsAdapter;
-import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.main.stops.StopsMvpView;
-import ru.tblsk.owlz.busschedule.ui.main.stops.StopsPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
+import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpView;
+import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsPresenter;
+import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpView;
+import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsPresenter;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
@@ -23,7 +21,6 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class ConfigPersistentModule {
 
     @Provides
-    @ConfigPersistent
     CompositeDisposable provideCompositeDisposable() {
         return new CompositeDisposable();
     }
@@ -43,12 +40,14 @@ public class ConfigPersistentModule {
     }
 
     @Provides
-    SchedulerProvider provideScheduler() {
-        return new AppSchedulerProvider();
+    @ConfigPersistent
+    AllStopsMvpPresenter<AllStopsMvpView> provideAllStopsPresenter(
+            AllStopsPresenter<AllStopsMvpView> allStopsPresenter) {
+        return allStopsPresenter;
     }
 
     @Provides
-    StopsAdapter provideStopsAdapter() {
-        return new StopsAdapter(new ArrayList<Stop>());
+    SchedulerProvider provideScheduler() {
+        return new AppSchedulerProvider();
     }
 }

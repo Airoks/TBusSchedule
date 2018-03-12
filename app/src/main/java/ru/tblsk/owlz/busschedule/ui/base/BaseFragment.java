@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import butterknife.Unbinder;
@@ -34,10 +35,10 @@ public abstract class BaseFragment extends Fragment implements MvpView {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if(mUnbinder != null) {
             mUnbinder.unbind();
         }
+        super.onDestroyView();
     }
 
     @Override
@@ -65,6 +66,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     }
 
     protected abstract void setUp(View view);
+    protected abstract void setupToolbar();
 
     public interface Callback {
         //калбэки для взаимодествия между фрагментами

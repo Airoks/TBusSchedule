@@ -12,9 +12,11 @@
     <string name="routs">Маршруты</string>
     <string name="main">Главная</string>
 
+    <string name="all_stops">Все Остановки</string>
+
     <string name="error">Произошла ошибка!</string>
 
-    <string name="all_stops">ВСЕ ОСТАНОВКИ</string>
+    <string name="all_stops_button">ВСЕ ОСТАНОВКИ</string>
     <string name="history_stop">Недавние</string>
     <string name="description_drawer">Боковое меню</string>
     <string name="delete_search_history">Удалить недавние остановки</string>

@@ -36,7 +36,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/all_stops"
+                android:text="@string/all_stops_button"
                 android:background="@drawable/button_contour"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@id/allStopsButton" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/historyRv"
+                android:id="@+id/historyStopRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="82dp"

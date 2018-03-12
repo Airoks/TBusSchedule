@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.main.stops;
+package ru.tblsk.owlz.busschedule.ui.stops.historystops;
 
 
 import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;

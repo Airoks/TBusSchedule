@@ -1,4 +1,6 @@
-package ru.tblsk.owlz.busschedule.ui.main.stops;
+package ru.tblsk.owlz.busschedule.ui.stops.historystops;
+
+import android.util.Log;
 
 import java.util.List;
 
@@ -33,12 +35,14 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                     @Override
                     public void accept(List<Stop> stops) throws Exception {
                         //если что передадим пустой список
-                        getMvpView().updateStops(stops);
+                        getMvpView().showSearchHistoryStops(stops);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        String error = throwable.getMessage();
+                        Log.d("getSearchHistoryStops: ", error);
+                        throwable.printStackTrace();
                     }
                 }));
     }
@@ -57,7 +61,9 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        String error = throwable.getMessage();
+                        Log.d("deleteSHistoryStops:", error);
+                        throwable.printStackTrace();
                     }
                 }));
     }

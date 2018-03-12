@@ -8,14 +8,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -127,7 +132,23 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Single<List<Stop>> getAllStops() {
-        return dbHelper.getAllStops();
+        return dbHelper.getAllStops()
+                .flatMap(new Function<List<Stop>, SingleSource<? extends List<Stop>>>() {
+                    @Override
+                    public SingleSource<? extends List<Stop>> apply(List<Stop> stops)
+                            throws Exception {
+                        final Collator russianCollator = Collator
+                                .getInstance(new Locale("ru", "RU"));
+                        Collections.sort(stops, new Comparator<Stop>() {
+                            @Override
+                            public int compare(Stop stopLeft, Stop stopRight) {
+                                return russianCollator.compare(stopLeft.getStopName()
+                                        , stopRight.getStopName());
+                            }
+                        });
+                        return Single.just(stops);
+                    }
+                });
     }
 
     @Override

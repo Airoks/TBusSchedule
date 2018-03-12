@@ -34,7 +34,6 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
                     .subscribe(new Action() {
                         @Override
                         public void run() throws Exception {
-                            Log.d("SplashPresenter: ","Complete");
                             getDataManager().setFirstRunVariable(false);
                         }
                     }, new Consumer<Throwable>() {
