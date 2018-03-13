@@ -286,5 +286,17 @@
 		"flight_fk": 24,
 		"direction_type_fk": 1,
 		"direction_name": "ЦУМ - Рыбзавод"
+	},
+	{
+		"id": 48,
+		"flight_fk": 25,
+		"direction_type_fk": 0,
+		"direction_name": "Тобольск - Сумкино"
+	},
+	{
+		"id": 49,
+		"flight_fk": 25,
+		"direction_type_fk": 1,
+		"direction_name": "Сумкино - Тобольск"
 	}
 ]

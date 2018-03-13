@@ -135,9 +135,12 @@ public class AllStopsFragment extends BaseFragment implements AllStopsMvpView{
         private ClickListener mClickListener;
         private GestureDetector mGestureDetector;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener ) {
+        public RecyclerTouchListener(Context context,
+                                     final RecyclerView recyclerView,
+                                     final ClickListener clickListener ) {
             this.mClickListener = clickListener;
-            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
+            mGestureDetector = new GestureDetector(context,
+                    new GestureDetector.SimpleOnGestureListener(){
                 @Override
                 public  boolean onSingleTapUp(MotionEvent e) {
                     return true;

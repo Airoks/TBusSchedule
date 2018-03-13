@@ -123,5 +123,10 @@
 		"id": 24,
 		"flight_type_fk": 0,
 		"flight_number": "26"
+	},
+	{
+		"id": 25,
+		"flight_type_fk": 1,
+		"flight_number": "107"
 	}
 ]
