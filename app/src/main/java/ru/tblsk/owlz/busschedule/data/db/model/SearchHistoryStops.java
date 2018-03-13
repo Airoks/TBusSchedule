@@ -13,11 +13,11 @@ import org.greenrobot.greendao.DaoException;
 public class SearchHistoryStops {
     @Id(autoincrement = true)
     @Property(nameInDb = "search_history_stop_id")
-    private long id;
+    private Long id;
 
     @Property(nameInDb = "stop_fk")
     @NotNull
-    private long stopId;
+    private Long stopId;
 
     @ToOne(joinProperty = "stopId")
     private Stop stop;
@@ -30,8 +30,8 @@ public class SearchHistoryStops {
     @Generated(hash = 1886775999)
     private transient SearchHistoryStopsDao myDao;
 
-    @Generated(hash = 1906981172)
-    public SearchHistoryStops(long id, long stopId) {
+    @Generated(hash = 1741645865)
+    public SearchHistoryStops(Long id, @NotNull Long stopId) {
         this.id = id;
         this.stopId = stopId;
     }
@@ -40,19 +40,19 @@ public class SearchHistoryStops {
     public SearchHistoryStops() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getStopId() {
+    public Long getStopId() {
         return this.stopId;
     }
 
-    public void setStopId(long stopId) {
+    public void setStopId(Long stopId) {
         this.stopId = stopId;
     }
 
@@ -60,9 +60,9 @@ public class SearchHistoryStops {
     private transient Long stop__resolvedKey;
 
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1233391797)
+    @Generated(hash = 941508798)
     public Stop getStop() {
-        long __key = this.stopId;
+        Long __key = this.stopId;
         if (stop__resolvedKey == null || !stop__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {

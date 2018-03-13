@@ -4,15 +4,15 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class FlightType {
@@ -20,7 +20,7 @@ public class FlightType {
     @SerializedName("id")
     @Property(nameInDb = "flight_type_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("flight_type_name")
@@ -39,8 +39,8 @@ public class FlightType {
     @Generated(hash = 1377307004)
     private transient FlightTypeDao myDao;
 
-    @Generated(hash = 973145605)
-    public FlightType(long id, @NotNull String flightTypeName) {
+    @Generated(hash = 671632356)
+    public FlightType(Long id, @NotNull String flightTypeName) {
         this.id = id;
         this.flightTypeName = flightTypeName;
     }
@@ -49,11 +49,11 @@ public class FlightType {
     public FlightType() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

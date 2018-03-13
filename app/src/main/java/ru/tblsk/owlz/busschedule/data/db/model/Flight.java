@@ -20,13 +20,13 @@ public class Flight {
     @SerializedName("id")
     @Property(nameInDb = "flight_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("flight_type_fk")
     @Property(nameInDb = "flight_type_fk")
     @NotNull
-    private long flightTypeId;
+    private Long flightTypeId;
 
     @Expose
     @SerializedName("flight_number")
@@ -45,8 +45,9 @@ public class Flight {
     @Generated(hash = 1011557899)
     private transient FlightDao myDao;
 
-    @Generated(hash = 1661740774)
-    public Flight(long id, long flightTypeId, @NotNull String flightNumber) {
+    @Generated(hash = 1412790009)
+    public Flight(Long id, @NotNull Long flightTypeId,
+            @NotNull String flightNumber) {
         this.id = id;
         this.flightTypeId = flightTypeId;
         this.flightNumber = flightNumber;
@@ -56,19 +57,19 @@ public class Flight {
     public Flight() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getFlightTypeId() {
+    public Long getFlightTypeId() {
         return this.flightTypeId;
     }
 
-    public void setFlightTypeId(long flightTypeId) {
+    public void setFlightTypeId(Long flightTypeId) {
         this.flightTypeId = flightTypeId;
     }
 

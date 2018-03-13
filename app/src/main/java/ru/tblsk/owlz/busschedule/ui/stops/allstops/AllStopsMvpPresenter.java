@@ -5,4 +5,5 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 
 public interface AllStopsMvpPresenter<V extends AllStopsMvpView> extends MvpPresenter<V> {
     void getAllStops();
+    void insertSearchHistoryStops(long stopId);
 }

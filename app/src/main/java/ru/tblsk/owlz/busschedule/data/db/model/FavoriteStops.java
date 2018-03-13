@@ -13,11 +13,11 @@ import org.greenrobot.greendao.annotation.NotNull;
 public class FavoriteStops {
     @Id(autoincrement = true)
     @Property(nameInDb = "favorite_stops_id")
-    private long id;
+    private Long id;
 
     @Property(nameInDb = "stops_on_routs_fk")
     @NotNull
-    private  long stopsOnRoutsId;
+    private  Long stopsOnRoutsId;
 
     @ToOne(joinProperty = "stopsOnRoutsId")
     private StopsOnRouts stopsOnRouts;
@@ -30,8 +30,8 @@ public class FavoriteStops {
     @Generated(hash = 986649151)
     private transient FavoriteStopsDao myDao;
 
-    @Generated(hash = 1241474591)
-    public FavoriteStops(long id, long stopsOnRoutsId) {
+    @Generated(hash = 950750758)
+    public FavoriteStops(Long id, @NotNull Long stopsOnRoutsId) {
         this.id = id;
         this.stopsOnRoutsId = stopsOnRoutsId;
     }
@@ -40,19 +40,19 @@ public class FavoriteStops {
     public FavoriteStops() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getStopsOnRoutsId() {
+    public Long getStopsOnRoutsId() {
         return this.stopsOnRoutsId;
     }
 
-    public void setStopsOnRoutsId(long stopsOnRoutsId) {
+    public void setStopsOnRoutsId(Long stopsOnRoutsId) {
         this.stopsOnRoutsId = stopsOnRoutsId;
     }
 
@@ -60,9 +60,9 @@ public class FavoriteStops {
     private transient Long stopsOnRouts__resolvedKey;
 
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 1038426212)
+    @Generated(hash = 686186327)
     public StopsOnRouts getStopsOnRouts() {
-        long __key = this.stopsOnRoutsId;
+        Long __key = this.stopsOnRoutsId;
         if (stopsOnRouts__resolvedKey == null
                 || !stopsOnRouts__resolvedKey.equals(__key)) {
             final DaoSession daoSession = this.daoSession;

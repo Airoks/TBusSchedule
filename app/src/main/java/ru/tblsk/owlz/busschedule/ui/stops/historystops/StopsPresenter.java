@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.stops.historystops;
 
 import android.util.Log;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
-
+                        getMvpView().showSearchHistoryStops(Collections.<Stop>emptyList());
                     }
                 }, new Consumer<Throwable>() {
                     @Override

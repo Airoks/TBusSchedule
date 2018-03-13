@@ -20,7 +20,7 @@ public class ScheduleType {
     @SerializedName("id")
     @Property(nameInDb = "schedule_type_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("schedule_type_name")
@@ -39,8 +39,8 @@ public class ScheduleType {
     @Generated(hash = 1056866477)
     private transient ScheduleTypeDao myDao;
 
-    @Generated(hash = 758904019)
-    public ScheduleType(long id, @NotNull String scheduleTypeName) {
+    @Generated(hash = 1423305045)
+    public ScheduleType(Long id, @NotNull String scheduleTypeName) {
         this.id = id;
         this.scheduleTypeName = scheduleTypeName;
     }
@@ -49,11 +49,11 @@ public class ScheduleType {
     public ScheduleType() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

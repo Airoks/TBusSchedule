@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.ui.base;
 
 
+import android.util.Log;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -42,12 +44,23 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     @Override
     public void detachView() {
-        mCompositeDisposable.dispose();
+        mCompositeDisposable.clear();
         this.mMvpView = null;
     }
 
     public boolean isViewAttached() {
         return this.mMvpView != null;
+    }
+
+    public void checkViewAttached() {
+        if (!isViewAttached()) throw new MvpViewNotAttachedException();
+    }
+
+    public static class MvpViewNotAttachedException extends RuntimeException {
+        public MvpViewNotAttachedException() {
+            super("Please call Presenter.onAttach(MvpView) before" +
+                    " requesting data to the Presenter");
+        }
     }
 
     public V getMvpView() {

@@ -22,19 +22,19 @@ public class Direction {
     @SerializedName("id")
     @Property(nameInDb = "direction_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("flight_fk")
     @Property(nameInDb = "flight_fk")
     @NotNull
-    private long flightId;
+    private Long flightId;
 
     @Expose
     @SerializedName("direction_type_fk")
     @Property(nameInDb = "direction_type_fk")
     @NotNull
-    private long directionTypeId;
+    private Long directionTypeId;
 
     @Expose
     @SerializedName("direction_name")
@@ -54,8 +54,8 @@ public class Direction {
     @Generated(hash = 1467317006)
     private transient DirectionDao myDao;
 
-    @Generated(hash = 473241049)
-    public Direction(long id, long flightId, long directionTypeId,
+    @Generated(hash = 729970084)
+    public Direction(Long id, @NotNull Long flightId, @NotNull Long directionTypeId,
             @NotNull String directionName) {
         this.id = id;
         this.flightId = flightId;
@@ -67,27 +67,27 @@ public class Direction {
     public Direction() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getFlightId() {
+    public Long getFlightId() {
         return this.flightId;
     }
 
-    public void setFlightId(long flightId) {
+    public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 
-    public long getDirectionTypeId() {
+    public Long getDirectionTypeId() {
         return this.directionTypeId;
     }
 
-    public void setDirectionTypeId(long directionTypeId) {
+    public void setDirectionTypeId(Long directionTypeId) {
         this.directionTypeId = directionTypeId;
     }
 
@@ -170,5 +170,4 @@ public class Direction {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionDao() : null;
     }
-
 }

@@ -17,19 +17,19 @@ public class Schedule {
     @SerializedName("id")
     @Property(nameInDb = "schedule_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("stops_on_routs_fk")
     @Property(nameInDb = "stops_on_routs_fk")
     @NotNull
-    private long stopsOnRoutsId;
+    private Long stopsOnRoutsId;
 
     @Expose
     @SerializedName("schedule_type_fk")
     @Property(nameInDb = "schedule_type_fk")
     @NotNull
-    private long scheduleTypeId;
+    private Long scheduleTypeId;
 
     @Expose
     @SerializedName("schedule_json")
@@ -45,9 +45,9 @@ public class Schedule {
     @Generated(hash = 1493574644)
     private transient ScheduleDao myDao;
 
-    @Generated(hash = 95821828)
-    public Schedule(long id, long stopsOnRoutsId, long scheduleTypeId,
-            @NotNull String scheduleJson) {
+    @Generated(hash = 2011117973)
+    public Schedule(Long id, @NotNull Long stopsOnRoutsId,
+            @NotNull Long scheduleTypeId, @NotNull String scheduleJson) {
         this.id = id;
         this.stopsOnRoutsId = stopsOnRoutsId;
         this.scheduleTypeId = scheduleTypeId;
@@ -58,27 +58,27 @@ public class Schedule {
     public Schedule() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getStopsOnRoutsId() {
+    public Long getStopsOnRoutsId() {
         return this.stopsOnRoutsId;
     }
 
-    public void setStopsOnRoutsId(long stopsOnRoutsId) {
+    public void setStopsOnRoutsId(Long stopsOnRoutsId) {
         this.stopsOnRoutsId = stopsOnRoutsId;
     }
 
-    public long getScheduleTypeId() {
+    public Long getScheduleTypeId() {
         return this.scheduleTypeId;
     }
 
-    public void setScheduleTypeId(long scheduleTypeId) {
+    public void setScheduleTypeId(Long scheduleTypeId) {
         this.scheduleTypeId = scheduleTypeId;
     }
 
@@ -132,4 +132,5 @@ public class Schedule {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleDao() : null;
     }
+
 }

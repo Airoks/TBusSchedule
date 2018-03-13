@@ -21,7 +21,7 @@ public class Stop {
     @SerializedName("id")
     @Property(nameInDb = "stop_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("name_of_stop")
@@ -41,8 +41,8 @@ public class Stop {
     @Generated(hash = 1582113218)
     private transient StopDao myDao;
 
-    @Generated(hash = 1077600994)
-    public Stop(long id, @NotNull String stopName) {
+    @Generated(hash = 590245342)
+    public Stop(Long id, @NotNull String stopName) {
         this.id = id;
         this.stopName = stopName;
     }
@@ -51,11 +51,11 @@ public class Stop {
     public Stop() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

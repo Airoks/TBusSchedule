@@ -20,19 +20,19 @@ public class StopsOnRouts {
     @SerializedName("id")
     @Property(nameInDb = "stop_on_routs_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("direction_fk")
     @Property(nameInDb = "direction_fk")
     @NotNull
-    private long directionId;
+    private Long directionId;
 
     @Expose
     @SerializedName("stop_fk")
     @Property(nameInDb = "stop_fk")
     @NotNull
-    private long stopId;
+    private Long stopId;
 
     @Expose
     @SerializedName("stop_position")
@@ -51,8 +51,9 @@ public class StopsOnRouts {
     @Generated(hash = 2025255696)
     private transient StopsOnRoutsDao myDao;
 
-    @Generated(hash = 1336312087)
-    public StopsOnRouts(long id, long directionId, long stopId, int stopPosition) {
+    @Generated(hash = 1219465487)
+    public StopsOnRouts(Long id, @NotNull Long directionId, @NotNull Long stopId,
+            int stopPosition) {
         this.id = id;
         this.directionId = directionId;
         this.stopId = stopId;
@@ -63,27 +64,27 @@ public class StopsOnRouts {
     public StopsOnRouts() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getDirectionId() {
+    public Long getDirectionId() {
         return this.directionId;
     }
 
-    public void setDirectionId(long directionId) {
+    public void setDirectionId(Long directionId) {
         this.directionId = directionId;
     }
 
-    public long getStopId() {
+    public Long getStopId() {
         return this.stopId;
     }
 
-    public void setStopId(long stopId) {
+    public void setStopId(Long stopId) {
         this.stopId = stopId;
     }
 

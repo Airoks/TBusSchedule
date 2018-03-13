@@ -20,7 +20,7 @@ public class DirectionType {
     @SerializedName("id")
     @Property(nameInDb = "direction_type_id")
     @Id
-    private long id;
+    private Long id;
 
     @Expose
     @SerializedName("direction_type_name")
@@ -39,8 +39,8 @@ public class DirectionType {
     @Generated(hash = 857977871)
     private transient DirectionTypeDao myDao;
 
-    @Generated(hash = 10033365)
-    public DirectionType(long id, @NotNull String directionTypeName) {
+    @Generated(hash = 449425232)
+    public DirectionType(Long id, @NotNull String directionTypeName) {
         this.id = id;
         this.directionTypeName = directionTypeName;
     }
@@ -49,11 +49,11 @@ public class DirectionType {
     public DirectionType() {
     }
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
