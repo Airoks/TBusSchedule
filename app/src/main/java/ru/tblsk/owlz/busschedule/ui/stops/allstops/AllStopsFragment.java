@@ -26,9 +26,11 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
+import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 
-public class AllStopsFragment extends BaseFragment implements AllStopsMvpView{
+public class AllStopsFragment extends BaseFragment
+        implements AllStopsMvpView, SetupToolbar{
 
     @Inject
     AllStopsPresenter<AllStopsMvpView> mPresenter;
@@ -85,7 +87,7 @@ public class AllStopsFragment extends BaseFragment implements AllStopsMvpView{
     }
 
     @Override
-    protected void setupToolbar() {
+    public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         mToolbar.setTitle(R.string.all_stops);

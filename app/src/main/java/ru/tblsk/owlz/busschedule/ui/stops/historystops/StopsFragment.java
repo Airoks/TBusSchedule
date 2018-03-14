@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,14 @@ import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
+import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 
 
-public class StopsFragment extends BaseFragment implements StopsMvpView {
+public class StopsFragment extends BaseFragment
+        implements StopsMvpView, SetupToolbar {
 
     @Inject
     StopsMvpPresenter<StopsMvpView> mPresenter;
@@ -88,7 +89,7 @@ public class StopsFragment extends BaseFragment implements StopsMvpView {
     }
 
     @Override
-    protected void setupToolbar() {
+    public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
         mToolbar.setTitle(R.string.stops);

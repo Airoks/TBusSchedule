@@ -66,7 +66,6 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     }
 
     protected abstract void setUp(View view);
-    protected abstract void setupToolbar();
 
     public interface Callback {
         //калбэки для взаимодествия между фрагментами
