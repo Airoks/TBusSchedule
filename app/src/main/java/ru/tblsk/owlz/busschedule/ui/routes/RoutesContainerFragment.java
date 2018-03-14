@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -39,8 +40,8 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routes_container, container, false);
         setUnbinder(ButterKnife.bind(this, view));
-        getFragmentComponent().inject(this);
-
+        getBaseActivity().getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);
         return view;
     }
 

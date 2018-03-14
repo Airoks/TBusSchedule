@@ -27,6 +27,7 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
     public void attachView(V mvpView) {
         super.attachView(mvpView);
         if(getDataManager().getFirstRunVariable()) {
+            Log.d("SplashPresenter", "seeeeed!!!");
             getCompositeDisposable().add(getDataManager()
                     .seedAllTables()
                     .subscribeOn(getSchedulerProvider().io())

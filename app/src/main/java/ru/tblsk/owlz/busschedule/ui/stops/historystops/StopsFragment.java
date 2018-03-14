@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
+import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -59,7 +60,8 @@ public class StopsFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stop, container, false);
-        getFragmentComponent().inject(this);
+        getBaseActivity().getActivityComponent().
+                fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
         return view;

@@ -15,7 +15,6 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 
 public abstract class BaseFragment extends Fragment implements MvpView {
 
-    private static FragmentComponent mFragmentComponent;
     private Unbinder mUnbinder;
     private BaseActivity mActivity;
 
@@ -34,10 +33,6 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null) {
-            mFragmentComponent = mActivity.getActivityComponent()
-                    .fragmentComponent(new FragmentModule(this));
-        }
     }
 
     @Override
@@ -62,10 +57,6 @@ public abstract class BaseFragment extends Fragment implements MvpView {
 
     public BaseActivity getBaseActivity() {
         return mActivity;
-    }
-
-    public FragmentComponent getFragmentComponent() {
-        return mFragmentComponent;
     }
 
     @Override
