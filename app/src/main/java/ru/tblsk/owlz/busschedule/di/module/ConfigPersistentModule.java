@@ -5,6 +5,9 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.di.annotation.ConfigPersistent;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpView;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
@@ -21,33 +24,40 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class ConfigPersistentModule {
 
     @Provides
-    CompositeDisposable provideCompositeDisposable() {
-        return new CompositeDisposable();
+    @ConfigPersistent
+    RoutesContainerMvpPresenter<RoutesContainerMvpView> provideRoutesContainerPresenter(
+            RoutesContainerPresenter<RoutesContainerMvpView> presenter) {
+        return presenter;
     }
 
     @Provides
     @ConfigPersistent
     SplashMvpPresenter<SplashMvpView> provideSplashPresenter(
-            SplashPresenter<SplashMvpView> splashPresenter) {
-        return splashPresenter;
+            SplashPresenter<SplashMvpView> presenter) {
+        return presenter;
     }
 
     @Provides
     @ConfigPersistent
     StopsMvpPresenter<StopsMvpView> provideStopsPresenter(
-            StopsPresenter<StopsMvpView> stopsPresenter) {
-        return stopsPresenter;
+            StopsPresenter<StopsMvpView> presenter) {
+        return presenter;
     }
 
     @Provides
     @ConfigPersistent
     AllStopsMvpPresenter<AllStopsMvpView> provideAllStopsPresenter(
-            AllStopsPresenter<AllStopsMvpView> allStopsPresenter) {
-        return allStopsPresenter;
+            AllStopsPresenter<AllStopsMvpView> presenter) {
+        return presenter;
     }
 
     @Provides
     SchedulerProvider provideScheduler() {
         return new AppSchedulerProvider();
+    }
+
+    @Provides
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
     }
 }

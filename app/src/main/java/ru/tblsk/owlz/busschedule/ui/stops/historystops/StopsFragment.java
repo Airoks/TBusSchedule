@@ -98,7 +98,7 @@ public class StopsFragment extends BaseFragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).openDrawer();
+                ((MainActivity)getBaseActivity()).openDrawer();
             }
         });
     }

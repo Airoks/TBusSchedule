@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
@@ -65,10 +66,14 @@ public class MainActivity extends BaseActivity {
                             case R.id.navigation_main:
                                 return true;
                             case R.id.navigation_stops:
-                                fragmentTransaction.replace(R.id.container, StopsFragment.newInstance());
+                                fragmentTransaction.replace(R.id.container,
+                                        StopsFragment.newInstance());
                                 fragmentTransaction.commit();
                                 return true;
                             case R.id.navigation_routs:
+                                fragmentTransaction.replace(R.id.container,
+                                        RoutesContainerFragment.newInstance());
+                                fragmentTransaction.commit();
                                 return true;
                         }
                         return false;

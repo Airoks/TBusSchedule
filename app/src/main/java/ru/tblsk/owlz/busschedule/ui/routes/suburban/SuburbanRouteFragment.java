@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.routes.urban;
+package ru.tblsk.owlz.busschedule.ui.routes.suburban;
 
 
 import android.os.Bundle;
@@ -6,11 +6,11 @@ import android.view.View;
 
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 
-public class UrbanRouteFragment extends BaseFragment{
+public class SuburbanRouteFragment extends BaseFragment{
 
-    public static UrbanRouteFragment newInstance() {
+    public static SuburbanRouteFragment newInstance() {
         Bundle args = new Bundle();
-        UrbanRouteFragment fragment = new UrbanRouteFragment();
+        SuburbanRouteFragment fragment = new SuburbanRouteFragment();
         fragment.setArguments(args);
         return fragment;
     }

@@ -33,7 +33,7 @@ public class AllStopsFragment extends BaseFragment
         implements AllStopsMvpView, SetupToolbar{
 
     @Inject
-    AllStopsPresenter<AllStopsMvpView> mPresenter;
+    AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
 
     @Inject
     StopsAdapter mStopsAdapter;
