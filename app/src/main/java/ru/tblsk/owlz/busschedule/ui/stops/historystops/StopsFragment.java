@@ -59,7 +59,7 @@ public class StopsFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stop, container, false);
-        getActivityComponent().inject(this);
+        getFragmentComponent().inject(this);
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
         return view;

@@ -115,7 +115,7 @@ public class AllStopsFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_allstop, container, false);
-        getActivityComponent().inject(this);
+        getFragmentComponent().inject(this);
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
         return view;

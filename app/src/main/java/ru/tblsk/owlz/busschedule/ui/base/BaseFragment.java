@@ -9,9 +9,13 @@ import android.view.View;
 
 import butterknife.Unbinder;
 import ru.tblsk.owlz.busschedule.di.component.ActivityComponent;
+import ru.tblsk.owlz.busschedule.di.component.FragmentComponent;
+import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 
 
 public abstract class BaseFragment extends Fragment implements MvpView {
+
+    private static FragmentComponent mFragmentComponent;
     private Unbinder mUnbinder;
     private BaseActivity mActivity;
 
@@ -24,6 +28,15 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         super.onAttach(context);
         if(context instanceof BaseActivity) {
             mActivity = (BaseActivity) context;
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState == null) {
+            mFragmentComponent = mActivity.getActivityComponent()
+                    .fragmentComponent(new FragmentModule(this));
         }
     }
 
@@ -51,11 +64,8 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         return mActivity;
     }
 
-    public ActivityComponent getActivityComponent() {
-        if(mActivity != null) {
-            return mActivity.getActivityComponent();
-        }
-        return null;
+    public FragmentComponent getFragmentComponent() {
+        return mFragmentComponent;
     }
 
     @Override

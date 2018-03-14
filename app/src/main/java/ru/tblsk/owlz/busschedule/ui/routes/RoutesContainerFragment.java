@@ -39,7 +39,7 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routes_container, container, false);
         setUnbinder(ButterKnife.bind(this, view));
-        getActivityComponent().inject(this);
+        getFragmentComponent().inject(this);
 
         return view;
     }
