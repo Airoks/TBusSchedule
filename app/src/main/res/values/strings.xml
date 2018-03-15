@@ -20,4 +20,7 @@
     <string name="history_stop">Недавние</string>
     <string name="description_drawer">Боковое меню</string>
     <string name="delete_search_history">Удалить недавние остановки</string>
+
+    <string name="urban_routes">Городские</string>
+    <string name="suburban_routes">Пригородные</string>
 </resources>

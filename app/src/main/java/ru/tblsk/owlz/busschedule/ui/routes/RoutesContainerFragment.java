@@ -1,8 +1,11 @@
 package ru.tblsk.owlz.busschedule.ui.routes;
 
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +20,25 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRouteFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRouteFragment;
 
 public class RoutesContainerFragment extends BaseFragment implements SetupToolbar{
 
     @Inject
     RoutesContainerMvpPresenter<RoutesContainerMvpView> mPresenter;
 
+    @Inject
+    RoutesPagerAdapter mPagerAdapter;
+
     @BindView(R.id.routesContainerToolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.routesContainerViewpager)
+    ViewPager mViewPager;
+
+    @BindView(R.id.routesContainerTab)
+    TabLayout mTabLayout;
 
     public static RoutesContainerFragment newInstance() {
         Bundle args = new Bundle();
@@ -48,6 +62,8 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
     @Override
     protected void setUp(View view) {
         setupToolbar();
+        setupViewPager(mViewPager);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -62,5 +78,12 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
                 ((MainActivity)getBaseActivity()).openDrawer();
             }
         });
+
+
+    }
+    public void setupViewPager(ViewPager viewPager) {
+        mPagerAdapter.addFragments(UrbanRouteFragment.newInstance(), String.valueOf(R.string.urban_routes));
+        mPagerAdapter.addFragments(SuburbanRouteFragment.newInstance(), String.valueOf(R.string.suburban_routes));
+        viewPager.setAdapter(mPagerAdapter);
     }
 }
