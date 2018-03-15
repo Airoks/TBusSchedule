@@ -19,11 +19,13 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRouteFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
 
 public class RoutesContainerFragment extends BaseFragment
         implements SetupToolbar, RoutesContainerMvpView{
+
+    public static final String TAG = "RoutesContainerFragment";
 
     @Inject
     RoutesContainerMvpPresenter<RoutesContainerMvpView> mPresenter;
@@ -96,7 +98,7 @@ public class RoutesContainerFragment extends BaseFragment
     public void setupViewPager(ViewPager viewPager) {
         mPagerAdapter.addFragments(UrbanRoutesFragment.newInstance(),
                 getResources().getString(R.string.urban_routes));
-        mPagerAdapter.addFragments(SuburbanRouteFragment.newInstance(),
+        mPagerAdapter.addFragments(SuburbanRoutesFragment.newInstance(),
                 getResources().getString(R.string.suburban_routes));
         viewPager.setAdapter(mPagerAdapter);
     }

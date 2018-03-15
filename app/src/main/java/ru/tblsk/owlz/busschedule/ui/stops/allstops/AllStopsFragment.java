@@ -34,6 +34,8 @@ import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 public class AllStopsFragment extends BaseFragment
         implements AllStopsMvpView, SetupToolbar{
 
+    public static final String TAG = "AllStopsFragment";
+
     @Inject
     AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
 

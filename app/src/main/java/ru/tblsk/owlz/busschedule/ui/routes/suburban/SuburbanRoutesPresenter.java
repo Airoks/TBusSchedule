@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.routes.urban;
+package ru.tblsk.owlz.busschedule.ui.routes.suburban;
 
 
 import java.util.List;
@@ -12,20 +12,20 @@ import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
-        extends BasePresenter<V> implements UrbanRoutesMvpPresenter<V>{
+public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
+        extends BasePresenter<V> implements SuburbanRoutesMvpPresenter<V> {
 
-    private static final String FLIGHT_TYPE = "urban";
+    private static final String FLIGHT_TYPE = "suburban";
 
     @Inject
-    public UrbanRoutesPresenter(DataManager dataManager,
-                                CompositeDisposable compositeDisposable,
-                                SchedulerProvider schedulerProvider) {
+    public SuburbanRoutesPresenter(DataManager dataManager,
+                                   CompositeDisposable compositeDisposable,
+                                   SchedulerProvider schedulerProvider) {
         super(dataManager, compositeDisposable, schedulerProvider);
     }
 
     @Override
-    public void getUrbanFlights() {
+    public void getSuburbanFlights() {
         getCompositeDisposable().add(getDataManager()
                 .getFlightByType(FLIGHT_TYPE)
                 .subscribeOn(getSchedulerProvider().io())
@@ -33,7 +33,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                 .subscribe(new Consumer<List<Flight>>() {
                     @Override
                     public void accept(List<Flight> flights) throws Exception {
-                        getMvpView().showUrbanRoutes(flights);
+                        getMvpView().showSuburbanRoutes(flights);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -41,6 +41,5 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
 
                     }
                 }));
-
     }
 }
