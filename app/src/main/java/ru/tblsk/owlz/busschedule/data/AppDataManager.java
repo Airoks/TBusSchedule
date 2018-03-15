@@ -137,6 +137,7 @@ public class AppDataManager implements DataManager {
                     @Override
                     public SingleSource<? extends List<Stop>> apply(List<Stop> stops)
                             throws Exception {
+                        //сортируем по русскому алфавиту
                         final Collator russianCollator = Collator
                                 .getInstance(new Locale("ru", "RU"));
                         Collections.sort(stops, new Comparator<Stop>() {

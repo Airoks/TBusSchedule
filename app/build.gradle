@@ -48,4 +48,7 @@ dependencies {
 
     //fast scroll
     implementation 'com.futuremind.recyclerfastscroll:fastscroll:0.2.5'
+
+    //facebook debug tools
+    implementation  'com.facebook.stetho:stetho:1.5.0'
 }
