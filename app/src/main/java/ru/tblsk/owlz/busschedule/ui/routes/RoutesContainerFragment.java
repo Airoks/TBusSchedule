@@ -1,7 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.routes;
 
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -23,7 +22,8 @@ import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRouteFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRouteFragment;
 
-public class RoutesContainerFragment extends BaseFragment implements SetupToolbar{
+public class RoutesContainerFragment extends BaseFragment
+        implements SetupToolbar, RoutesContainerMvpView{
 
     @Inject
     RoutesContainerMvpPresenter<RoutesContainerMvpView> mPresenter;
@@ -56,7 +56,20 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
         setUnbinder(ButterKnife.bind(this, view));
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
+        mPresenter.attachView(this);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mToolbar.setTitle(R.string.routs);
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.detachView();
+        super.onDestroyView();
     }
 
     @Override
@@ -64,6 +77,8 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
         setupToolbar();
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        ((MainActivity)getBaseActivity()).showBottomNavigationView();
     }
 
     @Override
@@ -82,8 +97,10 @@ public class RoutesContainerFragment extends BaseFragment implements SetupToolba
 
     }
     public void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragments(UrbanRouteFragment.newInstance(), String.valueOf(R.string.urban_routes));
-        mPagerAdapter.addFragments(SuburbanRouteFragment.newInstance(), String.valueOf(R.string.suburban_routes));
+        mPagerAdapter.addFragments(UrbanRouteFragment.newInstance(),
+                getResources().getString(R.string.urban_routes));
+        mPagerAdapter.addFragments(SuburbanRouteFragment.newInstance(),
+                getResources().getString(R.string.suburban_routes));
         viewPager.setAdapter(mPagerAdapter);
     }
 }

@@ -28,6 +28,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
+import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 
 public class AllStopsFragment extends BaseFragment
@@ -93,6 +94,9 @@ public class AllStopsFragment extends BaseFragment
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         mToolbar.setTitle(R.string.all_stops);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
+
+        ((MainActivity)getBaseActivity()).lockDrawer();
+        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

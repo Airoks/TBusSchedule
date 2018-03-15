@@ -10,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,22 @@ public class MainActivity extends BaseActivity {
 
     public void openDrawer() {
         mDrawer.openDrawer(Gravity.START);
+    }
+
+    public void lockDrawer() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    public void unlockDrawer() {
+        mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public void hideBottomNavigationView() {
+        mBottomNavigationView.setVisibility(View.GONE);
+    }
+
+    public void showBottomNavigationView() {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     private void setupBotNavView() {

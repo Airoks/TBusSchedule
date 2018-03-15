@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRouteFragment;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRouteFragment;
-
 public class RoutesPagerAdapter extends FragmentPagerAdapter{
 
     private final List<Fragment> Fragments = new ArrayList<>();

@@ -87,6 +87,10 @@ public class StopsFragment extends BaseFragment
         mRecyclerView.setNestedScrollingEnabled(false);//резкая прокрутка
         mRecyclerView.setFocusable(false);//без начальной фокусациии на rv
         setupToolbar();
+
+        ((MainActivity)getBaseActivity()).unlockDrawer();
+        ((MainActivity)getBaseActivity()).showBottomNavigationView();
+
         mPresenter.getSearchHistoryStops();
     }
 
