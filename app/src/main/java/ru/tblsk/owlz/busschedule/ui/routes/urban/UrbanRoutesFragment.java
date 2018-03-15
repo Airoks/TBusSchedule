@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 
-public class UrbanRouteFragment extends BaseFragment{
+public class UrbanRoutesFragment extends BaseFragment{
 
-    public static UrbanRouteFragment newInstance() {
+    public static UrbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
-        UrbanRouteFragment fragment = new UrbanRouteFragment();
+        UrbanRoutesFragment fragment = new UrbanRoutesFragment();
         fragment.setArguments(args);
         return fragment;
     }

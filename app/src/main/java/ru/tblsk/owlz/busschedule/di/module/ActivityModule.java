@@ -13,6 +13,9 @@ import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
@@ -69,6 +72,13 @@ public class ActivityModule {
     @PerActivity
     AllStopsMvpPresenter<AllStopsMvpView> provideAllStopsPresenter(
             AllStopsPresenter<AllStopsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    UrbanRoutesMvpPresenter<UrbanRoutesMvpView> provideUrbanRoutesPresenter(
+            UrbanRoutesPresenter<UrbanRoutesMvpView> presenter) {
         return presenter;
     }
 

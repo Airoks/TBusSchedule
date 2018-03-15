@@ -20,7 +20,7 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRouteFragment;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRouteFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
 
 public class RoutesContainerFragment extends BaseFragment
         implements SetupToolbar, RoutesContainerMvpView{
@@ -41,10 +41,7 @@ public class RoutesContainerFragment extends BaseFragment
     TabLayout mTabLayout;
 
     public static RoutesContainerFragment newInstance() {
-        Bundle args = new Bundle();
-        RoutesContainerFragment fragment = new RoutesContainerFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new RoutesContainerFragment();
     }
 
     @Nullable
@@ -97,7 +94,7 @@ public class RoutesContainerFragment extends BaseFragment
 
     }
     public void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragments(UrbanRouteFragment.newInstance(),
+        mPagerAdapter.addFragments(UrbanRoutesFragment.newInstance(),
                 getResources().getString(R.string.urban_routes));
         mPagerAdapter.addFragments(SuburbanRouteFragment.newInstance(),
                 getResources().getString(R.string.suburban_routes));
