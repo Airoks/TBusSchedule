@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.ui.stops;
 
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,6 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
         @Override
         public void onBind(int position) {
-            super.onBind(position);
             stopNameTextView.setText(mStops.get(position).getStopName());
         }
 

@@ -18,6 +18,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
 import ru.tblsk.owlz.busschedule.di.annotation.DatabaseInfo;
 import ru.tblsk.owlz.busschedule.di.annotation.PreferencesInfo;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 @Module
 public class ApplicationModule {
@@ -61,5 +62,11 @@ public class ApplicationModule {
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {
         return appPreferencesHelper;
+    }
+
+    @Provides
+    @Singleton
+    RxEventBus provideRxEventBus() {
+        return new RxEventBus();
     }
 }

@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 
 public class SuburbanRoutesFragment extends BaseFragment
@@ -40,6 +41,8 @@ public class SuburbanRoutesFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_suburban_routes, container, false);
+        getBaseActivity().getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);
         return view;
     }
 

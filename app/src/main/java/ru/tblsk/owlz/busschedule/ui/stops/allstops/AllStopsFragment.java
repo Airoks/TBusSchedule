@@ -23,13 +23,19 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
+import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class AllStopsFragment extends BaseFragment
         implements AllStopsMvpView, SetupToolbar{
@@ -44,6 +50,9 @@ public class AllStopsFragment extends BaseFragment
 
     @Inject
     LinearLayoutManager mLinearLayout;
+
+    @Inject
+    RxEventBus mEventBus;
 
     @BindView(R.id.allStopToolbar)
     Toolbar mToolbar;
@@ -81,6 +90,7 @@ public class AllStopsFragment extends BaseFragment
             public void onClick(View view, int position) {
                 long stopId = mStops.get(position).getId();
                 mPresenter.insertSearchHistoryStops(stopId);
+                mEventBus.post("ONE");
             }
 
             @Override
@@ -88,6 +98,7 @@ public class AllStopsFragment extends BaseFragment
                 Log.d("Click", "LongClick!");
             }
         }));
+
     }
 
     @Override

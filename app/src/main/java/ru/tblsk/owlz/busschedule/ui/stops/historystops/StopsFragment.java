@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
@@ -26,6 +31,7 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 
 public class StopsFragment extends BaseFragment
@@ -42,11 +48,16 @@ public class StopsFragment extends BaseFragment
     @Inject
     LinearLayoutManager mLinearLayout;
 
+    @Inject
+    RxEventBus mEventBus;
+
     @BindView(R.id.stopToolbar)
     Toolbar mToolbar;
 
     @BindView(R.id.historyStopRv)
     RecyclerView mRecyclerView;
+
+    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     public static StopsFragment newInstance() {
         return new StopsFragment();
@@ -78,6 +89,7 @@ public class StopsFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
+
         super.onDestroyView();
     }
 
@@ -94,6 +106,19 @@ public class StopsFragment extends BaseFragment
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
 
         mPresenter.getSearchHistoryStops();
+
+        mDisposable.add(mEventBus
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        if(o instanceof String) {
+                            Log.d("EVENTBUS", String.valueOf(o));
+                        }
+                    }
+                }));
     }
 
     @Override

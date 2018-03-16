@@ -5,6 +5,8 @@ import dagger.Subcomponent;
 import ru.tblsk.owlz.busschedule.di.annotation.PerFragment;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
@@ -14,4 +16,6 @@ public interface FragmentComponent {
     void inject(StopsFragment stopsFragment);
     void inject(AllStopsFragment allStopsFragment);
     void inject(RoutesContainerFragment routesContainerFragment);
+    void inject(UrbanRoutesFragment urbanRoutesFragment);
+    void inject(SuburbanRoutesFragment suburbanRoutesFragment);
 }

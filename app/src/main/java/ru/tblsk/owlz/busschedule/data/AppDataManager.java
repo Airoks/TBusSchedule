@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
@@ -36,6 +37,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 
+@Singleton
 public class AppDataManager implements DataManager {
     private final Context mContext;
     private final DbHelper dbHelper;
