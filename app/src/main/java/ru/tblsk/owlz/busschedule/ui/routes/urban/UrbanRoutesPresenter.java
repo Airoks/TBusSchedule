@@ -56,7 +56,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                 .subscribe(new Consumer<ChangeDirectionUrban>() {
                     @Override
                     public void accept(ChangeDirectionUrban changeDirectionUrban) throws Exception {
-
+                        getMvpView().changedDirection(changeDirectionUrban);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

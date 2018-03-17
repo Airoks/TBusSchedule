@@ -37,6 +37,8 @@ public class UrbanRoutesFragment extends BaseFragment
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
 
+
+
     public static UrbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
         UrbanRoutesFragment fragment = new UrbanRoutesFragment();
@@ -80,6 +82,11 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     public void showUrbanRoutes(List<Flight> flights) {
+
+    }
+
+    @Override
+    public void changedDirection(ChangeDirectionUrban directionUrban) {
 
     }
 }

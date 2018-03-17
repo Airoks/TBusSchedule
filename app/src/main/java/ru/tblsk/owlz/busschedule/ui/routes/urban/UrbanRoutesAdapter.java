@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
-import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 
 public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
@@ -61,24 +60,19 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     class UrbanRoutesViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.XYU)
-        Button button;
+        @BindView(R.id.directionNameTextView)
+        TextView directionName;
 
         public UrbanRoutesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickListener.swapButtonOnClick(view, getAdapterPosition());
-                }
-            });
+
         }
 
         @Override
         public void onBind(int position) {
-            button.setText(test.get(position));
+
         }
     }
 }
