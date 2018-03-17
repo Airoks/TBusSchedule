@@ -13,30 +13,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 
 public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private UrbanRoutesListener onClickListener;
 
-    private List<String> test;
+    private List<Flight> mFlights;
 
     public UrbanRoutesAdapter() {
-        test = new ArrayList<>();
-        test.add("one");
-        test.add("two");
-        test.add("three");
-        test.add("four");
-        test.add("five");
-        test.add("six");
-        test.add("seven");
-        test.add("eight");
-
+        mFlights = new ArrayList<>();
     }
 
-    public interface UrbanRoutesListener {
-        void swapButtonOnClick(View view, int position);
-    }
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -51,28 +40,40 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     @Override
     public int getItemCount() {
-        return test.size();
+        return mFlights.size();
+    }
+
+    public void addItem(List<Flight> flights) {
+        mFlights.clear();
+        mFlights.addAll(flights);
+        notifyDataSetChanged();
     }
 
     public void setSwapButton(UrbanRoutesListener urbanRoutesListener) {
         this.onClickListener = urbanRoutesListener;
     }
 
+    public interface UrbanRoutesListener {
+        void swapButtonOnClick(View view, int position);
+    }
+
     class UrbanRoutesViewHolder extends BaseViewHolder {
 
         @BindView(R.id.directionNameTextView)
-        TextView directionName;
+        TextView mDirectionName;
+
+        @BindView(R.id.flightNumberTextView)
+        TextView mFlightNumber;
 
         public UrbanRoutesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
         }
 
         @Override
         public void onBind(int position) {
-
+            mFlightNumber.setText(mFlights.get(position).getFlightNumber());
+            mDirectionName.setText(mFlights.get(position).getDirections().get(0).getDirectionName());
         }
     }
 }

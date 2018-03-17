@@ -62,7 +62,7 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     class StopViewHolder extends BaseViewHolder
             implements View.OnClickListener{
         @BindView(R.id.stopTextView)
-        TextView stopNameTextView;
+        TextView mStopName;
 
         public StopViewHolder(View itemView) {
             super(itemView);
@@ -72,7 +72,7 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
         @Override
         public void onBind(int position) {
-            stopNameTextView.setText(mStops.get(position).getStopName());
+            mStopName.setText(mStops.get(position).getStopName());
         }
 
         @Override

@@ -32,7 +32,8 @@ public class UrbanRoutesFragment extends BaseFragment
     @Inject
     LinearLayoutManager mLinearLayout;
 
-    UrbanRoutesAdapter urbanRoutesAdapter;
+    @Inject
+    UrbanRoutesAdapter mUrbanRoutesAdapter;
 
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
@@ -54,8 +55,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-        urbanRoutesAdapter = new UrbanRoutesAdapter();
-        urbanRoutesAdapter.setSwapButton(new UrbanRoutesAdapter.UrbanRoutesListener() {
+        mUrbanRoutesAdapter.setSwapButton(new UrbanRoutesAdapter.UrbanRoutesListener() {
             @Override
             public void swapButtonOnClick(View view, int position) {
                 Log.d("Button swap", "CLICK!!!!!!!");
@@ -64,7 +64,8 @@ public class UrbanRoutesFragment extends BaseFragment
 
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
-        mRecyclerView.setAdapter(urbanRoutesAdapter);
+        mRecyclerView.setAdapter(mUrbanRoutesAdapter);
+        mPresenter.getUrbanFlights();
     }
 
     @Nullable
@@ -82,7 +83,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     public void showUrbanRoutes(List<Flight> flights) {
-
+        mUrbanRoutesAdapter.addItem(flights);
     }
 
     @Override

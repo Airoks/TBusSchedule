@@ -9,7 +9,7 @@
     android:focusable="true">
 
     <TextView
-        android:id="@+id/routeNumberTextView"
+        android:id="@+id/flightNumberTextView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
@@ -28,7 +28,8 @@
         android:background="?selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_swap_horiz_black_24dp"
         android:layout_alignParentEnd="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:contentDescription="@string/change_direction" />
 
     <TextView
         android:id="@+id/directionNameTextView"
@@ -36,9 +37,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/routeNumberTextView"
+        android:layout_toLeftOf="@id/directionChangeIbutton"
+        android:layout_toRightOf="@+id/flightNumberTextView"
         android:layout_marginStart="16dp"
-        android:layout_toEndOf="@id/routeNumberTextView" />
+        android:layout_toEndOf="@+id/flightNumberTextView"
+        android:layout_toStartOf="@id/directionChangeIbutton" />
 
     <View
         android:layout_width="match_parent"

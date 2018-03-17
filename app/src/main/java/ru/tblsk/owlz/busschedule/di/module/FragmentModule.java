@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 
 @Module
@@ -28,5 +29,10 @@ public class FragmentModule {
     @Provides
     RoutesPagerAdapter provideRoutesPagerAdapter() {
         return new RoutesPagerAdapter(mFragment.getChildFragmentManager());
+    }
+
+    @Provides
+    UrbanRoutesAdapter provideUrbanRoutesAdapter() {
+        return new UrbanRoutesAdapter();
     }
 }

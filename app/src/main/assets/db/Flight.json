@@ -15,11 +15,6 @@
 		"flight_number": "3"
 	},
 	{
-		"id": 3,
-		"flight_type_fk": 0,
-		"flight_number": "3Д"
-	},
-	{
 		"id": 4,
 		"flight_type_fk": 0,
 		"flight_number": "4"

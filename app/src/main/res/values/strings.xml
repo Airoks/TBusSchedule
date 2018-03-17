@@ -23,4 +23,5 @@
 
     <string name="urban_routes">Городские</string>
     <string name="suburban_routes">Пригородные</string>
+    <string name="change_direction">Сменить направление</string>
 </resources>
