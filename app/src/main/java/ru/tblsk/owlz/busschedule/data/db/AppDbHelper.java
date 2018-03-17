@@ -401,4 +401,16 @@ public class AppDbHelper implements DbHelper {
             }
         });
     }
+
+    @Override
+    public Single<String> getFlightTypeByDirection(final long directionId) {
+        return Single.fromCallable(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                long flightId = mDaoSession.getDirectionDao().load(directionId).getFlightId();
+                long flightTypeId = mDaoSession.getFlightDao().load(flightId).getFlightTypeId();
+                return mDaoSession.getFlightTypeDao().load(flightTypeId).getFlightTypeName();
+            }
+        });
+    }
 }

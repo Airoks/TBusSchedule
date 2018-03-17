@@ -48,4 +48,6 @@ public interface DbHelper {
     Single<List<Stop>> getFavoriteStop();
     Single<List<Direction>> getFavoriteDirection(long stopId);
     Single<String> getFlightNumber(long flightId);
+
+    Single<String> getFlightTypeByDirection(long directionId);
 }

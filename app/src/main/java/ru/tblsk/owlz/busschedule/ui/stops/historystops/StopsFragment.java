@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -107,6 +108,8 @@ public class StopsFragment extends BaseFragment
 
         mPresenter.getSearchHistoryStops();
 
+        final List<String> list = new ArrayList<>();
+
         mDisposable.add(mEventBus
                 .observable()
                 .subscribeOn(Schedulers.io())
@@ -115,7 +118,7 @@ public class StopsFragment extends BaseFragment
                     @Override
                     public void accept(Object o) throws Exception {
                         if(o instanceof String) {
-                            Log.d("EVENTBUS", String.valueOf(o));
+                            list.add((String) o);
                         }
                     }
                 }));

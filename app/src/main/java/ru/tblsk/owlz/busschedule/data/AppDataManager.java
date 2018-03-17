@@ -210,6 +210,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Single<String> getFlightTypeByDirection(long directionId) {
+        return dbHelper.getFlightTypeByDirection(directionId);
+    }
+
+    @Override
     public Completable seedDatabaseFlightTypes() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
