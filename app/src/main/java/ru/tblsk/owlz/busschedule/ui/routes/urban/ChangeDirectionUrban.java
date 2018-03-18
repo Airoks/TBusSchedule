@@ -4,19 +4,41 @@ package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 public class ChangeDirectionUrban {
 
-    private int position;
-    private String direction;
+    public static class InFragment {
 
-    public ChangeDirectionUrban(int position, String direction) {
-        this.position = position;
-        this.direction = direction;
+        private final int position;
+        private final String direction;
+
+        public InFragment(int position, String direction) {
+            this.position = position;
+            this.direction = direction;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public String getDirection() {
+            return direction;
+        }
     }
 
-    public int getPosition() {
-        return position;
-    }
+    public static class InAdapter {
 
-    public String getDirection() {
-        return direction;
+        private final int position;
+        private final String direction;
+
+        public InAdapter(int position, String direction) {
+            this.position = position;
+            this.direction = direction;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public String getDirection() {
+            return direction;
+        }
     }
 }

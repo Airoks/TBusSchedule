@@ -57,7 +57,8 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         void swapButtonOnClick(View view, int position);
     }
 
-    class UrbanRoutesViewHolder extends BaseViewHolder {
+    class UrbanRoutesViewHolder extends BaseViewHolder
+            implements View.OnClickListener{
 
         @BindView(R.id.directionNameTextView)
         TextView mDirectionName;
@@ -74,6 +75,11 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         public void onBind(int position) {
             mFlightNumber.setText(mFlights.get(position).getFlightNumber());
             mDirectionName.setText(mFlights.get(position).getDirections().get(0).getDirectionName());
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }

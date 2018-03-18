@@ -50,13 +50,20 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
 
     @Override
     public void changeDirection() {
-        mEventBus.filteredObservable(ChangeDirectionUrban.class)
+        mEventBus.observable()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<ChangeDirectionUrban>() {
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void accept(ChangeDirectionUrban changeDirectionUrban) throws Exception {
-                        getMvpView().changedDirection(changeDirectionUrban);
+                    public void accept(Object o) throws Exception {
+                        if(o instanceof ChangeDirectionUrban.InFragment) {
+                            getMvpView().changedDirectionInFragment(
+                                    (ChangeDirectionUrban.InFragment)o);
+                        }
+                        if(o instanceof ChangeDirectionUrban.InAdapter) {
+                            getMvpView().changedDirectionInAdapter(
+                                    (ChangeDirectionUrban.InAdapter)o);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override

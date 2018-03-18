@@ -59,6 +59,7 @@ public class StopsFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private CompositeDisposable mDisposable = new CompositeDisposable();
+    private String testString;
 
     public static StopsFragment newInstance() {
         return new StopsFragment();
@@ -78,6 +79,13 @@ public class StopsFragment extends BaseFragment
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
+
+        if(testString == null) {
+            testString = "XYU";
+        } else {
+            Log.d("TESTSTRING", testString);
+        }
+
         return view;
     }
 
