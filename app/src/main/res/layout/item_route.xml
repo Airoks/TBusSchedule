@@ -19,7 +19,7 @@
         android:gravity="center"/>
 
     <ImageButton
-        android:id="@+id/directionChangeIbutton"
+        android:id="@+id/directionChangeButton"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_alignParentRight="true"
@@ -37,11 +37,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginLeft="16dp"
-        android:layout_toLeftOf="@id/directionChangeIbutton"
+        android:layout_toLeftOf="@id/directionChangeButton"
         android:layout_toRightOf="@+id/flightNumberTextView"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/flightNumberTextView"
-        android:layout_toStartOf="@id/directionChangeIbutton" />
+        android:layout_toStartOf="@id/directionChangeButton" />
 
     <View
         android:layout_width="match_parent"

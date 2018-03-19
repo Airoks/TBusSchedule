@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.AppDataManager;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.AppDbHelper;
@@ -19,6 +20,8 @@ import ru.tblsk.owlz.busschedule.di.annotation.DatabaseInfo;
 import ru.tblsk.owlz.busschedule.di.annotation.PreferencesInfo;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 @Module
 public class ApplicationModule {
@@ -68,5 +71,15 @@ public class ApplicationModule {
     @Singleton
     RxEventBus provideRxEventBus() {
         return new RxEventBus();
+    }
+
+    @Provides
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
+    }
+
+    @Provides
+    SchedulerProvider provideScheduler() {
+        return new AppSchedulerProvider();
     }
 }

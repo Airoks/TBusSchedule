@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
@@ -51,15 +52,10 @@ public class UrbanRoutesFragment extends BaseFragment
     LinearLayoutManager mLinearLayout;
 
     @Inject
-    UrbanRoutesAdapter mUrbanRoutesAdapter;
+    UrbanRoutesAdapter mAdapter;
 
-    @Inject
     CompositeDisposable mCompositeDisposable;
-
-    @Inject
     RxEventBus mEventBus;
-
-    @Inject
     SchedulerProvider mSchedulerProvider;
 
     @BindView(R.id.urbanRouteRv)
@@ -80,6 +76,10 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mEventBus = App.getApp(getBaseActivity()).getEventBus();
+        mCompositeDisposable = App.getApp(getBaseActivity()).getCompositeDisposable();
+        mSchedulerProvider = App.getApp(getBaseActivity()).getSchedulerProvider();
 
         mChangeDirectionAdapter = new HashMap<>();
         mChangeDirectionFragment = new ArrayList<>();
@@ -127,7 +127,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mCompositeDisposable.clear();
+        App.getApp(getBaseActivity()).getCompositeDisposable().clear();
         super.onDestroy();
     }
 
@@ -155,7 +155,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-        mUrbanRoutesAdapter.setSwapButton(new UrbanRoutesAdapter.UrbanRoutesListener() {
+        mAdapter.setSwapButton(new UrbanRoutesAdapter.UrbanRoutesListener() {
             @Override
             public void swapButtonOnClick(View view, int position) {
                 Log.d("Button swap", "CLICK!!!!!!!");
@@ -164,8 +164,13 @@ public class UrbanRoutesFragment extends BaseFragment
 
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
-        mRecyclerView.setAdapter(mUrbanRoutesAdapter);
-        //mPresenter.getUrbanFlights();
+        mRecyclerView.setAdapter(mAdapter);
+
+        if(mFlights == null) {
+            mPresenter.getUrbanFlights();
+        } else {
+            showSavedRouts();
+        }
 
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getBaseActivity(),
                 mRecyclerView, new ClickListener() {
@@ -194,8 +199,7 @@ public class UrbanRoutesFragment extends BaseFragment
         for(int i = 0; i < mFlights.size(); i++) {
             mDirectionRoutes.add(DIRECT);
         }
-        //изменить
-        mUrbanRoutesAdapter.addItem(flights);
+        mAdapter.addItems(flights, mDirectionRoutes);
     }
 
     @Override
@@ -211,7 +215,8 @@ public class UrbanRoutesFragment extends BaseFragment
     }
 
     private void showSavedRouts() {
-
+        updateDirectionRouts();
+        mAdapter.addItems(mFlights, mDirectionRoutes);
     }
 
     private void updateDirectionRouts() {

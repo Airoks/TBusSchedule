@@ -97,13 +97,4 @@ public class ActivityModule {
         return new LinearLayoutManager(activity);
     }
 
-    @Provides
-    CompositeDisposable provideCompositeDisposable() {
-        return new CompositeDisposable();
-    }
-
-    @Provides
-    SchedulerProvider provideScheduler() {
-        return new AppSchedulerProvider();
-    }
 }

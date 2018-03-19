@@ -44,7 +44,7 @@ public class StopsFragment extends BaseFragment
     StopsMvpPresenter<StopsMvpView> mPresenter;
 
     @Inject
-    StopsAdapter mStopsAdapter;
+    StopsAdapter mAdapter;
 
     @Inject
     LinearLayoutManager mLinearLayout;
@@ -68,7 +68,7 @@ public class StopsFragment extends BaseFragment
     }
     @Override
     public void showSearchHistoryStops(List<Stop> stops) {
-        mStopsAdapter.addItems(stops);
+        mAdapter.addItems(stops);
     }
 
     @Nullable
@@ -108,7 +108,7 @@ public class StopsFragment extends BaseFragment
     protected void setUp(View view) {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
-        mRecyclerView.setAdapter(mStopsAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);//резкая прокрутка
         mRecyclerView.setFocusable(false);//без начальной фокусациии на rv
         setupToolbar();

@@ -1,7 +1,6 @@
 package ru.tblsk.owlz.busschedule.utils;
 
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.BackpressureStrategy;
@@ -14,7 +13,6 @@ public class RxEventBus {
     private final PublishSubject<Object> mSubject;
     private final BackpressureStrategy mStrategy = BackpressureStrategy.BUFFER;
 
-    @Inject
     public RxEventBus() {
         mSubject = PublishSubject.create();
     }

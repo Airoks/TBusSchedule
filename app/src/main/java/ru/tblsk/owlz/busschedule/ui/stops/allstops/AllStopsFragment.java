@@ -23,13 +23,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
-import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -46,7 +41,7 @@ public class AllStopsFragment extends BaseFragment
     AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
 
     @Inject
-    StopsAdapter mStopsAdapter;
+    StopsAdapter mAdapter;
 
     @Inject
     LinearLayoutManager mLinearLayout;
@@ -79,7 +74,7 @@ public class AllStopsFragment extends BaseFragment
     protected void setUp(View view) {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
-        mRecyclerView.setAdapter(mStopsAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
         setupToolbar();
         mPresenter.getAllStops();
@@ -124,7 +119,7 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void showAllStops(List<Stop> stops) {
         mStops = stops;
-        mStopsAdapter.addItems(stops);
+        mAdapter.addItems(stops);
     }
 
     @Nullable
