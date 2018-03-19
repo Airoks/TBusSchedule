@@ -7,38 +7,38 @@ public class ChangeDirectionUrban {
     public static class InFragment {
 
         private final int position;
-        private final String direction;
+        private final String directionType;
 
-        public InFragment(int position, String direction) {
+        public InFragment(int position, String directionType) {
             this.position = position;
-            this.direction = direction;
+            this.directionType = directionType;
         }
 
         public int getPosition() {
             return position;
         }
 
-        public String getDirection() {
-            return direction;
+        public String getDirectionType() {
+            return directionType;
         }
     }
 
     public static class InAdapter {
 
         private final int position;
-        private final String direction;
+        private final String directionType;
 
-        public InAdapter(int position, String direction) {
+        public InAdapter(int position, String directionType) {
             this.position = position;
-            this.direction = direction;
+            this.directionType = directionType;
         }
 
         public int getPosition() {
             return position;
         }
 
-        public String getDirection() {
-            return direction;
+        public String getDirectionType() {
+            return directionType;
         }
     }
 }

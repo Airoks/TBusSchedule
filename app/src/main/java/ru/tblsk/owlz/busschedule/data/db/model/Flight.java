@@ -1,6 +1,9 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,7 +18,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class Flight {
+public class Flight implements Parcelable{
     @Expose
     @SerializedName("id")
     @Property(nameInDb = "flight_id")
@@ -56,6 +59,32 @@ public class Flight {
     @Generated(hash = 351578258)
     public Flight() {
     }
+
+    protected Flight(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            flightTypeId = null;
+        } else {
+            flightTypeId = in.readLong();
+        }
+        flightNumber = in.readString();
+    }
+
+    public static final Creator<Flight> CREATOR = new Creator<Flight>() {
+        @Override
+        public Flight createFromParcel(Parcel in) {
+            return new Flight(in);
+        }
+
+        @Override
+        public Flight[] newArray(int size) {
+            return new Flight[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -143,6 +172,28 @@ public class Flight {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        if (flightTypeId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(flightTypeId);
+        }
+        parcel.writeString(flightNumber);
     }
 
     /** called by internal mechanisms, do not call yourself. */

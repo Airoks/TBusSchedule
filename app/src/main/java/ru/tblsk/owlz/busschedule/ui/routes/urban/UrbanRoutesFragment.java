@@ -3,6 +3,7 @@ package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -27,13 +30,15 @@ import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 
 public class UrbanRoutesFragment extends BaseFragment
         implements UrbanRoutesMvpView{
 
     public static final String TAG = "UrbanRoutesFragment";
+    public static final String FLIGHTS = "flights";
+    public static final String DIRECTION_ROUTS = "directionRouts";
+    public static final String DIRECT = "direct";
+    public static final String REVERSE = "reverse";
 
     @Inject
     UrbanRoutesMvpPresenter<UrbanRoutesMvpView> mPresenter;
@@ -47,7 +52,10 @@ public class UrbanRoutesFragment extends BaseFragment
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
 
-    private List<ChangeDirectionUrban> changeDirection = new ArrayList<>();
+    private List<Flight> mFlights;
+    private List<String> mDirectionRoutes;
+    private List<ChangeDirectionUrban.InFragment> mChangeDirectionFragment;
+    private Map<Integer, String> mChangeDirectionAdapter;
 
     public static UrbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
@@ -59,6 +67,18 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
+            mDirectionRoutes = savedInstanceState.getStringArrayList(DIRECTION_ROUTS);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mPresenter.changeDirectionAdapter();
+        mPresenter.changeDirectionFragment();
+
     }
 
     @Override
@@ -110,23 +130,60 @@ public class UrbanRoutesFragment extends BaseFragment
                 .fragmentComponent(new FragmentModule(this)).inject(this);
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
-            mPresenter.getUrbanFlights();
+        mChangeDirectionAdapter = new HashMap<>();
+        mChangeDirectionFragment = new ArrayList<>();
         return view;
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
+        outState.putStringArrayList(DIRECTION_ROUTS, (ArrayList<String>) mDirectionRoutes);
+
+    }
+
+    @Override
     public void showUrbanRoutes(List<Flight> flights) {
+        mFlights = flights;
+        mDirectionRoutes = new ArrayList<>();
+        //при первом запуске пользователь видит прямое направление
+        for(int i = 0; i < mFlights.size(); i++) {
+            mDirectionRoutes.add(DIRECT);
+        }
+        //изменить
         mUrbanRoutesAdapter.addItem(flights);
     }
 
     @Override
     public void changedDirectionInFragment(ChangeDirectionUrban.InFragment direction) {
-
+        mChangeDirectionFragment.add(direction);
     }
 
     @Override
     public void changedDirectionInAdapter(ChangeDirectionUrban.InAdapter direction) {
+        int position = direction.getPosition();
+        String directionType = direction.getDirectionType();
+        mChangeDirectionAdapter.put(position, directionType);
+    }
 
+    private void showSavedRouts() {
+
+    }
+
+    private void updateDirectionRouts() {
+        if(!mChangeDirectionFragment.isEmpty()) {
+            int position = mChangeDirectionFragment.size();
+            mDirectionRoutes.set(mChangeDirectionFragment.get(position).getPosition(),
+                    mChangeDirectionFragment.get(position).getDirectionType());
+        }
+        if(!mChangeDirectionAdapter.isEmpty()) {
+            for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
+                int keyPos = (Integer) entry.getKey();
+                String keyDir = entry.getValue().toString();
+                mDirectionRoutes.set(keyPos, keyDir);
+            }
+        }
     }
 
     public static interface ClickListener{

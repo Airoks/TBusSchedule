@@ -49,21 +49,32 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
     }
 
     @Override
-    public void changeDirection() {
-        mEventBus.observable()
+    public void changeDirectionFragment() {
+        mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<Object>() {
+                .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
                     @Override
-                    public void accept(Object o) throws Exception {
-                        if(o instanceof ChangeDirectionUrban.InFragment) {
-                            getMvpView().changedDirectionInFragment(
-                                    (ChangeDirectionUrban.InFragment)o);
-                        }
-                        if(o instanceof ChangeDirectionUrban.InAdapter) {
-                            getMvpView().changedDirectionInAdapter(
-                                    (ChangeDirectionUrban.InAdapter)o);
-                        }
+                    public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
+                        getMvpView().changedDirectionInFragment(inFragment);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+    }
+
+    @Override
+    public void changeDirectionAdapter() {
+        mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
+                    @Override
+                    public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
+                        getMvpView().changedDirectionInAdapter(inAdapter);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
