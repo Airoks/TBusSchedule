@@ -25,11 +25,15 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
+import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class UrbanRoutesFragment extends BaseFragment
         implements UrbanRoutesMvpView{
@@ -49,6 +53,15 @@ public class UrbanRoutesFragment extends BaseFragment
     @Inject
     UrbanRoutesAdapter mUrbanRoutesAdapter;
 
+    @Inject
+    CompositeDisposable mCompositeDisposable;
+
+    @Inject
+    RxEventBus mEventBus;
+
+    @Inject
+    SchedulerProvider mSchedulerProvider;
+
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
 
@@ -67,6 +80,36 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
+                    @Override
+                    public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
+                        changedDirectionInFragment(inFragment);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
+                    @Override
+                    public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
+                        changedDirectionInAdapter(inAdapter);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
             mDirectionRoutes = savedInstanceState.getStringArrayList(DIRECTION_ROUTS);
@@ -85,6 +128,36 @@ public class UrbanRoutesFragment extends BaseFragment
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        mCompositeDisposable.clear();
+        super.onDestroy();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_urban_routes, container, false);
+        getBaseActivity().getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);
+        setUnbinder(ButterKnife.bind(this, view));
+        mPresenter.attachView(this);
+        mChangeDirectionAdapter = new HashMap<>();
+        mChangeDirectionFragment = new ArrayList<>();
+        return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        updateDirectionRouts();
+        outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
+        outState.putStringArrayList(DIRECTION_ROUTS, (ArrayList<String>) mDirectionRoutes);
+
     }
 
     @Override
@@ -118,29 +191,6 @@ public class UrbanRoutesFragment extends BaseFragment
 
             }
         }));
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_urban_routes, container, false);
-        getBaseActivity().getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);
-        setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
-        mChangeDirectionAdapter = new HashMap<>();
-        mChangeDirectionFragment = new ArrayList<>();
-        return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
-        outState.putStringArrayList(DIRECTION_ROUTS, (ArrayList<String>) mDirectionRoutes);
-
     }
 
     @Override
@@ -184,6 +234,8 @@ public class UrbanRoutesFragment extends BaseFragment
                 mDirectionRoutes.set(keyPos, keyDir);
             }
         }
+        mChangeDirectionFragment.clear();
+        mChangeDirectionAdapter.clear();
     }
 
     public static interface ClickListener{

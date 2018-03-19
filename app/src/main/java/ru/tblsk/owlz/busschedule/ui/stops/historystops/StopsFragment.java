@@ -60,6 +60,8 @@ public class StopsFragment extends BaseFragment
 
     private CompositeDisposable mDisposable = new CompositeDisposable();
     private String testString;
+    final List<String> list = new ArrayList<>();
+    public static boolean CHECK = false;
 
     public static StopsFragment newInstance() {
         return new StopsFragment();
@@ -98,7 +100,7 @@ public class StopsFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
-
+        list.clear();
         super.onDestroyView();
     }
 
@@ -116,20 +118,25 @@ public class StopsFragment extends BaseFragment
 
         mPresenter.getSearchHistoryStops();
 
-        final List<String> list = new ArrayList<>();
 
-        mDisposable.add(mEventBus
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        if(o instanceof String) {
-                            list.add((String) o);
+        if(!CHECK) {
+            mDisposable.add(mEventBus
+                    .observable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(Object o) throws Exception {
+                            if(o instanceof String) {
+                                list.add((String) o);
+                            }
                         }
-                    }
-                }));
+                    }));
+            CHECK = true;
+        }
+        for(String s : list) {
+            Log.d("EBENTBUS", s);
+        }
     }
 
     @Override
