@@ -81,6 +81,9 @@ public class UrbanRoutesFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mChangeDirectionAdapter = new HashMap<>();
+        mChangeDirectionFragment = new ArrayList<>();
+
         mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
                 .subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
@@ -117,14 +120,6 @@ public class UrbanRoutesFragment extends BaseFragment
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mPresenter.changeDirectionAdapter();
-        mPresenter.changeDirectionFragment();
-
-    }
-
-    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
@@ -146,8 +141,6 @@ public class UrbanRoutesFragment extends BaseFragment
                 .fragmentComponent(new FragmentModule(this)).inject(this);
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
-        mChangeDirectionAdapter = new HashMap<>();
-        mChangeDirectionFragment = new ArrayList<>();
         return view;
     }
 
