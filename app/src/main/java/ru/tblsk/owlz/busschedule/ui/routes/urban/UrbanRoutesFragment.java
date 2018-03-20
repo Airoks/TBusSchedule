@@ -1,7 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -9,10 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -77,6 +73,7 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         mEventBus = App.getApp(getBaseActivity()).getEventBus();
         mCompositeDisposable = App.getApp(getBaseActivity()).getCompositeDisposable();
@@ -85,54 +82,56 @@ public class UrbanRoutesFragment extends BaseFragment
         mChangeDirectionAdapter = new HashMap<>();
         mChangeDirectionFragment = new ArrayList<>();
 
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
-                    @Override
-                    public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
-                        changedDirectionInFragment(inFragment);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+        if(savedInstanceState == null) {
+            mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
+                    .subscribeOn(mSchedulerProvider.io())
+                    .observeOn(mSchedulerProvider.ui())
+                    .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
+                        @Override
+                        public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
+                            changedDirectionInFragment(inFragment);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
-                    @Override
-                    public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
-                        changedDirectionInAdapter(inAdapter);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+                        }
+                    }));
+            mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
+                    .subscribeOn(mSchedulerProvider.io())
+                    .observeOn(mSchedulerProvider.ui())
+                    .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
+                        @Override
+                        public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
+                            changedDirectionInAdapter(inAdapter);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
+                        }
+                    }));
 
-        mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<Direction>() {
-                    @Override
-                    public void accept(Direction direction) throws Exception {
-                        FragmentManager fragmentManager = getChildFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container,
-                                DirectionInfoFragment.newInstance(direction.getId()));
-                        transaction.addToBackStack(DirectionInfoFragment.TAG);
-                        transaction.commit();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+            mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
+                    .subscribeOn(mSchedulerProvider.io())
+                    .observeOn(mSchedulerProvider.ui())
+                    .subscribe(new Consumer<Direction>() {
+                        @Override
+                        public void accept(Direction direction) throws Exception {
+                            FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+                            transaction.replace(R.id.container,
+                                    DirectionInfoFragment.newInstance(direction.getId()));
+                            transaction.addToBackStack(DirectionInfoFragment.TAG);
+                            transaction.commit();
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
+                        }
+                    }));
+        }
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
@@ -183,10 +182,8 @@ public class UrbanRoutesFragment extends BaseFragment
         mRecyclerView.setAdapter(mAdapter);
 
         if(mFlights == null) {
-            Log.d("mFlights", "NULL");
             mPresenter.getUrbanFlights();
         } else {
-            Log.d("mFlights", " NOT NULL");
             showSavedRouts();
         }
 
@@ -221,11 +218,7 @@ public class UrbanRoutesFragment extends BaseFragment
     }
 
     private void updateDirectionRouts() {
-        if(!mChangeDirectionFragment.isEmpty()) {
-            int position = mChangeDirectionFragment.size() - 1;
-            mDirectionRoutes.set(mChangeDirectionFragment.get(position).getPosition(),
-                    mChangeDirectionFragment.get(position).getDirectionType());
-        }
+        //приоритет принадлежит изменениям в DirectionInfoFragment
         if(!mChangeDirectionAdapter.isEmpty()) {
             for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
                 int keyPos = (Integer) entry.getKey();
@@ -233,58 +226,13 @@ public class UrbanRoutesFragment extends BaseFragment
                 mDirectionRoutes.set(keyPos, keyDir);
             }
         }
+        if(!mChangeDirectionFragment.isEmpty()) {
+            int position = mChangeDirectionFragment.size() - 1;
+            mDirectionRoutes.set(mChangeDirectionFragment.get(position).getPosition(),
+                    mChangeDirectionFragment.get(position).getDirectionType());
+        }
+
         mChangeDirectionFragment.clear();
         mChangeDirectionAdapter.clear();
-    }
-
-    public static interface ClickListener{
-        void onClick(View view, int position);
-        void onLongClick(View view, int position);
-    }
-
-    private class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private UrbanRoutesFragment.ClickListener mClickListener;
-        private GestureDetector mGestureDetector;
-
-        public RecyclerTouchListener(Context context,
-                                     final RecyclerView recyclerView,
-                                     final UrbanRoutesFragment.ClickListener clickListener ) {
-            this.mClickListener = clickListener;
-            mGestureDetector = new GestureDetector(context,
-                    new GestureDetector.SimpleOnGestureListener(){
-                        @Override
-                        public  boolean onSingleTapUp(MotionEvent e) {
-                            return true;
-                        }
-                        @Override
-                        public void onLongPress(MotionEvent e) {
-                            View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                            if (child != null && clickListener != null) {
-                                clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
-                            }
-                        }
-                    });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if( child != null && mClickListener != null && mGestureDetector.onTouchEvent(e)) {
-                mClickListener.onClick( child, rv.getChildAdapterPosition(child));
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
     }
 }

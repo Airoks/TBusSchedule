@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,6 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String REVERSE = "reverse";
     private static final int DIRECT_ID = 0;
     private static final int REVERSE_ID = 1;
-
-    private UrbanRoutesListener onClickListener;
 
     private List<Flight> mFlights;
     private List<Integer> mDirectionRouts;
@@ -105,14 +102,6 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         mFlights.addAll(flights);
         notifyDataSetChanged();
-    }
-
-    public void setSwapButton(UrbanRoutesListener urbanRoutesListener) {
-        this.onClickListener = urbanRoutesListener;
-    }
-
-    public interface UrbanRoutesListener {
-        void swapButtonOnClick(View view, int position);
     }
 
     class UrbanRoutesViewHolder extends BaseViewHolder
