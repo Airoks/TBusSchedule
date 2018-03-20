@@ -29,6 +29,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -113,6 +114,26 @@ public class UrbanRoutesFragment extends BaseFragment
                     }
                 }));
 
+        mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<Direction>() {
+                    @Override
+                    public void accept(Direction direction) throws Exception {
+                        FragmentManager fragmentManager = getChildFragmentManager();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.container,
+                                DirectionInfoFragment.newInstance(direction.getId()));
+                        transaction.addToBackStack(DirectionInfoFragment.TAG);
+                        transaction.commit();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
             mDirectionRoutes = savedInstanceState.getStringArrayList(DIRECTION_ROUTS);
@@ -155,40 +176,20 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-        mAdapter.setSwapButton(new UrbanRoutesAdapter.UrbanRoutesListener() {
-            @Override
-            public void swapButtonOnClick(View view, int position) {
-                Log.d("Button swap", "CLICK!!!!!!!");
-            }
-        });
+
 
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
         mRecyclerView.setAdapter(mAdapter);
 
         if(mFlights == null) {
+            Log.d("mFlights", "NULL");
             mPresenter.getUrbanFlights();
         } else {
+            Log.d("mFlights", " NOT NULL");
             showSavedRouts();
         }
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getBaseActivity(),
-                mRecyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.container, DirectionInfoFragment.newInstance());
-                fragmentTransaction.hide(getParentFragment());
-                fragmentTransaction.addToBackStack(DirectionInfoFragment.TAG);
-                fragmentTransaction.commit();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
     @Override
@@ -221,7 +222,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     private void updateDirectionRouts() {
         if(!mChangeDirectionFragment.isEmpty()) {
-            int position = mChangeDirectionFragment.size();
+            int position = mChangeDirectionFragment.size() - 1;
             mDirectionRoutes.set(mChangeDirectionFragment.get(position).getPosition(),
                     mChangeDirectionFragment.get(position).getDirectionType());
         }

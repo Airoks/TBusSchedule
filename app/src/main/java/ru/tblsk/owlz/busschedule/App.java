@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 

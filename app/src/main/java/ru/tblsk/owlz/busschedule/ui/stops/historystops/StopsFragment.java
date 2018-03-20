@@ -166,7 +166,7 @@ public class StopsFragment extends BaseFragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.container, AllStopsFragment.newInstance());
-        fragmentTransaction.addToBackStack("to AllStopsFragment");
+        fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
 
         fragmentTransaction.commit();
     }
