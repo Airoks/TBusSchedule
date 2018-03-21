@@ -17,15 +17,6 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class App extends Application {
 
-    @Inject
-    RxEventBus mEventBus;
-
-    @Inject
-    CompositeDisposable mCompositeDisposable;
-
-    @Inject
-    SchedulerProvider mSchedulerProvider;
-
     private ApplicationComponent mApplicationComponent;
 
     @Override
@@ -33,7 +24,6 @@ public class App extends Application {
         super.onCreate();
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
-        mApplicationComponent.inject(this);
 
         Stetho.initializeWithDefaults(this);
     }
@@ -46,16 +36,5 @@ public class App extends Application {
         return  this.mApplicationComponent;
     }
 
-    public RxEventBus getEventBus() {
-        return this.mEventBus;
-    }
-
-    public CompositeDisposable getCompositeDisposable() {
-        return this.mCompositeDisposable;
-    }
-
-    public SchedulerProvider getSchedulerProvider() {
-        return this.mSchedulerProvider;
-    }
 
 }

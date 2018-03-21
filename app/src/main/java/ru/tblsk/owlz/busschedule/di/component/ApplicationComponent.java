@@ -15,7 +15,6 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-    void inject(App app);
     //что мы хотим получить из AppModule ?
     DataManager getDataManager();
     SchedulerProvider getSchedulerProvider();

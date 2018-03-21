@@ -11,6 +11,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 @Module
 public class FragmentModule {
@@ -32,7 +33,7 @@ public class FragmentModule {
     }
 
     @Provides
-    UrbanRoutesAdapter provideUrbanRoutesAdapter() {
-        return new UrbanRoutesAdapter();
+    UrbanRoutesAdapter provideUrbanRoutesAdapter(RxEventBus eventBus) {
+        return new UrbanRoutesAdapter(eventBus);
     }
 }

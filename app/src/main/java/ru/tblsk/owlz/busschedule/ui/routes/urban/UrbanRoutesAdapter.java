@@ -11,9 +11,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
@@ -31,7 +32,9 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Integer> mDirectionRouts;
     private RxEventBus mEventBus;
 
-    public UrbanRoutesAdapter() {
+    @Inject
+    public UrbanRoutesAdapter(RxEventBus eventBus) {
+        this.mEventBus = eventBus;
         mFlights = new ArrayList<>();
         mDirectionRouts = new ArrayList<>();
     }
@@ -40,7 +43,6 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_route, parent, false);
-        mEventBus = App.getApp(parent.getContext()).getEventBus();
         return new UrbanRoutesViewHolder(itemView);
     }
 

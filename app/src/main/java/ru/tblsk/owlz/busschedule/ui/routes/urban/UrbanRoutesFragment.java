@@ -23,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
@@ -51,8 +50,13 @@ public class UrbanRoutesFragment extends BaseFragment
     @Inject
     UrbanRoutesAdapter mAdapter;
 
+    @Inject
     CompositeDisposable mCompositeDisposable;
+
+    @Inject
     RxEventBus mEventBus;
+
+    @Inject
     SchedulerProvider mSchedulerProvider;
 
     @BindView(R.id.urbanRouteRv)
@@ -75,63 +79,8 @@ public class UrbanRoutesFragment extends BaseFragment
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mEventBus = App.getApp(getBaseActivity()).getEventBus();
-        mCompositeDisposable = App.getApp(getBaseActivity()).getCompositeDisposable();
-        mSchedulerProvider = App.getApp(getBaseActivity()).getSchedulerProvider();
-
         mChangeDirectionAdapter = new HashMap<>();
         mChangeDirectionFragment = new ArrayList<>();
-
-        if(savedInstanceState == null) {
-            mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
-                    .subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
-                    .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
-                        @Override
-                        public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
-                            changedDirectionInFragment(inFragment);
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
-            mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
-                    .subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
-                    .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
-                        @Override
-                        public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
-                            changedDirectionInAdapter(inAdapter);
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
-
-            mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
-                    .subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
-                    .subscribe(new Consumer<Direction>() {
-                        @Override
-                        public void accept(Direction direction) throws Exception {
-                            FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.replace(R.id.container,
-                                    DirectionInfoFragment.newInstance(direction.getId()));
-                            transaction.addToBackStack(DirectionInfoFragment.TAG);
-                            transaction.commit();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
-        }
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
@@ -147,7 +96,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        App.getApp(getBaseActivity()).getCompositeDisposable().clear();
+        mCompositeDisposable.clear();
         super.onDestroy();
     }
 
@@ -159,6 +108,11 @@ public class UrbanRoutesFragment extends BaseFragment
         View view = inflater.inflate(R.layout.fragment_urban_routes, container, false);
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
+
+        if(mFlights == null) {
+            subscribeOnEvents();
+        }
+
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
         return view;
@@ -175,8 +129,6 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-
-
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
         mRecyclerView.setAdapter(mAdapter);
@@ -234,5 +186,56 @@ public class UrbanRoutesFragment extends BaseFragment
 
         mChangeDirectionFragment.clear();
         mChangeDirectionAdapter.clear();
+    }
+
+    private void subscribeOnEvents() {
+        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
+                    @Override
+                    public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
+                        changedDirectionInFragment(inFragment);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
+                    @Override
+                    public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
+                        changedDirectionInAdapter(inAdapter);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+
+        mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(new Consumer<Direction>() {
+                    @Override
+                    public void accept(Direction direction) throws Exception {
+                        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.container,
+                                DirectionInfoFragment.newInstance(direction.getId()));
+                        transaction.addToBackStack(DirectionInfoFragment.TAG);
+                        transaction.commit();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
     }
 }
