@@ -1,8 +1,19 @@
 package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
+import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 
 public class ChangeDirectionUrban {
+
+    private Direction direction;
+
+    public ChangeDirectionUrban(Direction direction) {
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
 
     public static class InFragment {
 

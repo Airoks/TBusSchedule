@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.routes.urban;
+package ru.tblsk.owlz.busschedule.ui.routes;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +19,11 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
-public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final String DIRECT = "direct";
     private static final String REVERSE = "reverse";
@@ -31,10 +33,12 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Flight> mFlights;
     private List<Integer> mDirectionRouts;
     private RxEventBus mEventBus;
+    private String mFlightType;
 
     @Inject
-    public UrbanRoutesAdapter(RxEventBus eventBus) {
+    public RoutesAdapter(RxEventBus eventBus, String flightType) {
         this.mEventBus = eventBus;
+        this.mFlightType = flightType;
         mFlights = new ArrayList<>();
         mDirectionRouts = new ArrayList<>();
     }
@@ -58,7 +62,11 @@ public class UrbanRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 for(Direction direction : directions) {
                     if(direction.getDirectionTypeId() == directionId) {
-                        mEventBus.post(direction);
+                        if(mFlightType.equals("urban")) {
+                            mEventBus.post(new ChangeDirectionUrban(direction));
+                        } else {
+                            mEventBus.post(new ChangeDirectionSuburban(direction));
+                        }
                     }
                 }
             }

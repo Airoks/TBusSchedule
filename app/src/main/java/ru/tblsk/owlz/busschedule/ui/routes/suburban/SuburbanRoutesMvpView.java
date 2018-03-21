@@ -8,4 +8,6 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 
 public interface SuburbanRoutesMvpView extends MvpView{
     void showSuburbanRoutes(List<Flight> flights);
+    void changedDirectionInFragment(ChangeDirectionSuburban.InFragment direction);
+    void changedDirectionInAdapter(ChangeDirectionSuburban.InAdapter direction);
 }

@@ -24,16 +24,19 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.di.annotation.FlightType;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
+import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.routes.Event;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class UrbanRoutesFragment extends BaseFragment
-        implements UrbanRoutesMvpView{
+        implements UrbanRoutesMvpView, Event{
 
     public static final String TAG = "UrbanRoutesFragment";
     public static final String FLIGHTS = "flights";
@@ -48,7 +51,8 @@ public class UrbanRoutesFragment extends BaseFragment
     LinearLayoutManager mLinearLayout;
 
     @Inject
-    UrbanRoutesAdapter mAdapter;
+    @FlightType("urban")
+    RoutesAdapter mAdapter;
 
     @Inject
     CompositeDisposable mCompositeDisposable;
@@ -133,12 +137,14 @@ public class UrbanRoutesFragment extends BaseFragment
         mRecyclerView.setLayoutManager(mLinearLayout);
         mRecyclerView.setAdapter(mAdapter);
 
+        ((MainActivity)getBaseActivity()).unlockDrawer();
+        ((MainActivity)getBaseActivity()).showBottomNavigationView();
+
         if(mFlights == null) {
             mPresenter.getUrbanFlights();
         } else {
             showSavedRouts();
         }
-
     }
 
     @Override
@@ -164,12 +170,12 @@ public class UrbanRoutesFragment extends BaseFragment
         mChangeDirectionAdapter.put(position, directionType);
     }
 
-    private void showSavedRouts() {
+    public void showSavedRouts() {
         updateDirectionRouts();
         mAdapter.addItems(mFlights, mDirectionRoutes);
     }
 
-    private void updateDirectionRouts() {
+    public void updateDirectionRouts() {
         //приоритет принадлежит изменениям в DirectionInfoFragment
         if(!mChangeDirectionAdapter.isEmpty()) {
             for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
@@ -188,7 +194,7 @@ public class UrbanRoutesFragment extends BaseFragment
         mChangeDirectionAdapter.clear();
     }
 
-    private void subscribeOnEvents() {
+    public void subscribeOnEvents() {
         mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
                 .subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
@@ -218,16 +224,18 @@ public class UrbanRoutesFragment extends BaseFragment
                     }
                 }));
 
-        mCompositeDisposable.add(mEventBus.filteredObservable(Direction.class)
+        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.class)
                 .subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<Direction>() {
+                .subscribe(new Consumer<ChangeDirectionUrban>() {
                     @Override
-                    public void accept(Direction direction) throws Exception {
-                        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+                    public void accept(ChangeDirectionUrban directionUrban) throws Exception {
+                        FragmentManager fragmentManager = getBaseActivity()
+                                .getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.container,
-                                DirectionInfoFragment.newInstance(direction.getId()));
+                                DirectionInfoFragment.newInstance(
+                                        directionUrban.getDirection().getId()));
                         transaction.addToBackStack(DirectionInfoFragment.TAG);
                         transaction.commit();
                     }
