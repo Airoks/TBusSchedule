@@ -86,9 +86,14 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         }
 
                         notifyItemChanged(stance);
-                        ChangeDirectionUrban.InAdapter inAdapter =
-                                new ChangeDirectionUrban.InAdapter(stance, directionName);
-                        mEventBus.post(inAdapter);
+
+                        if(mFlightType.equals("urban")) {
+                            mEventBus.post(new ChangeDirectionUrban
+                                    .InAdapter(stance, directionName));
+                        } else {
+                            mEventBus.post(new ChangeDirectionSuburban
+                                    .InAdapter(stance, directionName));
+                        }
                     }
                 });
 
