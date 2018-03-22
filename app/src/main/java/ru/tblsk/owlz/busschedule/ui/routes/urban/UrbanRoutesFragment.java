@@ -109,7 +109,7 @@ public class UrbanRoutesFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_urban_routes, container, false);
+        View view = inflater.inflate(R.layout.fragment_urbanroutes, container, false);
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
 

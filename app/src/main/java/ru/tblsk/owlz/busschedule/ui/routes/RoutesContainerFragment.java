@@ -51,7 +51,7 @@ public class RoutesContainerFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_routes_container, container, false);
+        View view = inflater.inflate(R.layout.fragment_routescontainer, container, false);
         setUnbinder(ButterKnife.bind(this, view));
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
@@ -88,7 +88,7 @@ public class RoutesContainerFragment extends BaseFragment
     @Override
     public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.routs);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

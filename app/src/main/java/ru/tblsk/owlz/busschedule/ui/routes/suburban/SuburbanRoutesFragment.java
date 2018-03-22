@@ -126,7 +126,7 @@ public class SuburbanRoutesFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_suburban_routes, container, false);
+        View view = inflater.inflate(R.layout.fragment_suburbanroutes, container, false);
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
 

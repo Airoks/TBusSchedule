@@ -13,7 +13,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/shape_route_number"
+        android:background="@drawable/route_shapeoval"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:gravity="center"/>
@@ -26,7 +26,7 @@
         android:layout_centerVertical="true"
         android:clickable="true"
         android:background="?selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_swap_horiz_black_24dp"
+        app:srcCompat="@drawable/al_swaphorizblack_24dp"
         android:layout_alignParentEnd="true"
         android:focusable="true"
         android:contentDescription="@string/change_direction" />

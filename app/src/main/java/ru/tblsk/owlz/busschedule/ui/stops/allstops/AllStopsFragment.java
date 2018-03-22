@@ -99,7 +99,7 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.setTitle(R.string.all_stops);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
 

@@ -4,6 +4,8 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,7 +14,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -48,7 +49,7 @@ public class DirectionInfoFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_direction_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_directioninfo, container, false);
         getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
                 .inject(this);
         setUnbinder(ButterKnife.bind(this, view));
@@ -61,5 +62,10 @@ public class DirectionInfoFragment extends BaseFragment{
             }
         });
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

@@ -142,7 +142,7 @@ public class StopsFragment extends BaseFragment
     @Override
     public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.stops);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
 
