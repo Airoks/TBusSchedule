@@ -3,6 +3,7 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,17 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
+import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
-public class DirectionInfoFragment extends BaseFragment{
+public class DirectionInfoFragment extends BaseFragment
+        implements DirectionInfoMvpView, SetupToolbar{
 
     public static final String TAG = "DirectionInfoFragment";
     public static final String DIRECTION_ID = "directionId";
@@ -28,8 +34,9 @@ public class DirectionInfoFragment extends BaseFragment{
     @Inject
     RxEventBus mEventBus;
 
-    @BindView(R.id.testButton)
-    Button button;
+    @BindView(R.id.toolbar_directioninfo)
+    Toolbar mToolbar;
+
 
     public static DirectionInfoFragment newInstance(Long directionId) {
         Bundle bundle = new Bundle();
@@ -53,19 +60,23 @@ public class DirectionInfoFragment extends BaseFragment{
         getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
                 .inject(this);
         setUnbinder(ButterKnife.bind(this, view));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChangeDirectionUrban.InFragment inFragment =
-                        new ChangeDirectionUrban.InFragment(0, "reverse");
-                mEventBus.post(inFragment);
-            }
-        });
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void showStopsOnDirection(List<Stop> stops) {
+
+    }
+
+    @Override
+    public void setupToolbar() {
+        getBaseActivity().setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
+
     }
 }

@@ -5,4 +5,6 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 
 public interface DirectionInfoMvpPresenter<V extends DirectionInfoMvpView>
         extends MvpPresenter<V>{
+
+    void getStopsOnDirection(Long directionId);
 }

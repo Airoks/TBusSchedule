@@ -170,8 +170,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<Stop>> getAllStopsOnRouts(long directionId) {
-        return dbHelper.getAllStopsOnRouts(directionId);
+    public Single<List<Stop>> getStopsOnDirection(long directionId) {
+        return dbHelper.getStopsOnDirection(directionId);
     }
 
     @Override

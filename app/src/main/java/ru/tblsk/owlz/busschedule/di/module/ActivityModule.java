@@ -10,6 +10,9 @@ import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpView;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
@@ -89,6 +92,13 @@ public class ActivityModule {
     @PerActivity
     SuburbanRoutesMvpPresenter<SuburbanRoutesMvpView> provideSuburbanRoutesPresenter(
             SuburbanRoutesPresenter<SuburbanRoutesMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    DirectionInfoMvpPresenter<DirectionInfoMvpView> provideDirectionInfoPresenter(
+            DirectionInfoPresenter<DirectionInfoMvpView> presenter) {
         return presenter;
     }
 
