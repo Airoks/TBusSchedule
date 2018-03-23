@@ -22,6 +22,8 @@ import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
 public class MainActivity extends BaseActivity {
 
+    public static final String CURRENT_PAGE_ID = "currentPageId";
+
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
     @BindView(R.id.drawer_layout)
@@ -29,12 +31,25 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
 
+    private int currentPageId = - 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            currentPageId = savedInstanceState.getInt(CURRENT_PAGE_ID);
+        }
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setUp();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_PAGE_ID, currentPageId);
     }
 
     @Override
@@ -77,21 +92,26 @@ public class MainActivity extends BaseActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        switch (item.getItemId()) {
-                            case R.id.navigation_main:
-                                return true;
-                            case R.id.navigation_stops:
-                                fragmentTransaction.replace(R.id.container,
-                                        StopsFragment.newInstance());
-                                fragmentTransaction.commit();
-                                return true;
-                            case R.id.navigation_routs:
-                                fragmentTransaction.replace(R.id.container,
-                                        RoutesContainerFragment.newInstance());
-                                fragmentTransaction.commit();
-                                return true;
+                        if(currentPageId == item.getItemId()) {
+                            return false;
+                        } else {
+                            currentPageId = item.getItemId();
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            switch (item.getItemId()) {
+                                case R.id.navigation_main:
+                                    return true;
+                                case R.id.navigation_stops:
+                                    fragmentTransaction.replace(R.id.container,
+                                            StopsFragment.newInstance());
+                                    fragmentTransaction.commit();
+                                    return true;
+                                case R.id.navigation_routs:
+                                    fragmentTransaction.replace(R.id.container,
+                                            RoutesContainerFragment.newInstance());
+                                    fragmentTransaction.commit();
+                                    return true;
+                            }
                         }
                         return false;
                     }
