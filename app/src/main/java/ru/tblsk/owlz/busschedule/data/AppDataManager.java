@@ -365,14 +365,10 @@ public class AppDataManager implements DataManager {
                     @Override
                     public CompletableSource apply(Boolean isEmpty) throws Exception {
                         if(isEmpty) {
-                            Log.d("seed", "PARSING");
                             Type type = new TypeToken<List<DepartureTime>>(){}.getType();
                             List<DepartureTime> departureTimes = gson.fromJson(
                                     CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_DEPARTURE_TIME), type);
-                            if(!departureTimes.isEmpty()) {
-                                Log.d("seedDatabaseDeparture", "parsing - NOT EMPTY");
-                            }
                             return saveDepartureTimeList(departureTimes);
                         }
                         return Completable.complete();
