@@ -10,6 +10,10 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.ToMany;
+import org.greenrobot.greendao.converter.PropertyConverter;
+
+import java.util.List;
 
 @Entity(active = true)
 public class Schedule {
@@ -26,16 +30,13 @@ public class Schedule {
     private Long stopsOnRoutsId;
 
     @Expose
-    @SerializedName("schedule_type_fk")
-    @Property(nameInDb = "schedule_type_fk")
+    @SerializedName("schedule_type")
+    @Property(nameInDb = "schedule_type")
     @NotNull
-    private Long scheduleTypeId;
+    private Long scheduleType;
 
-    @Expose
-    @SerializedName("schedule_json")
-    @Property(nameInDb = "schedule_json")
-    @NotNull
-    private String scheduleJson;
+    @ToMany(referencedJoinProperty = "scheduleId")
+    private List<DepartureTime> departureTimes;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -45,13 +46,12 @@ public class Schedule {
     @Generated(hash = 1493574644)
     private transient ScheduleDao myDao;
 
-    @Generated(hash = 2011117973)
+    @Generated(hash = 1311050869)
     public Schedule(Long id, @NotNull Long stopsOnRoutsId,
-            @NotNull Long scheduleTypeId, @NotNull String scheduleJson) {
+            @NotNull Long scheduleType) {
         this.id = id;
         this.stopsOnRoutsId = stopsOnRoutsId;
-        this.scheduleTypeId = scheduleTypeId;
-        this.scheduleJson = scheduleJson;
+        this.scheduleType = scheduleType;
     }
 
     @Generated(hash = 729319394)
@@ -74,20 +74,41 @@ public class Schedule {
         this.stopsOnRoutsId = stopsOnRoutsId;
     }
 
-    public Long getScheduleTypeId() {
-        return this.scheduleTypeId;
+    public Long getScheduleType() {
+        return this.scheduleType;
     }
 
-    public void setScheduleTypeId(Long scheduleTypeId) {
-        this.scheduleTypeId = scheduleTypeId;
+    public void setScheduleType(Long scheduleType) {
+        this.scheduleType = scheduleType;
     }
 
-    public String getScheduleJson() {
-        return this.scheduleJson;
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 938702560)
+    public List<DepartureTime> getDepartureTimes() {
+        if (departureTimes == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            DepartureTimeDao targetDao = daoSession.getDepartureTimeDao();
+            List<DepartureTime> departureTimesNew = targetDao
+                    ._querySchedule_DepartureTimes(id);
+            synchronized (this) {
+                if (departureTimes == null) {
+                    departureTimes = departureTimesNew;
+                }
+            }
+        }
+        return departureTimes;
     }
 
-    public void setScheduleJson(String scheduleJson) {
-        this.scheduleJson = scheduleJson;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 2091103014)
+    public synchronized void resetDepartureTimes() {
+        departureTimes = null;
     }
 
     /**
@@ -132,5 +153,38 @@ public class Schedule {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleDao() : null;
     }
+
+    public enum ScheduleType {
+        @SerializedName("0")
+        WORKDAY(0),
+        @SerializedName("1")
+        WEEKEND(1);
+
+        int id;
+
+        ScheduleType(int id) {
+            this.id = id;
+        }
+    }
+
+    public static class ScheduleTypeConverter
+            implements PropertyConverter<ScheduleType, Integer> {
+
+        @Override
+        public ScheduleType convertToEntityProperty(Integer databaseValue) {
+            for(ScheduleType type : ScheduleType.values()) {
+                if(type.id == databaseValue) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public Integer convertToDatabaseValue(ScheduleType entityProperty) {
+            return entityProperty == null ? null : entityProperty.id;
+        }
+    }
+
 
 }

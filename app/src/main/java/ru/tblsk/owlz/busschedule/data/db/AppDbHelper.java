@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoSession;
+import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionDao;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
@@ -25,7 +28,6 @@ import ru.tblsk.owlz.busschedule.data.db.model.FlightDao;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightTypeDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
-import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStops;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStopsDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
@@ -112,11 +114,14 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Completable saveScheduleTypeList(final List<ScheduleType> scheduleTypeList) {
+    public Completable saveDepartureTimeList(final List<DepartureTime> departureTimes) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                mDaoSession.getScheduleTypeDao().insertInTx(scheduleTypeList);
+
+                    Log.d("departureTime", "NOT EMPTY");
+
+                mDaoSession.getDepartureTimeDao().insertInTx(departureTimes);
             }
         });
     }
@@ -172,16 +177,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<Boolean> isEmptyScheduleType() {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return !(mDaoSession.getScheduleTypeDao().count() > 0);
-            }
-        });
-    }
-
-    @Override
     public Single<Boolean> isEmptyStop() {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
@@ -197,6 +192,17 @@ public class AppDbHelper implements DbHelper {
             @Override
             public Boolean call() throws Exception {
                 return !(mDaoSession.getStopsOnRoutsDao().count() > 0);
+            }
+        });
+    }
+
+    @Override
+    public Single<Boolean> isEmptyDepartureTime() {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                System.out.println(mDaoSession.getDepartureTimeDao().count() > 0);
+                return !(mDaoSession.getDepartureTimeDao().count() > 0);
             }
         });
     }

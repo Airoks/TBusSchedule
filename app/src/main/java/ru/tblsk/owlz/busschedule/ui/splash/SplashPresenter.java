@@ -26,7 +26,7 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
     @Override
     public void attachView(V mvpView) {
         super.attachView(mvpView);
-        if(getDataManager().getFirstRunVariable()) {
+        //if(getDataManager().getFirstRunVariable()) {
             Log.d("SplashPresenter", "seeeeed!!!");
             getCompositeDisposable().add(getDataManager()
                     .seedAllTables()
@@ -46,7 +46,7 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
                             throwable.printStackTrace();
                         }
                     }));
-        }
+        //}
         getMvpView().openMainActivity();
     }
 }

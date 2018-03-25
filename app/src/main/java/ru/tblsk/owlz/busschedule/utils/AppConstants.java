@@ -11,7 +11,7 @@ public final class AppConstants {
     public static final String SEED_DB_FLIGHTS = "db/Flight.json";
     public static final String SEED_DB_FLIGHT_TYPES = "db/FlightType.json";
     public static final String SEED_DB_SCHEDULES = "db/Schedule.json";
-    public static final String SEED_DB_SCHEDULE_TYPES = "db/ScheduleType.json";
+    public static final String SEED_DB_DEPARTURE_TIME = "db/DepartureTime.json";
     public static final String SEED_DB_STOPS = "db/Stop.json";
     public static final String SEED_DB_STOPS_ON_ROUTS = "db/StopOnRouts.json";
 

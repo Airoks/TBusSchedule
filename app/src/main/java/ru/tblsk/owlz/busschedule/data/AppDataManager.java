@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.data;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,12 +25,12 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
+import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
-import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
 import ru.tblsk.owlz.busschedule.data.preferences.PreferencesHelper;
@@ -88,8 +89,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable saveScheduleTypeList(List<ScheduleType> scheduleTypeList) {
-        return dbHelper.saveScheduleTypeList(scheduleTypeList);
+    public Completable saveDepartureTimeList(List<DepartureTime> departureTimes) {
+        return dbHelper.saveDepartureTimeList(departureTimes);
     }
 
     @Override
@@ -118,11 +119,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Boolean> isEmptyScheduleType() {
-        return dbHelper.isEmptyScheduleType();
-    }
-
-    @Override
     public Single<Boolean> isEmptyStop() {
         return dbHelper.isEmptyStop();
     }
@@ -130,6 +126,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<Boolean> isEmptyStopsOnRouts() {
         return dbHelper.isEmptyStopsOnRouts();
+    }
+
+    @Override
+    public Single<Boolean> isEmptyDepartureTime() {
+        return dbHelper.isEmptyDepartureTime();
     }
 
     @Override
@@ -356,19 +357,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable seedDatabaseScheduleTypes() {
+    public Completable seedDatabaseDepartureTime() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
-        return dbHelper.isEmptyScheduleType()
+        return dbHelper.isEmptyDepartureTime()
                 .flatMapCompletable(new Function<Boolean, CompletableSource>() {
                     @Override
                     public CompletableSource apply(Boolean isEmpty) throws Exception {
                         if(isEmpty) {
-                            Type type = new TypeToken<List<ScheduleType>>(){}.getType();
-                            List<ScheduleType> scheduleTypes = gson.fromJson(
+                            Log.d("seed", "PARSING");
+                            Type type = new TypeToken<List<DepartureTime>>(){}.getType();
+                            List<DepartureTime> departureTimes = gson.fromJson(
                                     CommonUtils.loadJSONFromAsset(mContext,
-                                            AppConstants.SEED_DB_SCHEDULE_TYPES), type);
-                            return saveScheduleTypeList(scheduleTypes);
+                                            AppConstants.SEED_DB_DEPARTURE_TIME), type);
+                            if(!departureTimes.isEmpty()) {
+                                Log.d("seedDatabaseDeparture", "parsing - NOT EMPTY");
+                            }
+                            return saveDepartureTimeList(departureTimes);
                         }
                         return Completable.complete();
                     }
@@ -388,8 +393,8 @@ public class AppDataManager implements DataManager {
         completableSources.add(seedDatabaseDirections());
         completableSources.add(seedDatabaseStops());
         completableSources.add(seedDatabaseStopsOnRouts());
-        completableSources.add(seedDatabaseScheduleTypes());
         completableSources.add(seedDatabaseSchedules());
+        completableSources.add(seedDatabaseDepartureTime());
         return completableSources;
     }
 

@@ -5,12 +5,12 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
-import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
 
@@ -23,16 +23,16 @@ public interface DbHelper {
     Completable saveStopsOnRoutsList(List<StopsOnRouts> stopsOnRoutsList);
     Completable saveStopList(List<Stop> stopList);
     Completable saveScheduleList(List<Schedule> scheduleList);
-    Completable saveScheduleTypeList(List<ScheduleType> scheduleTypeList);
+    Completable saveDepartureTimeList(List<DepartureTime> departureTimes);
 
     Single<Boolean> isEmptyDirection();
     Single<Boolean> isEmptyDirectionType();
     Single<Boolean> isEmptyFlight();
     Single<Boolean> isEmptyFlightType();
     Single<Boolean> isEmptySchedule();
-    Single<Boolean> isEmptyScheduleType();
     Single<Boolean> isEmptyStop();
     Single<Boolean> isEmptyStopsOnRouts();
+    Single<Boolean> isEmptyDepartureTime();
 
     Single<List<Stop>> getAllStops();
     Single<List<Flight>> getFlightByType(String flightType);

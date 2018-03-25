@@ -22,6 +22,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
+import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
@@ -48,7 +49,7 @@ public class DirectionInfoFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-
+        setupToolbar();
     }
 
     @Nullable
@@ -78,5 +79,7 @@ public class DirectionInfoFragment extends BaseFragment
         getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
 
+        ((MainActivity)getBaseActivity()).lockDrawer();
+        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
     }
 }
