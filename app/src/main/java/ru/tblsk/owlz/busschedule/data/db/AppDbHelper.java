@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -118,9 +116,6 @@ public class AppDbHelper implements DbHelper {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-
-                    Log.d("departureTime", "NOT EMPTY");
-
                 mDaoSession.getDepartureTimeDao().insertInTx(departureTimes);
             }
         });
@@ -381,7 +376,6 @@ public class AppDbHelper implements DbHelper {
         return Single.fromCallable(new Callable<List<Direction>>() {
             @Override
             public List<Direction> call() throws Exception {
-                //
                 List<Direction> directions = new ArrayList<>();
                 List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
 
