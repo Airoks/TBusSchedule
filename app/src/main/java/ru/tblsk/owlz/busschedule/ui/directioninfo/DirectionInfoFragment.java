@@ -4,6 +4,7 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -31,7 +34,7 @@ public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
 
     public static final String TAG = "DirectionInfoFragment";
-    public static final String DIRECTION_ID = "directionId";
+    public static final String DIRECTION = "direction";
 
     @Inject
     RxEventBus mEventBus;
@@ -39,18 +42,32 @@ public class DirectionInfoFragment extends BaseFragment
     @BindView(R.id.toolbar_directioninfo)
     Toolbar mToolbar;
 
+    @BindView(R.id.textview_directioninfo_directionname)
+    TextView mDirectionName;
 
-    public static DirectionInfoFragment newInstance(Long directionId) {
+    Direction mDirection;
+
+
+    public static DirectionInfoFragment newInstance(Direction direction) {
         Bundle bundle = new Bundle();
-        bundle.putLong(DIRECTION_ID, directionId);
+        bundle.putParcelable(DIRECTION, direction);
         DirectionInfoFragment newInstance = new DirectionInfoFragment();
         newInstance.setArguments(bundle);
         return newInstance;
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+        mDirection = bundle.getParcelable(DIRECTION);
+    }
+
+    @Override
     protected void setUp(View view) {
         setupToolbar();
+        mDirectionName.setText(mDirection.getDirectionName());
     }
 
     @Nullable
@@ -66,6 +83,12 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mToolbar.setTitle(R.string.directioninfo_rout);
+    }
+
+    @Override
     public void showStopsOnDirection(List<Stop> stops) {
 
     }
@@ -74,6 +97,7 @@ public class DirectionInfoFragment extends BaseFragment
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.inflateMenu(R.menu.menu_directioninfo);
+        mToolbar.setTitle(R.string.directioninfo_rout);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

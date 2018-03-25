@@ -235,7 +235,7 @@ public class UrbanRoutesFragment extends BaseFragment
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.container,
                                 DirectionInfoFragment.newInstance(
-                                        directionUrban.getDirection().getId()));
+                                        directionUrban.getDirection()));
                         transaction.addToBackStack(DirectionInfoFragment.TAG);
                         transaction.commit();
                     }

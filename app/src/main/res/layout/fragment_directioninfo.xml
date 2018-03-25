@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp">
+            android:layout_height="46dp">
 
             <TextView
                 android:id="@+id/textview_directioninfo_directionname"
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="72dp"
                 android:layout_gravity="center"
+                android:textSize="16sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="72dp" />
 

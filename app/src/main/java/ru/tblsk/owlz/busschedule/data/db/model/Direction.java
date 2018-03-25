@@ -2,6 +2,9 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,7 +20,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class Direction {
+public class Direction implements Parcelable{
     @Expose
     @SerializedName("id")
     @Property(nameInDb = "direction_id")
@@ -66,6 +69,37 @@ public class Direction {
     @Generated(hash = 1390953800)
     public Direction() {
     }
+
+    protected Direction(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            flightId = null;
+        } else {
+            flightId = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            directionTypeId = null;
+        } else {
+            directionTypeId = in.readLong();
+        }
+        directionName = in.readString();
+    }
+
+    public static final Creator<Direction> CREATOR = new Creator<Direction>() {
+        @Override
+        public Direction createFromParcel(Parcel in) {
+            return new Direction(in);
+        }
+
+        @Override
+        public Direction[] newArray(int size) {
+            return new Direction[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -162,6 +196,34 @@ public class Direction {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        if (flightId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(flightId);
+        }
+        if (directionTypeId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(directionTypeId);
+        }
+        parcel.writeString(directionName);
     }
 
     /** called by internal mechanisms, do not call yourself. */
