@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +23,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
+import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoFragment extends BaseFragment
@@ -36,7 +40,8 @@ public class DirectionInfoFragment extends BaseFragment
     public static final String TAG = "DirectionInfoFragment";
     public static final String DIRECTION = "direction";
     public static final String DIRECTIONS = "directions";
-    public static final String FLIGHT_NUMBER = "flightNumber";
+    public static final String FLIGHT = "flight";
+    public static final String POSITION = "position";
 
     @Inject
     RxEventBus mEventBus;
@@ -51,13 +56,17 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private Direction mDirection;
+    private Flight mFlight;
+    private int mPosition;
     private List<Stop> mStops;
 
 
-    public static DirectionInfoFragment newInstance(Direction direction, String flightNumber) {
+    public static DirectionInfoFragment newInstance(Direction direction,
+                                                    Flight flight, int mPosition) {
         Bundle bundle = new Bundle();
+        bundle.putInt(POSITION, mPosition);
         bundle.putParcelable(DIRECTION, direction);
-        bundle.putString(FLIGHT_NUMBER, flightNumber);
+        bundle.putParcelable(FLIGHT, flight);
         DirectionInfoFragment newInstance = new DirectionInfoFragment();
         newInstance.setArguments(bundle);
         return newInstance;
@@ -72,6 +81,8 @@ public class DirectionInfoFragment extends BaseFragment
         }
         Bundle bundle = this.getArguments();
         mDirection = bundle.getParcelable(DIRECTION);
+        mFlight = bundle.getParcelable(FLIGHT);
+        mPosition = bundle.getInt(POSITION);
     }
 
     @Override
@@ -95,7 +106,8 @@ public class DirectionInfoFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        mToolbar.setTitle(R.string.directioninfo_rout);
+        String s = getResources().getString(R.string.directioninfo_rout);
+        mToolbar.setTitle(mFlight.getFlightNumber() + " " + s);
     }
 
     @Override
@@ -114,18 +126,27 @@ public class DirectionInfoFragment extends BaseFragment
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.inflateMenu(R.menu.menu_directioninfo);
-        mToolbar.setTitle(R.string.directioninfo_rout);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_directioninfo_change:
                         //оповещение в DirectionInfoAdapter
-                        Collections.reverse(mStops);
+                        /*Collections.reverse(mStops);
                         ChangeDirectionInfo directionInfo = new ChangeDirectionInfo(mStops);
-                        mEventBus.post(directionInfo);
+                        mEventBus.post(directionInfo);*/
 
-                        //
+                        //оповещение в Urban/SuburbanRoutesFragment
+                        if(mFlight.getFlightTypeId() == 0) {
+                            ChangeDirectionUrban.InFragment inFragment =
+                                    new ChangeDirectionUrban.InFragment(mPosition, "urban");
+                            mEventBus.post(inFragment);
+                        }
+                        if(mFlight.getFlightTypeId() == 1) {
+                            ChangeDirectionSuburban.InFragment inFragment =
+                                    new ChangeDirectionSuburban.InFragment(mPosition, "suburban");
+                            mEventBus.post(inFragment);
+                        }
 
                         return true;
                 }

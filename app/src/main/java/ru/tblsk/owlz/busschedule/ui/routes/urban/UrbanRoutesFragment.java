@@ -238,7 +238,7 @@ public class UrbanRoutesFragment extends BaseFragment
                         transaction.replace(R.id.container,
                                 DirectionInfoFragment.newInstance(
                                         directionUrban.getDirection(),
-                                        mFlights.get(position).getFlightNumber()));
+                                        mFlights.get(position), position));
                         transaction.addToBackStack(DirectionInfoFragment.TAG);
                         transaction.commit();
                     }
