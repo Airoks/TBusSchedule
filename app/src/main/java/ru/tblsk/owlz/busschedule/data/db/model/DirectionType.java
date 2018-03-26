@@ -136,5 +136,4 @@ public class DirectionType {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getDirectionTypeDao() : null;
     }
-
 }

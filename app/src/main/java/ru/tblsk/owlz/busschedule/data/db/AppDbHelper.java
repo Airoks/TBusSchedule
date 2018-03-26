@@ -196,7 +196,6 @@ public class AppDbHelper implements DbHelper {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                System.out.println(mDaoSession.getDepartureTimeDao().count() > 0);
                 return !(mDaoSession.getDepartureTimeDao().count() > 0);
             }
         });

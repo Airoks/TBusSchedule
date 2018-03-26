@@ -233,12 +233,15 @@ public class SuburbanRoutesFragment extends BaseFragment
                 .subscribe(new Consumer<ChangeDirectionSuburban>() {
                     @Override
                     public void accept(ChangeDirectionSuburban directionSuburban) throws Exception {
+                        int position = directionSuburban.getFlightPosition();
+
                         FragmentManager fragmentManager = getBaseActivity()
                                 .getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.container,
                                 DirectionInfoFragment.newInstance(
-                                        directionSuburban.getDirection()));
+                                        directionSuburban.getDirection(),
+                                        mFlights.get(position).getFlightNumber()));
                         transaction.addToBackStack(DirectionInfoFragment.TAG);
                         transaction.commit();
                     }

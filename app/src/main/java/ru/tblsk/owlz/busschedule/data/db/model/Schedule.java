@@ -4,6 +4,7 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -33,7 +34,8 @@ public class Schedule {
     @SerializedName("schedule_type")
     @Property(nameInDb = "schedule_type")
     @NotNull
-    private Long scheduleType;
+    @Convert(converter = ScheduleTypeConverter.class, columnType = Integer.class)
+    private ScheduleType scheduleType;
 
     @ToMany(referencedJoinProperty = "scheduleId")
     private List<DepartureTime> departureTimes;
@@ -46,9 +48,9 @@ public class Schedule {
     @Generated(hash = 1493574644)
     private transient ScheduleDao myDao;
 
-    @Generated(hash = 1311050869)
+    @Generated(hash = 347471495)
     public Schedule(Long id, @NotNull Long stopsOnRoutsId,
-            @NotNull Long scheduleType) {
+            @NotNull ScheduleType scheduleType) {
         this.id = id;
         this.stopsOnRoutsId = stopsOnRoutsId;
         this.scheduleType = scheduleType;
@@ -74,11 +76,11 @@ public class Schedule {
         this.stopsOnRoutsId = stopsOnRoutsId;
     }
 
-    public Long getScheduleType() {
+    public ScheduleType getScheduleType() {
         return this.scheduleType;
     }
 
-    public void setScheduleType(Long scheduleType) {
+    public void setScheduleType(ScheduleType scheduleType) {
         this.scheduleType = scheduleType;
     }
 

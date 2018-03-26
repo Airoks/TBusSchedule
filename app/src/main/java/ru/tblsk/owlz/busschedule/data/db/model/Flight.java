@@ -40,26 +40,6 @@ public class Flight implements Parcelable{
     @ToMany(referencedJoinProperty = "flightId")
     private List<Direction> directions;
 
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-
-    /** Used for active entity operations. */
-    @Generated(hash = 1011557899)
-    private transient FlightDao myDao;
-
-    @Generated(hash = 1412790009)
-    public Flight(Long id, @NotNull Long flightTypeId,
-            @NotNull String flightNumber) {
-        this.id = id;
-        this.flightTypeId = flightTypeId;
-        this.flightNumber = flightNumber;
-    }
-
-    @Generated(hash = 351578258)
-    public Flight() {
-    }
-
     protected Flight(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -74,6 +54,18 @@ public class Flight implements Parcelable{
         flightNumber = in.readString();
     }
 
+    @Generated(hash = 1412790009)
+    public Flight(Long id, @NotNull Long flightTypeId,
+            @NotNull String flightNumber) {
+        this.id = id;
+        this.flightTypeId = flightTypeId;
+        this.flightNumber = flightNumber;
+    }
+
+    @Generated(hash = 351578258)
+    public Flight() {
+    }
+
     public static final Creator<Flight> CREATOR = new Creator<Flight>() {
         @Override
         public Flight createFromParcel(Parcel in) {
@@ -85,6 +77,36 @@ public class Flight implements Parcelable{
             return new Flight[size];
         }
     };
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1011557899)
+    private transient FlightDao myDao;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        if (flightTypeId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(flightTypeId);
+        }
+        parcel.writeString(flightNumber);
+    }
 
     public Long getId() {
         return this.id;
@@ -172,28 +194,6 @@ public class Flight implements Parcelable{
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        if (flightTypeId == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(flightTypeId);
-        }
-        parcel.writeString(flightNumber);
     }
 
     /** called by internal mechanisms, do not call yourself. */

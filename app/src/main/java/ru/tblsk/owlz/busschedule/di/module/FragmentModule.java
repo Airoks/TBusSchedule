@@ -35,8 +35,8 @@ public class FragmentModule {
     }
 
     @Provides
-    DirectionInfoAdapter provideDirectionInfoAdapter() {
-        return new DirectionInfoAdapter();
+    DirectionInfoAdapter provideDirectionInfoAdapter(RxEventBus eventBus) {
+        return new DirectionInfoAdapter(eventBus);
     }
 
     @Provides

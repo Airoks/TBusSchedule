@@ -9,17 +9,23 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
+    private RxEventBus mEventBus;
     private List<Stop> stops;
 
-    public DirectionInfoAdapter() {
+    @Inject
+    public DirectionInfoAdapter(RxEventBus eventBus) {
+        this.mEventBus = eventBus;
         this.stops = new ArrayList<>();
     }
 

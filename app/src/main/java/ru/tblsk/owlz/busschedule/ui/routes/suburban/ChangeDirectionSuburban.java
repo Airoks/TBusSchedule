@@ -6,14 +6,21 @@ import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 public class ChangeDirectionSuburban {
 
     private Direction direction;
+    private int flightPosition;
 
-    public ChangeDirectionSuburban(Direction direction) {
+    public ChangeDirectionSuburban(Direction direction, int flightPosition) {
+        this.flightPosition = flightPosition;
         this.direction = direction;
     }
 
     public Direction getDirection() {
         return direction;
     }
+
+    public int getFlightPosition() {
+        return flightPosition;
+    }
+
     public static class InFragment {
 
         private final int position;

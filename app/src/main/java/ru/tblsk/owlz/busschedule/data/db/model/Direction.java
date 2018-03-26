@@ -49,27 +49,6 @@ public class Direction implements Parcelable{
     @OrderBy("stopPosition ASC")
     private List<StopsOnRouts> stopsOnRouts;
 
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-
-    /** Used for active entity operations. */
-    @Generated(hash = 1467317006)
-    private transient DirectionDao myDao;
-
-    @Generated(hash = 729970084)
-    public Direction(Long id, @NotNull Long flightId, @NotNull Long directionTypeId,
-            @NotNull String directionName) {
-        this.id = id;
-        this.flightId = flightId;
-        this.directionTypeId = directionTypeId;
-        this.directionName = directionName;
-    }
-
-    @Generated(hash = 1390953800)
-    public Direction() {
-    }
-
     protected Direction(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -89,6 +68,19 @@ public class Direction implements Parcelable{
         directionName = in.readString();
     }
 
+    @Generated(hash = 729970084)
+    public Direction(Long id, @NotNull Long flightId, @NotNull Long directionTypeId,
+            @NotNull String directionName) {
+        this.id = id;
+        this.flightId = flightId;
+        this.directionTypeId = directionTypeId;
+        this.directionName = directionName;
+    }
+
+    @Generated(hash = 1390953800)
+    public Direction() {
+    }
+
     public static final Creator<Direction> CREATOR = new Creator<Direction>() {
         @Override
         public Direction createFromParcel(Parcel in) {
@@ -100,6 +92,42 @@ public class Direction implements Parcelable{
             return new Direction[size];
         }
     };
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1467317006)
+    private transient DirectionDao myDao;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        if (flightId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(flightId);
+        }
+        if (directionTypeId == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(directionTypeId);
+        }
+        parcel.writeString(directionName);
+    }
 
     public Long getId() {
         return this.id;
@@ -196,34 +224,6 @@ public class Direction implements Parcelable{
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        if (flightId == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(flightId);
-        }
-        if (directionTypeId == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(directionTypeId);
-        }
-        parcel.writeString(directionName);
     }
 
     /** called by internal mechanisms, do not call yourself. */

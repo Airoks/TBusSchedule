@@ -63,9 +63,9 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 for(Direction direction : directions) {
                     if(direction.getDirectionTypeId() == directionId) {
                         if(mFlightType.equals("urban")) {
-                            mEventBus.post(new ChangeDirectionUrban(direction));
+                            mEventBus.post(new ChangeDirectionUrban(direction, stance));
                         } else {
-                            mEventBus.post(new ChangeDirectionSuburban(direction));
+                            mEventBus.post(new ChangeDirectionSuburban(direction, stance));
                         }
                     }
                 }

@@ -36,13 +36,14 @@ public class Stop implements Parcelable{
     @OrderBy("stopPosition ASC")
     private List<StopsOnRouts> stopsOnRouts;
 
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-
-    /** Used for active entity operations. */
-    @Generated(hash = 1582113218)
-    private transient StopDao myDao;
+    protected Stop(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        stopName = in.readString();
+    }
 
     @Generated(hash = 590245342)
     public Stop(Long id, @NotNull String stopName) {
@@ -52,15 +53,6 @@ public class Stop implements Parcelable{
 
     @Generated(hash = 362110707)
     public Stop() {
-    }
-
-    protected Stop(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readLong();
-        }
-        stopName = in.readString();
     }
 
     public static final Creator<Stop> CREATOR = new Creator<Stop>() {
@@ -74,6 +66,30 @@ public class Stop implements Parcelable{
             return new Stop[size];
         }
     };
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1582113218)
+    private transient StopDao myDao;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        parcel.writeString(stopName);
+    }
 
     public Long getId() {
         return this.id;
@@ -154,22 +170,6 @@ public class Stop implements Parcelable{
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        parcel.writeString(stopName);
     }
 
     /** called by internal mechanisms, do not call yourself. */

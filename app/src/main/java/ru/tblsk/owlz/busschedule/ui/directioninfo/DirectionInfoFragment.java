@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
+import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -34,6 +36,7 @@ public class DirectionInfoFragment extends BaseFragment
     public static final String TAG = "DirectionInfoFragment";
     public static final String DIRECTION = "direction";
     public static final String DIRECTIONS = "directions";
+    public static final String FLIGHT_NUMBER = "flightNumber";
 
     @Inject
     RxEventBus mEventBus;
@@ -48,12 +51,13 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private Direction mDirection;
-    private List<Stop> stops;
+    private List<Stop> mStops;
 
 
-    public static DirectionInfoFragment newInstance(Direction direction) {
+    public static DirectionInfoFragment newInstance(Direction direction, String flightNumber) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(DIRECTION, direction);
+        bundle.putString(FLIGHT_NUMBER, flightNumber);
         DirectionInfoFragment newInstance = new DirectionInfoFragment();
         newInstance.setArguments(bundle);
         return newInstance;
@@ -64,7 +68,7 @@ public class DirectionInfoFragment extends BaseFragment
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState != null) {
-            stops = savedInstanceState.getParcelableArrayList(DIRECTIONS);
+            mStops = savedInstanceState.getParcelableArrayList(DIRECTIONS);
         }
         Bundle bundle = this.getArguments();
         mDirection = bundle.getParcelable(DIRECTION);
@@ -98,7 +102,7 @@ public class DirectionInfoFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) stops);
+        outState.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) mStops);
     }
 
     @Override
@@ -116,6 +120,13 @@ public class DirectionInfoFragment extends BaseFragment
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_directioninfo_change:
+                        //оповещение в DirectionInfoAdapter
+                        Collections.reverse(mStops);
+                        ChangeDirectionInfo directionInfo = new ChangeDirectionInfo(mStops);
+                        mEventBus.post(directionInfo);
+
+                        //
+
                         return true;
                 }
                 return false;
