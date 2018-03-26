@@ -2,18 +2,17 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +26,6 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoFragment extends BaseFragment
@@ -35,6 +33,7 @@ public class DirectionInfoFragment extends BaseFragment
 
     public static final String TAG = "DirectionInfoFragment";
     public static final String DIRECTION = "direction";
+    public static final String DIRECTIONS = "directions";
 
     @Inject
     RxEventBus mEventBus;
@@ -45,7 +44,11 @@ public class DirectionInfoFragment extends BaseFragment
     @BindView(R.id.textview_directioninfo_directionname)
     TextView mDirectionName;
 
-    Direction mDirection;
+    @BindView(R.id.recyclerview_directioninfo_stops)
+    RecyclerView mRecyclerView;
+
+    private Direction mDirection;
+    private List<Stop> stops;
 
 
     public static DirectionInfoFragment newInstance(Direction direction) {
@@ -60,6 +63,9 @@ public class DirectionInfoFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(savedInstanceState != null) {
+            stops = savedInstanceState.getParcelableArrayList(DIRECTIONS);
+        }
         Bundle bundle = this.getArguments();
         mDirection = bundle.getParcelable(DIRECTION);
     }
@@ -86,6 +92,13 @@ public class DirectionInfoFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.directioninfo_rout);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) stops);
     }
 
     @Override

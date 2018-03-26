@@ -1,6 +1,9 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +19,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class Stop {
+public class Stop implements Parcelable{
     @Expose
     @SerializedName("id")
     @Property(nameInDb = "stop_id")
@@ -50,6 +53,27 @@ public class Stop {
     @Generated(hash = 362110707)
     public Stop() {
     }
+
+    protected Stop(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        stopName = in.readString();
+    }
+
+    public static final Creator<Stop> CREATOR = new Creator<Stop>() {
+        @Override
+        public Stop createFromParcel(Parcel in) {
+            return new Stop(in);
+        }
+
+        @Override
+        public Stop[] newArray(int size) {
+            return new Stop[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -130,6 +154,22 @@ public class Stop {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        parcel.writeString(stopName);
     }
 
     /** called by internal mechanisms, do not call yourself. */

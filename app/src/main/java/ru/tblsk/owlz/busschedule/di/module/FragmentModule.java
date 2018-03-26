@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.annotation.FlightType;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
@@ -31,6 +32,11 @@ public class FragmentModule {
     @Provides
     RoutesPagerAdapter provideRoutesPagerAdapter() {
         return new RoutesPagerAdapter(mFragment.getChildFragmentManager());
+    }
+
+    @Provides
+    DirectionInfoAdapter provideDirectionInfoAdapter() {
+        return new DirectionInfoAdapter();
     }
 
     @Provides
