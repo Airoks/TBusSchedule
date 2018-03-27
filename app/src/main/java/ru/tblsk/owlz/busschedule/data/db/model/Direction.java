@@ -36,7 +36,7 @@ public class Direction implements Parcelable{
 
     @Expose
     @SerializedName("direction_type_fk")
-    @Property(nameInDb = "direction_type_fk")
+    @Property(nameInDb = "direction_type")
     @NotNull
     @Convert(converter = DirectionTypeConverter.class, columnType = Integer.class)
     private DirectionType directionType;

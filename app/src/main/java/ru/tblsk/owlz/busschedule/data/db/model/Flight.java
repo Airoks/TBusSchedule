@@ -28,7 +28,7 @@ public class Flight implements Parcelable{
 
     @Expose
     @SerializedName("flight_type_fk")
-    @Property(nameInDb = "flight_type_fk")
+    @Property(nameInDb = "flight_type")
     @NotNull
     @Convert(converter = FlightTypeConverter.class, columnType = Integer.class)
     private FlightType flightType;
