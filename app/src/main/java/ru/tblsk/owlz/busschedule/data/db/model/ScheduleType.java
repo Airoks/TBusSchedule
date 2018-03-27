@@ -3,15 +3,15 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum DirectionType {
+public enum ScheduleType {
     @SerializedName("0")
-    DIRECT(0),
+    WORKDAY(0),
     @SerializedName("1")
-    REVERSE(1);
+    WEEKEND(1);
 
-    final int id;
+    int id;
 
-    DirectionType(int id) {
+    ScheduleType(int id) {
         this.id = id;
     }
 }

@@ -4,6 +4,7 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -46,6 +47,15 @@ public class DirectionInfoFragment extends BaseFragment
     @Inject
     RxEventBus mEventBus;
 
+    @Inject
+    DirectionInfoMvpPresenter<DirectionInfoMvpView> mPresenter;
+
+    @Inject
+    DirectionInfoAdapter mAdapter;
+
+    @Inject
+    LinearLayoutManager mLinearLayout;
+
     @BindView(R.id.toolbar_directioninfo)
     Toolbar mToolbar;
 
@@ -56,6 +66,7 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private Direction mDirection;
+    private long mDirectionType;
     private Flight mFlight;
     private int mPosition;
     private List<Stop> mStops;
@@ -83,12 +94,21 @@ public class DirectionInfoFragment extends BaseFragment
         mDirection = bundle.getParcelable(DIRECTION);
         mFlight = bundle.getParcelable(FLIGHT);
         mPosition = bundle.getInt(POSITION);
+        mDirectionType = mDirection.getDirectionTypeId();
     }
 
     @Override
     protected void setUp(View view) {
         setupToolbar();
         mDirectionName.setText(mDirection.getDirectionName());
+
+        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setAdapter(mAdapter);
+
+        if(mStops == null) {
+            mPresenter.getStopsOnDirection(mDirection.getId());
+        }
     }
 
     @Nullable
@@ -100,6 +120,7 @@ public class DirectionInfoFragment extends BaseFragment
         getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
                 .inject(this);
         setUnbinder(ButterKnife.bind(this, view));
+        mPresenter.attachView(this);
         return view;
     }
 
@@ -119,7 +140,8 @@ public class DirectionInfoFragment extends BaseFragment
 
     @Override
     public void showStopsOnDirection(List<Stop> stops) {
-
+        mStops = stops;
+        mAdapter.addItems(mStops);
     }
 
     @Override
@@ -138,14 +160,34 @@ public class DirectionInfoFragment extends BaseFragment
 
                         //оповещение в Urban/SuburbanRoutesFragment
                         if(mFlight.getFlightTypeId() == 0) {
-                            ChangeDirectionUrban.InFragment inFragment =
-                                    new ChangeDirectionUrban.InFragment(mPosition, "urban");
-                            mEventBus.post(inFragment);
+                            if(mDirectionType == 0) {
+                                mDirectionType = 1;
+
+                                ChangeDirectionUrban.InFragment inFragment =
+                                        new ChangeDirectionUrban.InFragment(mPosition, "reverse");
+                                mEventBus.post(inFragment);
+                            } else {
+                                mDirectionType = 0;
+
+                                ChangeDirectionUrban.InFragment inFragment =
+                                        new ChangeDirectionUrban.InFragment(mPosition, "direct");
+                                mEventBus.post(inFragment);
+                            }
                         }
                         if(mFlight.getFlightTypeId() == 1) {
-                            ChangeDirectionSuburban.InFragment inFragment =
-                                    new ChangeDirectionSuburban.InFragment(mPosition, "suburban");
-                            mEventBus.post(inFragment);
+                            if(mDirectionType == 0) {
+                                mDirectionType = 1;
+
+                                ChangeDirectionSuburban.InFragment inFragment =
+                                        new ChangeDirectionSuburban.InFragment(mPosition, "reverse");
+                                mEventBus.post(inFragment);
+                            } else {
+                                mDirectionType = 0;
+
+                                ChangeDirectionSuburban.InFragment inFragment =
+                                        new ChangeDirectionSuburban.InFragment(mPosition, "direct");
+                                mEventBus.post(inFragment);
+                            }
                         }
 
                         return true;

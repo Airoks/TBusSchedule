@@ -155,38 +155,4 @@ public class Schedule {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getScheduleDao() : null;
     }
-
-    public enum ScheduleType {
-        @SerializedName("0")
-        WORKDAY(0),
-        @SerializedName("1")
-        WEEKEND(1);
-
-        int id;
-
-        ScheduleType(int id) {
-            this.id = id;
-        }
-    }
-
-    public static class ScheduleTypeConverter
-            implements PropertyConverter<ScheduleType, Integer> {
-
-        @Override
-        public ScheduleType convertToEntityProperty(Integer databaseValue) {
-            for(ScheduleType type : ScheduleType.values()) {
-                if(type.id == databaseValue) {
-                    return type;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public Integer convertToDatabaseValue(ScheduleType entityProperty) {
-            return entityProperty == null ? null : entityProperty.id;
-        }
-    }
-
-
 }

@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,17 +22,19 @@ import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private RxEventBus mEventBus;
-    private List<Stop> stops;
+    private List<Stop> mStops;
 
     @Inject
     public DirectionInfoAdapter(RxEventBus eventBus) {
         this.mEventBus = eventBus;
-        this.stops = new ArrayList<>();
+        this.mStops = new ArrayList<>();
     }
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_directioninfo, parent, false);
+        return new DirectionInfoAdapter.DirectionInfoViewHolder(itemView);
     }
 
     @Override
@@ -40,14 +43,14 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     public void addItems(List<Stop> stops) {
-        this.stops.clear();
-        this.stops.addAll(stops);
+        this.mStops.clear();
+        this.mStops.addAll(stops);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mStops.size();
     }
 
     class DirectionInfoViewHolder extends BaseViewHolder {
@@ -67,14 +70,14 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @Override
         public void onBind(int position) {
-            mStopName.setText(stops.get(position).getStopName());
+            mStopName.setText(mStops.get(position).getStopName());
 
             mTopLine.setVisibility(View.VISIBLE);
             mBottomLine.setVisibility(View.VISIBLE);
             if(position == 0) {
                 mTopLine.setVisibility(View.GONE);
             }
-            if(position == (stops.size() - 1)) {
+            if(position == (mStops.size() - 1)) {
                 mBottomLine.setVisibility(View.GONE);
             }
         }

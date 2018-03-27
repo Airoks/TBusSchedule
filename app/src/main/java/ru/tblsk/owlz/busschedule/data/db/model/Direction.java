@@ -8,7 +8,10 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.OrderBy;
@@ -16,8 +19,6 @@ import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
 public class Direction implements Parcelable{
@@ -37,7 +38,8 @@ public class Direction implements Parcelable{
     @SerializedName("direction_type_fk")
     @Property(nameInDb = "direction_type_fk")
     @NotNull
-    private Long directionTypeId;
+    @Convert(converter = DirectionTypeConverter.class, columnType = Integer.class)
+    private DirectionType directionType;
 
     @Expose
     @SerializedName("direction_name")
@@ -61,19 +63,19 @@ public class Direction implements Parcelable{
             flightId = in.readLong();
         }
         if (in.readByte() == 0) {
-            directionTypeId = null;
+            directionType = null;
         } else {
-            directionTypeId = in.readLong();
+            directionType = DirectionType.valueOf(in.readString());
         }
         directionName = in.readString();
     }
 
-    @Generated(hash = 729970084)
-    public Direction(Long id, @NotNull Long flightId, @NotNull Long directionTypeId,
-            @NotNull String directionName) {
+    @Generated(hash = 1233092637)
+    public Direction(Long id, @NotNull Long flightId,
+            @NotNull DirectionType directionType, @NotNull String directionName) {
         this.id = id;
         this.flightId = flightId;
-        this.directionTypeId = directionTypeId;
+        this.directionType = directionType;
         this.directionName = directionName;
     }
 
@@ -120,11 +122,11 @@ public class Direction implements Parcelable{
             parcel.writeByte((byte) 1);
             parcel.writeLong(flightId);
         }
-        if (directionTypeId == null) {
+        if (directionType == null) {
             parcel.writeByte((byte) 0);
         } else {
             parcel.writeByte((byte) 1);
-            parcel.writeLong(directionTypeId);
+            parcel.writeString(directionType.name());
         }
         parcel.writeString(directionName);
     }
@@ -145,12 +147,12 @@ public class Direction implements Parcelable{
         this.flightId = flightId;
     }
 
-    public Long getDirectionTypeId() {
-        return this.directionTypeId;
+    public DirectionType getDirectionType() {
+        return this.directionType;
     }
 
-    public void setDirectionTypeId(Long directionTypeId) {
-        this.directionTypeId = directionTypeId;
+    public void setDirectionType(DirectionType directionType) {
+        this.directionType = directionType;
     }
 
     public String getDirectionName() {

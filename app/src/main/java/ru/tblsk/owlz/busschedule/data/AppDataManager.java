@@ -26,7 +26,6 @@ import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
-import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
@@ -53,18 +52,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable saveFlightTypeList(List<FlightType> flightTypeList) {
-        return dbHelper.saveFlightTypeList(flightTypeList);
-    }
-
-    @Override
     public Completable saveFlightList(List<Flight> flightList) {
         return dbHelper.saveFlightList(flightList);
-    }
-
-    @Override
-    public Completable saveDirectionTypeList(List<DirectionType> directionTypeList) {
-        return dbHelper.saveDirectionTypeList(directionTypeList);
     }
 
     @Override
@@ -98,18 +87,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Boolean> isEmptyDirectionType() {
-        return dbHelper.isEmptyDirectionType();
-    }
-
-    @Override
     public Single<Boolean> isEmptyFlight() {
         return dbHelper.isEmptyFlight();
-    }
-
-    @Override
-    public Single<Boolean> isEmptyFlightType() {
-        return dbHelper.isEmptyFlightType();
     }
 
     @Override
@@ -155,7 +134,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<Flight>> getFlightByType(String flightType) {
+    public Single<List<Flight>> getFlightByType(FlightType flightType) {
         return dbHelper.getFlightByType(flightType);
     }
 
@@ -210,32 +189,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<String> getFlightTypeByDirection(long directionId) {
-        return dbHelper.getFlightTypeByDirection(directionId);
-    }
-
-    @Override
-    public Completable seedDatabaseFlightTypes() {
-        GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
-        final Gson gson = builder.create();
-        return dbHelper.isEmptyFlightType()
-                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
-                    @Override
-                    public CompletableSource apply(Boolean isEmpty) throws Exception {
-                        if(isEmpty) {
-                            Type type = new TypeToken<List<FlightType>>() {
-                            }.getType();
-                            List<FlightType> flightTypes = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(mContext,
-                                            AppConstants.SEED_DB_FLIGHT_TYPES), type);
-                            return saveFlightTypeList(flightTypes);
-                        }
-                        return Completable.complete();
-                    }
-                });
-    }
-
-    @Override
     public Completable seedDatabaseFlights() {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
@@ -269,26 +222,6 @@ public class AppDataManager implements DataManager {
                                     CommonUtils.loadJSONFromAsset(mContext,
                                             AppConstants.SEED_DB_DIRECTIONS), type);
                             return saveDirectionList(directions);
-                        }
-                        return Completable.complete();
-                    }
-                });
-    }
-
-    @Override
-    public Completable seedDatabaseDirectionTypes() {
-        GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
-        final Gson gson = builder.create();
-        return dbHelper.isEmptyDirectionType()
-                .flatMapCompletable(new Function<Boolean, CompletableSource>() {
-                    @Override
-                    public CompletableSource apply(final Boolean isEmpty) throws Exception {
-                        if(isEmpty) {
-                            Type type = new TypeToken<List<DirectionType>>(){}.getType();
-                            List<DirectionType> directionTypes = gson.fromJson(
-                                    CommonUtils.loadJSONFromAsset(mContext,
-                                            AppConstants.SEED_DB_DIRECTION_TYPES), type);
-                            return saveDirectionTypeList(directionTypes);
                         }
                         return Completable.complete();
                     }
@@ -382,9 +315,7 @@ public class AppDataManager implements DataManager {
 
     private Iterable<CompletableSource> getListCompletable() {
         List<CompletableSource> completableSources = new ArrayList<>();
-        completableSources.add(seedDatabaseFlightTypes());
         completableSources.add(seedDatabaseFlights());
-        completableSources.add(seedDatabaseDirectionTypes());
         completableSources.add(seedDatabaseDirections());
         completableSources.add(seedDatabaseStops());
         completableSources.add(seedDatabaseStopsOnRouts());

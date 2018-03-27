@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -16,6 +17,7 @@ import org.greenrobot.greendao.annotation.ToMany;
 import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.converter.PropertyConverter;
 
 @Entity(active = true)
 public class Flight implements Parcelable{
@@ -29,7 +31,8 @@ public class Flight implements Parcelable{
     @SerializedName("flight_type_fk")
     @Property(nameInDb = "flight_type_fk")
     @NotNull
-    private Long flightTypeId;
+    @Convert(converter = FlightTypeConverter.class, columnType = Integer.class)
+    private FlightType flightType;
 
     @Expose
     @SerializedName("flight_number")
@@ -47,18 +50,18 @@ public class Flight implements Parcelable{
             id = in.readLong();
         }
         if (in.readByte() == 0) {
-            flightTypeId = null;
+            flightType = null;
         } else {
-            flightTypeId = in.readLong();
+            flightType = FlightType.valueOf(in.readString());
         }
         flightNumber = in.readString();
     }
 
-    @Generated(hash = 1412790009)
-    public Flight(Long id, @NotNull Long flightTypeId,
+    @Generated(hash = 1944495751)
+    public Flight(Long id, @NotNull FlightType flightType,
             @NotNull String flightNumber) {
         this.id = id;
-        this.flightTypeId = flightTypeId;
+        this.flightType = flightType;
         this.flightNumber = flightNumber;
     }
 
@@ -99,11 +102,11 @@ public class Flight implements Parcelable{
             parcel.writeByte((byte) 1);
             parcel.writeLong(id);
         }
-        if (flightTypeId == null) {
+        if (flightType == null) {
             parcel.writeByte((byte) 0);
         } else {
             parcel.writeByte((byte) 1);
-            parcel.writeLong(flightTypeId);
+            parcel.writeString(flightType.name());
         }
         parcel.writeString(flightNumber);
     }
@@ -116,12 +119,12 @@ public class Flight implements Parcelable{
         this.id = id;
     }
 
-    public Long getFlightTypeId() {
-        return this.flightTypeId;
+    public FlightType getFlightType() {
+        return this.flightType;
     }
 
-    public void setFlightTypeId(Long flightTypeId) {
-        this.flightTypeId = flightTypeId;
+    public void setFlightType(FlightType flightType) {
+        this.flightType = flightType;
     }
 
     public String getFlightNumber() {

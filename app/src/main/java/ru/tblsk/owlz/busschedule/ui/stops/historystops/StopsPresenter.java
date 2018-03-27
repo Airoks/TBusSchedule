@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
@@ -30,7 +31,7 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
     public void getSearchHistoryStops() {
         getCompositeDisposable().add(getDataManager()
                 .getSearchHistoryStops()
-                .subscribeOn(getSchedulerProvider().io())
+                .subscribeOn(Schedulers.io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<Stop>>() {
                     @Override

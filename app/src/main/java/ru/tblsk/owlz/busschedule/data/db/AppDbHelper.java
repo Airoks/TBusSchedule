@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.data.db;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +18,10 @@ import ru.tblsk.owlz.busschedule.data.db.model.DaoSession;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionDao;
-import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.FavoriteStops;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightDao;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightTypeDao;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStops;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStopsDao;
@@ -41,15 +38,6 @@ public class AppDbHelper implements DbHelper {
     public AppDbHelper(DbOpenHelper dbOpenHelper) {
         mDaoSession = new DaoMaster(dbOpenHelper.getWritableDb()).newSession();
     }
-    @Override
-    public Completable saveFlightTypeList(final List<FlightType> flightTypeList) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mDaoSession.getFlightTypeDao().insertInTx(flightTypeList);
-            }
-        });
-    }
 
     @Override
     public Completable saveFlightList(final List<Flight> flightList) {
@@ -57,16 +45,6 @@ public class AppDbHelper implements DbHelper {
             @Override
             public void run() throws Exception {
                 mDaoSession.getFlightDao().insertInTx(flightList);
-            }
-        });
-    }
-
-    @Override
-    public Completable saveDirectionTypeList(final List<DirectionType> directionTypeList) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                mDaoSession.getDirectionTypeDao().insertInTx(directionTypeList);
             }
         });
     }
@@ -132,31 +110,11 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<Boolean> isEmptyDirectionType() {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return !(mDaoSession.getDirectionTypeDao().count() > 0);
-            }
-        });
-    }
-
-    @Override
     public Single<Boolean> isEmptyFlight() {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 return !(mDaoSession.getFlightDao().count() > 0);
-            }
-        });
-    }
-
-    @Override
-    public Single<Boolean> isEmptyFlightType() {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return !(mDaoSession.getFlightTypeDao().count() > 0);
             }
         });
     }
@@ -212,18 +170,13 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<List<Flight>> getFlightByType(final String flightType) {
+    public Single<List<Flight>> getFlightByType(final FlightType flightType) {
         return Single.fromCallable(new Callable<List<Flight>>() {
             @Override
             public List<Flight> call() throws Exception {
-                List<Flight> flights;
-                long flightTypeId = mDaoSession.getFlightTypeDao().queryBuilder()
-                        .where(FlightTypeDao.Properties.FlightTypeName.eq(flightType))
-                        .unique().getId();
-                flights = mDaoSession.getFlightDao().queryBuilder()
-                        .where(FlightDao.Properties.FlightTypeId.eq(flightTypeId))
+                return mDaoSession.getFlightDao().queryBuilder()
+                        .where(FlightDao.Properties.FlightType.eq(flightType))
                         .list();
-                return flights;
             }
         });
     }
@@ -267,7 +220,7 @@ public class AppDbHelper implements DbHelper {
         return Single.fromCallable(new Callable<List<Stop>>() {
             @Override
             public List<Stop> call() throws Exception {
-                List<Stop> stops = Collections.emptyList();
+                List<Stop> stops = new ArrayList<>();
                 List<StopsOnRouts> stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
                         .orderAsc(StopsOnRoutsDao.Properties.StopPosition).list();
@@ -401,15 +354,4 @@ public class AppDbHelper implements DbHelper {
         });
     }
 
-    @Override
-    public Single<String> getFlightTypeByDirection(final long directionId) {
-        return Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                long flightId = mDaoSession.getDirectionDao().load(directionId).getFlightId();
-                long flightTypeId = mDaoSession.getFlightDao().load(flightId).getFlightTypeId();
-                return mDaoSession.getFlightTypeDao().load(flightTypeId).getFlightTypeName();
-            }
-        });
-    }
 }

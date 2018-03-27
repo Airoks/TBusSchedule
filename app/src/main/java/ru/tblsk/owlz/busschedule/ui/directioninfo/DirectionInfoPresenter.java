@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 
+import android.util.Log;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +32,9 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
                 .subscribe(new Consumer<List<Stop>>() {
                     @Override
                     public void accept(List<Stop> stops) throws Exception {
+                        if(!stops.isEmpty()) {
+                            Log.d("DirectionInfo", stops.get(0).getStopName());
+                        }
                         getMvpView().showStopsOnDirection(stops);
                     }
                 }, new Consumer<Throwable>() {
