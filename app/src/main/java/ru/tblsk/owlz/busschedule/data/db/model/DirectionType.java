@@ -9,7 +9,7 @@ public enum DirectionType {
     @SerializedName("1")
     REVERSE(1);
 
-    final int id;
+    public final int id;
 
     DirectionType(int id) {
         this.id = id;

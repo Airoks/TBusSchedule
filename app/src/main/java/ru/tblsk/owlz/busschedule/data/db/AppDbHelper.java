@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -175,7 +177,7 @@ public class AppDbHelper implements DbHelper {
             @Override
             public List<Flight> call() throws Exception {
                 return mDaoSession.getFlightDao().queryBuilder()
-                        .where(FlightDao.Properties.FlightType.eq(flightType))
+                        .where(FlightDao.Properties.FlightType.eq(flightType.id))
                         .list();
             }
         });

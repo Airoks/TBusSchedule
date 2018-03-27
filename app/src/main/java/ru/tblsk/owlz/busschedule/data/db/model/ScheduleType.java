@@ -9,7 +9,7 @@ public enum ScheduleType {
     @SerializedName("1")
     WEEKEND(1);
 
-    int id;
+    public final int id;
 
     ScheduleType(int id) {
         this.id = id;

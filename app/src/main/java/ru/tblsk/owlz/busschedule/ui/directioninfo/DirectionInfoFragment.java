@@ -24,7 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
+import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
@@ -66,7 +68,7 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private Direction mDirection;
-    private long mDirectionType;
+    private DirectionType mDirectionType;
     private Flight mFlight;
     private int mPosition;
     private List<Stop> mStops;
@@ -94,7 +96,7 @@ public class DirectionInfoFragment extends BaseFragment
         mDirection = bundle.getParcelable(DIRECTION);
         mFlight = bundle.getParcelable(FLIGHT);
         mPosition = bundle.getInt(POSITION);
-        mDirectionType = mDirection.getDirectionTypeId();
+        mDirectionType = mDirection.getDirectionType();
     }
 
     @Override
@@ -159,30 +161,30 @@ public class DirectionInfoFragment extends BaseFragment
                         mEventBus.post(directionInfo);*/
 
                         //оповещение в Urban/SuburbanRoutesFragment
-                        if(mFlight.getFlightTypeId() == 0) {
-                            if(mDirectionType == 0) {
-                                mDirectionType = 1;
+                        if(mFlight.getFlightType() == FlightType.URBAN) {
+                            if(mDirectionType == DirectionType.DIRECT) {
+                                mDirectionType = DirectionType.REVERSE;
 
                                 ChangeDirectionUrban.InFragment inFragment =
                                         new ChangeDirectionUrban.InFragment(mPosition, "reverse");
                                 mEventBus.post(inFragment);
                             } else {
-                                mDirectionType = 0;
+                                mDirectionType = DirectionType.DIRECT;
 
                                 ChangeDirectionUrban.InFragment inFragment =
                                         new ChangeDirectionUrban.InFragment(mPosition, "direct");
                                 mEventBus.post(inFragment);
                             }
                         }
-                        if(mFlight.getFlightTypeId() == 1) {
-                            if(mDirectionType == 0) {
-                                mDirectionType = 1;
+                        if(mFlight.getFlightType() == FlightType.SUBURBAN) {
+                            if(mDirectionType == DirectionType.DIRECT) {
+                                mDirectionType = DirectionType.REVERSE;
 
                                 ChangeDirectionSuburban.InFragment inFragment =
                                         new ChangeDirectionSuburban.InFragment(mPosition, "reverse");
                                 mEventBus.post(inFragment);
                             } else {
-                                mDirectionType = 0;
+                                mDirectionType = DirectionType.DIRECT;
 
                                 ChangeDirectionSuburban.InFragment inFragment =
                                         new ChangeDirectionSuburban.InFragment(mPosition, "direct");

@@ -9,13 +9,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
         extends BasePresenter<V> implements SuburbanRoutesMvpPresenter<V> {
 
-    private static final String FLIGHT_TYPE = "suburban";
 
     @Inject
     public SuburbanRoutesPresenter(DataManager dataManager,
@@ -27,7 +27,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
     @Override
     public void getSuburbanFlights() {
         getCompositeDisposable().add(getDataManager()
-                .getFlightByType(FLIGHT_TYPE)
+                .getFlightByType(FlightType.SUBURBAN)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<Flight>>() {

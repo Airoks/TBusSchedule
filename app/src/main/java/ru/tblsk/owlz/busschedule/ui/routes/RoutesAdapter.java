@@ -61,7 +61,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 List<Direction> directions = mFlights.get(stance).getDirections();
 
                 for(Direction direction : directions) {
-                    if(direction.getDirectionTypeId() == directionId) {
+                    if(direction.getDirectionType().id == directionId) {
                         if(mFlightType.equals("urban")) {
                             mEventBus.post(new ChangeDirectionUrban(direction, stance));
                         } else {
@@ -158,9 +158,9 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         private void findByDirectionType(int position, int directionId) {
             int caseOne = mFlights.get(position)
-                    .getDirections().get(0).getDirectionTypeId().intValue();
+                    .getDirections().get(0).getDirectionType().id;
             int caseTwo = mFlights.get(position)
-                    .getDirections().get(1).getDirectionTypeId().intValue();
+                    .getDirections().get(1).getDirectionType().id;
 
             if(directionId == caseOne) {
                 mDirectionName.setText(mFlights.get(position)

@@ -9,7 +9,7 @@ public enum FlightType {
     @SerializedName("1")
     SUBURBAN(1);
 
-    final int id;
+    public final int id;
 
     FlightType(int id) {
         this.id = id;
