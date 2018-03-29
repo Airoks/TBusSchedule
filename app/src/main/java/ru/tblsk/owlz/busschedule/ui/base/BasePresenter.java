@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.base;
 
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;

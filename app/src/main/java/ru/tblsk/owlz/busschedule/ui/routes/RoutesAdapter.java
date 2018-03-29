@@ -47,16 +47,13 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_route, parent, false);
-        return new UrbanRoutesViewHolder(itemView);
-    }
 
-    @Override
-    public void onBindViewHolder(final BaseViewHolder holder, int position) {
+        final BaseViewHolder viewHolder = new RoutesViewHolder(itemView);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int stance = holder.getAdapterPosition();
+                int stance = viewHolder.getAdapterPosition();
                 int directionId = mDirectionRouts.get(stance);
                 List<Direction> directions = mFlights.get(stance).getDirections();
 
@@ -72,11 +69,11 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
         });
 
-        holder.itemView.findViewById(R.id.directionChangeButton)
+        viewHolder.itemView.findViewById(R.id.directionChangeButton)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int stance = holder.getAdapterPosition();
+                        int stance = viewHolder.getAdapterPosition();
                         String directionName = mDirectionRouts.get(stance) == 0 ? REVERSE : DIRECT;
 
                         if(mDirectionRouts.get(stance) == DIRECT_ID) {
@@ -97,6 +94,11 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                 });
 
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(final BaseViewHolder holder, int position) {
         holder.onBind(position);
     }
 
@@ -119,7 +121,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
-    class UrbanRoutesViewHolder extends BaseViewHolder
+    class RoutesViewHolder extends BaseViewHolder
             implements View.OnClickListener{
 
         @BindView(R.id.directionNameTextView)
@@ -131,7 +133,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @BindView(R.id.directionChangeButton)
         ImageButton mChangeButton;
 
-        public UrbanRoutesViewHolder(View itemView) {
+        public RoutesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
