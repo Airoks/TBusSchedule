@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
@@ -13,14 +14,17 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     private final DataManager mDataManager;
     private final CompositeDisposable mCompositeDisposable;
     private final SchedulerProvider mSchedulerProvider;
+    private final RxEventBus mEventBus;
 
     @Inject
     public BasePresenter(DataManager dataManager,
                          CompositeDisposable compositeDisposable,
-                         SchedulerProvider schedulerProvider) {
+                         SchedulerProvider schedulerProvider,
+                         RxEventBus eventBus) {
         this.mDataManager = dataManager;
         this.mCompositeDisposable = compositeDisposable;
         this.mSchedulerProvider = schedulerProvider;
+        this.mEventBus = eventBus;
     }
 
     public DataManager getDataManager() {
@@ -35,6 +39,10 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
         return this.mSchedulerProvider;
     }
 
+    protected RxEventBus getEventBus() {
+        return this.mEventBus;
+    }
+
     @Override
     public void attachView(V mvpView) {
         this.mMvpView = mvpView;
@@ -42,8 +50,12 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     @Override
     public void detachView() {
-        mCompositeDisposable.clear();
         this.mMvpView = null;
+    }
+
+    @Override
+    public void unsubscribeFromEvents() {
+        mCompositeDisposable.clear();
     }
 
     public boolean isViewAttached() {

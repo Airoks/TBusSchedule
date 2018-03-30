@@ -54,15 +54,6 @@ public class SuburbanRoutesFragment extends BaseFragment
     @FlightType("suburban")
     RoutesAdapter mAdapter;
 
-    @Inject
-    CompositeDisposable mCompositeDisposable;
-
-    @Inject
-    RxEventBus mEventBus;
-
-    @Inject
-    SchedulerProvider mSchedulerProvider;
-
     @BindView(R.id.suburbanRouteRv)
     RecyclerView mRecyclerView;
 
@@ -101,7 +92,7 @@ public class SuburbanRoutesFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mCompositeDisposable.clear();
+        mPresenter.unsubscribeFromEvents();
         super.onDestroy();
     }
 
@@ -131,7 +122,7 @@ public class SuburbanRoutesFragment extends BaseFragment
                 .fragmentComponent(new FragmentModule(this)).inject(this);
 
         if(mFlights == null) {
-            subscribeOnEvents();
+            mPresenter.subscribeOnEvents();
         }
 
         setUnbinder(ButterKnife.bind(this, view));
@@ -171,6 +162,21 @@ public class SuburbanRoutesFragment extends BaseFragment
     }
 
     @Override
+    public void openDirectionInfoFragment(ChangeDirectionSuburban directionSuburban) {
+        int position = directionSuburban.getFlightPosition();
+
+        FragmentManager fragmentManager = getBaseActivity()
+                .getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,
+                DirectionInfoFragment.newInstance(
+                        directionSuburban.getDirection(),
+                        mFlights.get(position), position));
+        transaction.addToBackStack(DirectionInfoFragment.TAG);
+        transaction.commit();
+    }
+
+    @Override
     public void showSavedRouts() {
         updateDirectionRouts();
         mAdapter.addItems(mFlights, mDirectionRoutes);
@@ -194,62 +200,5 @@ public class SuburbanRoutesFragment extends BaseFragment
 
         mChangeDirectionFragment.clear();
         mChangeDirectionAdapter.clear();
-    }
-
-    @Override
-    public void subscribeOnEvents() {
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionSuburban.InFragment.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban.InFragment>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban.InFragment inFragment) throws Exception {
-                        changedDirectionInFragment(inFragment);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionSuburban.InAdapter.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban.InAdapter>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban.InAdapter inAdapter) throws Exception {
-                        changedDirectionInAdapter(inAdapter);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
-
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionSuburban.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban directionSuburban) throws Exception {
-                        int position = directionSuburban.getFlightPosition();
-
-                        FragmentManager fragmentManager = getBaseActivity()
-                                .getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container,
-                                DirectionInfoFragment.newInstance(
-                                        directionSuburban.getDirection(),
-                                        mFlights.get(position), position));
-                        transaction.addToBackStack(DirectionInfoFragment.TAG);
-                        transaction.commit();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
     }
 }

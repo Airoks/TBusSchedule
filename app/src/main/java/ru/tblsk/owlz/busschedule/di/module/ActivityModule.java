@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
@@ -31,8 +30,6 @@ import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsPresenter;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpView;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsPresenter;
-import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
-import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 @Module
 public class ActivityModule {

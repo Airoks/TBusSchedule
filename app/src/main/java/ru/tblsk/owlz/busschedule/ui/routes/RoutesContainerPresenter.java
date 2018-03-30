@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class RoutesContainerPresenter<V extends RoutesContainerMvpView>
@@ -14,7 +15,8 @@ public class RoutesContainerPresenter<V extends RoutesContainerMvpView>
     @Inject
     public RoutesContainerPresenter(DataManager dataManager,
                                     CompositeDisposable compositeDisposable,
-                                    SchedulerProvider schedulerProvider) {
-        super(dataManager, compositeDisposable, schedulerProvider);
+                                    SchedulerProvider schedulerProvider,
+                                    RxEventBus eventBus) {
+        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
     }
 }

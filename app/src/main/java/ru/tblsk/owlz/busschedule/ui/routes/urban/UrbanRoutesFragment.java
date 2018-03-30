@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,15 +55,6 @@ public class UrbanRoutesFragment extends BaseFragment
     @FlightType("urban")
     RoutesAdapter mAdapter;
 
-    @Inject
-    CompositeDisposable mCompositeDisposable;
-
-    @Inject
-    RxEventBus mEventBus;
-
-    @Inject
-    SchedulerProvider mSchedulerProvider;
-
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
 
@@ -100,7 +92,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mCompositeDisposable.clear();
+        mPresenter.unsubscribeFromEvents();
         super.onDestroy();
     }
 
@@ -109,16 +101,17 @@ public class UrbanRoutesFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_urbanroutes, container, false);
+        View view = getView() != null ? getView() :
+                inflater.inflate(R.layout.fragment_urbanroutes, container, false);
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
-
-        if(mFlights == null) {
-            subscribeOnEvents();
-        }
-
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
+
+        if(mFlights == null) {
+            mPresenter.subscribeOnEvents();
+        }
+
         return view;
     }
 
@@ -159,8 +152,8 @@ public class UrbanRoutesFragment extends BaseFragment
     }
 
     @Override
-    public void changedDirectionInFragment(ChangeDirectionUrban.InFragment direction) {
-        mChangeDirectionFragment.add(direction);
+    public void changedDirectionInFragment(List<ChangeDirectionUrban.InFragment> direction) {
+        mChangeDirectionFragment.addAll(direction);
     }
 
     @Override
@@ -168,6 +161,21 @@ public class UrbanRoutesFragment extends BaseFragment
         int position = direction.getPosition();
         String directionType = direction.getDirectionType();
         mChangeDirectionAdapter.put(position, directionType);
+    }
+
+    @Override
+    public void openDirectionInfoFragment(ChangeDirectionUrban directionUrban) {
+        int position = directionUrban.getFlightPosition();
+
+        FragmentManager fragmentManager = getBaseActivity()
+                .getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,
+                DirectionInfoFragment.newInstance(
+                        directionUrban.getDirection(),
+                        mFlights.get(position), position));
+        transaction.addToBackStack(DirectionInfoFragment.TAG);
+        transaction.commit();
     }
 
     public void showSavedRouts() {
@@ -192,61 +200,5 @@ public class UrbanRoutesFragment extends BaseFragment
 
         mChangeDirectionFragment.clear();
         mChangeDirectionAdapter.clear();
-    }
-
-    public void subscribeOnEvents() {
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
-                    @Override
-                    public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
-                        changedDirectionInFragment(inFragment);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
-                    @Override
-                    public void accept(ChangeDirectionUrban.InAdapter inAdapter) throws Exception {
-                        changedDirectionInAdapter(inAdapter);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
-
-        mCompositeDisposable.add(mEventBus.filteredObservable(ChangeDirectionUrban.class)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<ChangeDirectionUrban>() {
-                    @Override
-                    public void accept(ChangeDirectionUrban directionUrban) throws Exception {
-                        int position = directionUrban.getFlightPosition();
-
-                        FragmentManager fragmentManager = getBaseActivity()
-                                .getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container,
-                                DirectionInfoFragment.newInstance(
-                                        directionUrban.getDirection(),
-                                        mFlights.get(position), position));
-                        transaction.addToBackStack(DirectionInfoFragment.TAG);
-                        transaction.commit();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
     }
 }

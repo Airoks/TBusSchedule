@@ -12,6 +12,7 @@ import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends BasePresenter<V>
@@ -20,8 +21,9 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
     @Inject
     public DirectionInfoPresenter(DataManager dataManager,
                                   CompositeDisposable compositeDisposable,
-                                  SchedulerProvider schedulerProvider) {
-        super(dataManager, compositeDisposable, schedulerProvider);
+                                  SchedulerProvider schedulerProvider,
+                                  RxEventBus eventBus) {
+        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
     }
 
     @Override
