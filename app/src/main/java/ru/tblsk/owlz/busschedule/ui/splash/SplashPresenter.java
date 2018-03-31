@@ -19,9 +19,8 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
     @Inject
     public SplashPresenter(DataManager dataManager,
                            CompositeDisposable compositeDisposable,
-                           SchedulerProvider schedulerProvider,
-                           RxEventBus eventBus) {
-        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+                           SchedulerProvider schedulerProvider) {
+        super(dataManager, compositeDisposable, schedulerProvider);
 
     }
 

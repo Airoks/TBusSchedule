@@ -15,8 +15,7 @@ public class RoutesContainerPresenter<V extends RoutesContainerMvpView>
     @Inject
     public RoutesContainerPresenter(DataManager dataManager,
                                     CompositeDisposable compositeDisposable,
-                                    SchedulerProvider schedulerProvider,
-                                    RxEventBus eventBus) {
-        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+                                    SchedulerProvider schedulerProvider) {
+        super(dataManager, compositeDisposable, schedulerProvider);
     }
 }

@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.stops.allstops;
 
 
-import android.util.Log;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,7 +11,6 @@ import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<V>
@@ -22,9 +19,8 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
     @Inject
     public AllStopsPresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
-                             SchedulerProvider schedulerProvider,
-                             RxEventBus eventBus) {
-        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+                             SchedulerProvider schedulerProvider) {
+        super(dataManager, compositeDisposable, schedulerProvider);
     }
 
     @Override

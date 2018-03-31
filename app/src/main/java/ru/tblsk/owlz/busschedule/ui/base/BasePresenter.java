@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.base;
 
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
@@ -14,17 +12,14 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     private final DataManager mDataManager;
     private final CompositeDisposable mCompositeDisposable;
     private final SchedulerProvider mSchedulerProvider;
-    private final RxEventBus mEventBus;
 
-    @Inject
+
     public BasePresenter(DataManager dataManager,
                          CompositeDisposable compositeDisposable,
-                         SchedulerProvider schedulerProvider,
-                         RxEventBus eventBus) {
+                         SchedulerProvider schedulerProvider) {
         this.mDataManager = dataManager;
         this.mCompositeDisposable = compositeDisposable;
         this.mSchedulerProvider = schedulerProvider;
-        this.mEventBus = eventBus;
     }
 
     public DataManager getDataManager() {
@@ -37,10 +32,6 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
     protected SchedulerProvider getSchedulerProvider() {
         return this.mSchedulerProvider;
-    }
-
-    protected RxEventBus getEventBus() {
-        return this.mEventBus;
     }
 
     @Override

@@ -19,9 +19,8 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
     @Inject
     public DirectionInfoPresenter(DataManager dataManager,
                                   CompositeDisposable compositeDisposable,
-                                  SchedulerProvider schedulerProvider,
-                                  RxEventBus eventBus) {
-        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+                                  SchedulerProvider schedulerProvider) {
+        super(dataManager, compositeDisposable, schedulerProvider);
     }
 
     @Override

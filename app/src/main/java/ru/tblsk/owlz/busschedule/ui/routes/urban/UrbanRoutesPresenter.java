@@ -18,6 +18,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
         extends BasePresenter<V> implements UrbanRoutesMvpPresenter<V>{
 
+    private RxEventBus mEventBus;
     private List<ChangeDirectionUrban.InFragment> changeInFragment;
 
     @Inject
@@ -25,8 +26,9 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                                 CompositeDisposable compositeDisposable,
                                 SchedulerProvider schedulerProvider,
                                 RxEventBus eventBus) {
-        super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+        super(dataManager, compositeDisposable, schedulerProvider);
 
+        this.mEventBus = eventBus;
         changeInFragment = new ArrayList<>();
     }
 
@@ -60,7 +62,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
     @Override
     public void subscribeOnEvents() {
         //clicked on change direction button in DirectionInfoFragment
-        getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.InFragment.class)
+        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionUrban.InFragment.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
@@ -76,7 +78,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                 }));
 
         //clicked on change direction button
-        getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.InAdapter.class)
+        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionUrban.InAdapter.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<ChangeDirectionUrban.InAdapter>() {
@@ -92,7 +94,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                 }));
 
         //clicked on item recycler view
-        getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.class)
+        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionUrban.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<ChangeDirectionUrban>() {
