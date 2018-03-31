@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +21,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
-import ru.tblsk.owlz.busschedule.di.annotation.FlightType;
+import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.Event;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
-import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class UrbanRoutesFragment extends BaseFragment
         implements UrbanRoutesMvpView, Event{
@@ -42,8 +38,8 @@ public class UrbanRoutesFragment extends BaseFragment
     public static final String TAG = "UrbanRoutesFragment";
     public static final String FLIGHTS = "flights";
     public static final String DIRECTION_ROUTS = "directionRouts";
-    public static final String DIRECT = "direct";
-    public static final String REVERSE = "reverse";
+    public static final int DIRECT = DirectionType.DIRECT.id;
+    public static final int REVERSE = DirectionType.REVERSE.id;
 
     @Inject
     UrbanRoutesMvpPresenter<UrbanRoutesMvpView> mPresenter;
@@ -52,16 +48,16 @@ public class UrbanRoutesFragment extends BaseFragment
     LinearLayoutManager mLinearLayout;
 
     @Inject
-    @FlightType("urban")
+    @Type("urban")
     RoutesAdapter mAdapter;
 
     @BindView(R.id.urbanRouteRv)
     RecyclerView mRecyclerView;
 
     private List<Flight> mFlights;
-    private List<String> mDirectionRoutes;
+    private List<Integer> mDirectionRoutes;
     private List<ChangeDirectionUrban.InFragment> mChangeDirectionFragment;
-    private Map<Integer, String> mChangeDirectionAdapter;
+    private Map<Integer, Integer> mChangeDirectionAdapter;
 
     public static UrbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
@@ -80,7 +76,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
-            mDirectionRoutes = savedInstanceState.getStringArrayList(DIRECTION_ROUTS);
+            mDirectionRoutes = savedInstanceState.getIntegerArrayList(DIRECTION_ROUTS);
         }
     }
 
@@ -103,8 +99,10 @@ public class UrbanRoutesFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_urbanroutes, container, false);
+
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
+
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
 
@@ -120,7 +118,7 @@ public class UrbanRoutesFragment extends BaseFragment
         super.onSaveInstanceState(outState);
         updateDirectionRouts();
         outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
-        outState.putStringArrayList(DIRECTION_ROUTS, (ArrayList<String>) mDirectionRoutes);
+        outState.putIntegerArrayList(DIRECTION_ROUTS, (ArrayList<Integer>) mDirectionRoutes);
 
     }
 
@@ -159,7 +157,7 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void changedDirectionInAdapter(ChangeDirectionUrban.InAdapter direction) {
         int position = direction.getPosition();
-        String directionType = direction.getDirectionType();
+        int directionType = direction.getDirectionType();
         mChangeDirectionAdapter.put(position, directionType);
     }
 
@@ -188,7 +186,7 @@ public class UrbanRoutesFragment extends BaseFragment
         if(!mChangeDirectionAdapter.isEmpty()) {
             for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
                 int keyPos = (Integer) entry.getKey();
-                String keyDir = entry.getValue().toString();
+                int keyDir = (int) entry.getValue();
                 mDirectionRoutes.set(keyPos, keyDir);
             }
         }

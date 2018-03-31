@@ -21,19 +21,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
-import ru.tblsk.owlz.busschedule.di.annotation.FlightType;
+import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.Event;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
-import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class SuburbanRoutesFragment extends BaseFragment
         implements SuburbanRoutesMvpView, Event{
@@ -41,8 +38,8 @@ public class SuburbanRoutesFragment extends BaseFragment
     public static final String TAG = "SuburbanRoutesFragment";
     public static final String FLIGHTS = "flights";
     public static final String DIRECTION_ROUTS = "directionRouts";
-    public static final String DIRECT = "direct";
-    public static final String REVERSE = "reverse";
+    public static final int DIRECT = DirectionType.DIRECT.id;
+    public static final int REVERSE = DirectionType.REVERSE.id;
 
     @Inject
     SuburbanRoutesMvpPresenter<SuburbanRoutesMvpView> mPresenter;
@@ -51,16 +48,16 @@ public class SuburbanRoutesFragment extends BaseFragment
     LinearLayoutManager mLinearLayout;
 
     @Inject
-    @FlightType("suburban")
+    @Type("suburban")
     RoutesAdapter mAdapter;
 
     @BindView(R.id.suburbanRouteRv)
     RecyclerView mRecyclerView;
 
     private List<Flight> mFlights;
-    private List<String> mDirectionRoutes;
+    private List<Integer> mDirectionRoutes;
     private List<ChangeDirectionSuburban.InFragment> mChangeDirectionFragment;
-    private Map<Integer, String> mChangeDirectionAdapter;
+    private Map<Integer, Integer> mChangeDirectionAdapter;
 
     public static SuburbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
@@ -79,7 +76,7 @@ public class SuburbanRoutesFragment extends BaseFragment
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
-            mDirectionRoutes = savedInstanceState.getStringArrayList(DIRECTION_ROUTS);
+            mDirectionRoutes = savedInstanceState.getIntegerArrayList(DIRECTION_ROUTS);
         }
 
     }
@@ -135,7 +132,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         super.onSaveInstanceState(outState);
         updateDirectionRouts();
         outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
-        outState.putStringArrayList(DIRECTION_ROUTS, (ArrayList<String>) mDirectionRoutes);
+        outState.putIntegerArrayList(DIRECTION_ROUTS, (ArrayList<Integer>) mDirectionRoutes);
     }
 
     @Override
@@ -150,14 +147,14 @@ public class SuburbanRoutesFragment extends BaseFragment
     }
 
     @Override
-    public void changedDirectionInFragment(ChangeDirectionSuburban.InFragment direction) {
-        mChangeDirectionFragment.add(direction);
+    public void changedDirectionInFragment(List<ChangeDirectionSuburban.InFragment> directions) {
+        mChangeDirectionFragment.addAll(directions);
     }
 
     @Override
     public void changedDirectionInAdapter(ChangeDirectionSuburban.InAdapter direction) {
         int position = direction.getPosition();
-        String directionType = direction.getDirectionType();
+        int directionType = direction.getDirectionType();
         mChangeDirectionAdapter.put(position, directionType);
     }
 
@@ -188,7 +185,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         if(!mChangeDirectionAdapter.isEmpty()) {
             for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
                 int keyPos = (Integer) entry.getKey();
-                String keyDir = entry.getValue().toString();
+                int keyDir = (int) entry.getValue();
                 mDirectionRoutes.set(keyPos, keyDir);
             }
         }

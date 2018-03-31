@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +59,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
 
     @Override
     public void subscribeOnEvents() {
+        //clicked on change direction button in DirectionInfoFragment
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.InFragment.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
@@ -75,6 +74,8 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
 
                     }
                 }));
+
+        //clicked on change direction button
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.InAdapter.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
@@ -90,6 +91,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                     }
                 }));
 
+        //clicked on item recycler view
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionUrban.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())

@@ -17,7 +17,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
+import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
@@ -27,16 +29,16 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final String DIRECT = "direct";
     private static final String REVERSE = "reverse";
-    private static final int DIRECT_ID = 0;
-    private static final int REVERSE_ID = 1;
+    private static final int DIRECT_ID = DirectionType.DIRECT.id;
+    private static final int REVERSE_ID = DirectionType.REVERSE.id;
 
     private List<Flight> mFlights;
     private List<Integer> mDirectionRouts;
     private RxEventBus mEventBus;
-    private String mFlightType;
+    private int mFlightType;
 
     @Inject
-    public RoutesAdapter(RxEventBus eventBus, String flightType) {
+    public RoutesAdapter(RxEventBus eventBus, int flightType) {
         this.mEventBus = eventBus;
         this.mFlightType = flightType;
         mFlights = new ArrayList<>();
@@ -59,7 +61,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 for(Direction direction : directions) {
                     if(direction.getDirectionType().id == directionId) {
-                        if(mFlightType.equals("urban")) {
+                        if(mFlightType == FlightType.URBAN.id) {
                             mEventBus.post(new ChangeDirectionUrban(direction, stance));
                         } else {
                             mEventBus.post(new ChangeDirectionSuburban(direction, stance));
@@ -74,7 +76,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onClick(View view) {
                         int stance = viewHolder.getAdapterPosition();
-                        String directionName = mDirectionRouts.get(stance) == 0 ? REVERSE : DIRECT;
+                        int directionTypeName = mDirectionRouts.get(stance);
 
                         if(mDirectionRouts.get(stance) == DIRECT_ID) {
                             mDirectionRouts.set(stance, REVERSE_ID);
@@ -84,12 +86,12 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         notifyItemChanged(stance);
 
-                        if(mFlightType.equals("urban")) {
+                        if(mFlightType == FlightType.URBAN.id) {
                             mEventBus.post(new ChangeDirectionUrban
-                                    .InAdapter(stance, directionName));
+                                    .InAdapter(stance, directionTypeName));
                         } else {
                             mEventBus.post(new ChangeDirectionSuburban
-                                    .InAdapter(stance, directionName));
+                                    .InAdapter(stance, directionTypeName));
                         }
                     }
                 });
@@ -107,16 +109,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mFlights.size();
     }
 
-    public void addItems(List<Flight> flights, List<String> directionRouts) {
+    public void addItems(List<Flight> flights, List<Integer> directionRouts) {
         mDirectionRouts.clear();
         mFlights.clear();
-        for(String s : directionRouts) {
-            if(s.equals(DIRECT)) {
-                mDirectionRouts.add(DIRECT_ID);
-            } else {
-                mDirectionRouts.add(REVERSE_ID);
-            }
-        }
+        mDirectionRouts.addAll(directionRouts);
         mFlights.addAll(flights);
         notifyDataSetChanged();
     }

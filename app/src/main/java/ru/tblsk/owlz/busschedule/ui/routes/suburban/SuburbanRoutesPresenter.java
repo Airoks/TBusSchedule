@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.ui.routes.suburban;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
         extends BasePresenter<V> implements SuburbanRoutesMvpPresenter<V> {
 
+    private List<ChangeDirectionSuburban.InFragment> changeInFragment;
 
     @Inject
     public SuburbanRoutesPresenter(DataManager dataManager,
@@ -24,6 +26,15 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                                    SchedulerProvider schedulerProvider,
                                    RxEventBus eventBus) {
         super(dataManager, compositeDisposable, schedulerProvider, eventBus);
+
+        changeInFragment = new ArrayList<>();
+    }
+
+    @Override
+    public void attachView(V mvpView) {
+        super.attachView(mvpView);
+        getMvpView().changedDirectionInFragment(changeInFragment);
+        changeInFragment.clear();
     }
 
     @Override
@@ -47,13 +58,14 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
 
     @Override
     public void subscribeOnEvents() {
+        //clicked on change direction button in DirectionInfoFragment
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionSuburban.InFragment.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<ChangeDirectionSuburban.InFragment>() {
                     @Override
                     public void accept(ChangeDirectionSuburban.InFragment inFragment) throws Exception {
-                        getMvpView().changedDirectionInFragment(inFragment);
+                        changeInFragment.add(inFragment);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -61,6 +73,8 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
 
                     }
                 }));
+
+        //clicked on change direction button
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionSuburban.InAdapter.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
@@ -76,6 +90,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                     }
                 }));
 
+        //clicked on item recycler view
         getCompositeDisposable().add(getEventBus().filteredObservable(ChangeDirectionSuburban.class)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())

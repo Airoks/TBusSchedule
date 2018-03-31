@@ -9,7 +9,7 @@ public final class AppConstants {
     public static final String SEED_DB_DIRECTIONS = "db/Direction.json";
     public static final String SEED_DB_DIRECTION_TYPES = "db/DirectionType.json";
     public static final String SEED_DB_FLIGHTS = "db/Flight.json";
-    public static final String SEED_DB_FLIGHT_TYPES = "db/FlightType.json";
+    public static final String SEED_DB_FLIGHT_TYPES = "db/Type.json";
     public static final String SEED_DB_SCHEDULES = "db/Schedule.json";
     public static final String SEED_DB_DEPARTURE_TIME = "db/DepartureTime.json";
     public static final String SEED_DB_STOPS = "db/Stop.json";

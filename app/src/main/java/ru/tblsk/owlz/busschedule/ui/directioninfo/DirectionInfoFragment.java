@@ -45,6 +45,8 @@ public class DirectionInfoFragment extends BaseFragment
     public static final String DIRECTIONS = "directions";
     public static final String FLIGHT = "flight";
     public static final String POSITION = "position";
+    public static final int DIRECT = DirectionType.DIRECT.id;
+    public static final int REVERSE = DirectionType.REVERSE.id;
 
     @Inject
     RxEventBus mEventBus;
@@ -68,7 +70,7 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private Direction mDirection;
-    private DirectionType mDirectionType;
+    private int mDirectionType;
     private Flight mFlight;
     private int mPosition;
     private List<Stop> mStops;
@@ -96,7 +98,7 @@ public class DirectionInfoFragment extends BaseFragment
         mDirection = bundle.getParcelable(DIRECTION);
         mFlight = bundle.getParcelable(FLIGHT);
         mPosition = bundle.getInt(POSITION);
-        mDirectionType = mDirection.getDirectionType();
+        mDirectionType = mDirection.getDirectionType().id;
     }
 
     @Override
@@ -162,32 +164,32 @@ public class DirectionInfoFragment extends BaseFragment
 
                         //оповещение в Urban/SuburbanRoutesFragment
                         if(mFlight.getFlightType() == FlightType.URBAN) {
-                            if(mDirectionType == DirectionType.DIRECT) {
-                                mDirectionType = DirectionType.REVERSE;
+                            if(mDirectionType == DIRECT) {
+                                mDirectionType = REVERSE;
 
                                 ChangeDirectionUrban.InFragment inFragment =
-                                        new ChangeDirectionUrban.InFragment(mPosition, "reverse");
+                                        new ChangeDirectionUrban.InFragment(mPosition, REVERSE);
                                 mEventBus.post(inFragment);
                             } else {
-                                mDirectionType = DirectionType.DIRECT;
+                                mDirectionType = DIRECT;
 
                                 ChangeDirectionUrban.InFragment inFragment =
-                                        new ChangeDirectionUrban.InFragment(mPosition, "direct");
+                                        new ChangeDirectionUrban.InFragment(mPosition, DIRECT);
                                 mEventBus.post(inFragment);
                             }
                         }
                         if(mFlight.getFlightType() == FlightType.SUBURBAN) {
-                            if(mDirectionType == DirectionType.DIRECT) {
-                                mDirectionType = DirectionType.REVERSE;
+                            if(mDirectionType == DIRECT) {
+                                mDirectionType = REVERSE;
 
                                 ChangeDirectionSuburban.InFragment inFragment =
-                                        new ChangeDirectionSuburban.InFragment(mPosition, "reverse");
+                                        new ChangeDirectionSuburban.InFragment(mPosition, REVERSE);
                                 mEventBus.post(inFragment);
                             } else {
-                                mDirectionType = DirectionType.DIRECT;
+                                mDirectionType = DIRECT;
 
                                 ChangeDirectionSuburban.InFragment inFragment =
-                                        new ChangeDirectionSuburban.InFragment(mPosition, "direct");
+                                        new ChangeDirectionSuburban.InFragment(mPosition, DIRECT);
                                 mEventBus.post(inFragment);
                             }
                         }

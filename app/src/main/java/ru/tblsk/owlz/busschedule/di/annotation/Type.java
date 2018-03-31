@@ -10,6 +10,6 @@ import javax.inject.Qualifier;
 @Qualifier
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FlightType {
+public @interface Type {
     String value() default "";
 }

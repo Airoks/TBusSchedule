@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 import ru.tblsk.owlz.busschedule.di.component.ApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.component.DaggerApplicationComponent;
@@ -21,6 +22,12 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         Stetho.initializeWithDefaults(this);
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
+
     }
 
     public static App getApp(Context context) {

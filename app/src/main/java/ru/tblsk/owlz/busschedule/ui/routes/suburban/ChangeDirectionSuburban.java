@@ -24,9 +24,9 @@ public class ChangeDirectionSuburban {
     public static class InFragment {
 
         private final int position;
-        private final String directionType;
+        private final int directionType;
 
-        public InFragment(int position, String directionType) {
+        public InFragment(int position, int directionType) {
             this.position = position;
             this.directionType = directionType;
         }
@@ -35,7 +35,7 @@ public class ChangeDirectionSuburban {
             return position;
         }
 
-        public String getDirectionType() {
+        public int getDirectionType() {
             return directionType;
         }
     }
@@ -43,9 +43,9 @@ public class ChangeDirectionSuburban {
     public static class InAdapter {
 
         private final int position;
-        private final String directionType;
+        private final int directionType;
 
-        public InAdapter(int position, String directionType) {
+        public InAdapter(int position, int directionType) {
             this.position = position;
             this.directionType = directionType;
         }
@@ -54,7 +54,7 @@ public class ChangeDirectionSuburban {
             return position;
         }
 
-        public String getDirectionType() {
+        public int getDirectionType() {
             return directionType;
         }
     }

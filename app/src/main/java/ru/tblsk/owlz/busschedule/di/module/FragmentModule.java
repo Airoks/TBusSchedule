@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
-import ru.tblsk.owlz.busschedule.di.annotation.FlightType;
+import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
@@ -40,14 +41,14 @@ public class FragmentModule {
     }
 
     @Provides
-    @FlightType("urban")
+    @Type("urban")
     RoutesAdapter provideUrbanRoutesAdapter(RxEventBus eventBus) {
-        return new RoutesAdapter(eventBus, "urban");
+        return new RoutesAdapter(eventBus, FlightType.URBAN.id);
     }
 
     @Provides
-    @FlightType("suburban")
+    @Type("suburban")
     RoutesAdapter provideSuburbanRoutesAdapter(RxEventBus eventBus) {
-        return new RoutesAdapter(eventBus, "suburban");
+        return new RoutesAdapter(eventBus, FlightType.SUBURBAN.id);
     }
 }

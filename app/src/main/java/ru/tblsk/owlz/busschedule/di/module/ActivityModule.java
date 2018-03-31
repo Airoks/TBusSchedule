@@ -4,6 +4,7 @@ package ru.tblsk.owlz.busschedule.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 
 import dagger.Module;
 import dagger.Provides;
@@ -100,8 +101,8 @@ public class ActivityModule {
     }
 
     @Provides
-    LinearLayoutManager provideLinearLayoutManager(AppCompatActivity activity) {
-        return new LinearLayoutManager(activity);
+    LinearLayoutManager provideLinearLayoutManager(@ActivityContext Context context) {
+        return new LinearLayoutManager(context);
     }
 
 }
