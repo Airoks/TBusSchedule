@@ -13,9 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -23,17 +21,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
-import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.routes.Event;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
+import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 
 public class SuburbanRoutesFragment extends BaseFragment
-        implements SuburbanRoutesMvpView, Event{
+        implements SuburbanRoutesMvpView {
 
     public static final String TAG = "SuburbanRoutesFragment";
     public static final String FLIGHTS = "flights";
@@ -54,10 +51,8 @@ public class SuburbanRoutesFragment extends BaseFragment
     @BindView(R.id.suburbanRouteRv)
     RecyclerView mRecyclerView;
 
-    private List<Flight> mFlights;
+    private List<FlightVO> mFlights;
     private List<Integer> mDirectionRoutes;
-    private List<ChangeDirectionSuburban.InFragment> mChangeDirectionFragment;
-    private Map<Integer, Integer> mChangeDirectionAdapter;
 
     public static SuburbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
@@ -70,9 +65,6 @@ public class SuburbanRoutesFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        mChangeDirectionAdapter = new HashMap<>();
-        mChangeDirectionFragment = new ArrayList<>();
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
@@ -105,7 +97,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         if(mFlights == null) {
             mPresenter.getSuburbanFlights();
         } else {
-            showSavedRouts();
+            mPresenter.getSavedSuburbanFlights();
         }
     }
 
@@ -117,26 +109,25 @@ public class SuburbanRoutesFragment extends BaseFragment
         View view = inflater.inflate(R.layout.fragment_suburbanroutes, container, false);
         getBaseActivity().getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
+        setUnbinder(ButterKnife.bind(this, view));
+        mPresenter.attachView(this);
 
-        if(mFlights == null) {
+        if(mFlights == null || savedInstanceState != null) {
             mPresenter.subscribeOnEvents();
         }
 
-        setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
         return view;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        updateDirectionRouts();
         outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
         outState.putIntegerArrayList(DIRECTION_ROUTS, (ArrayList<Integer>) mDirectionRoutes);
     }
 
     @Override
-    public void showSuburbanRoutes(List<Flight> flights) {
+    public void showSuburbanRoutes(List<FlightVO> flights) {
         mFlights = flights;
         mDirectionRoutes = new ArrayList<>();
         //при первом запуске пользователь видит прямое направление
@@ -147,15 +138,22 @@ public class SuburbanRoutesFragment extends BaseFragment
     }
 
     @Override
-    public void changedDirectionInFragment(List<ChangeDirectionSuburban.InFragment> directions) {
-        mChangeDirectionFragment.addAll(directions);
+    public void showSavedSuburbanRoutes() {
+        mAdapter.addItems(mFlights, mDirectionRoutes);
     }
 
     @Override
-    public void changedDirectionInAdapter(ChangeDirectionSuburban.InAdapter direction) {
-        int position = direction.getPosition();
-        int directionType = direction.getDirectionType();
-        mChangeDirectionAdapter.put(position, directionType);
+    public void updateDirectionFromDirectionInfo(List<ChangeDirectionSuburban.InFragment> inFragments) {
+        if(!inFragments.isEmpty()) {
+            int position = inFragments.size() - 1;
+            mDirectionRoutes.set(inFragments.get(position).getPosition(),
+                    inFragments.get(position).getDirectionType());
+        }
+    }
+
+    @Override
+    public void updateDirectionFromAdapter(ChangeDirectionSuburban.InAdapter inAdapter) {
+        mDirectionRoutes.set(inAdapter.getPosition(), inAdapter.getDirectionType());
     }
 
     @Override
@@ -171,31 +169,5 @@ public class SuburbanRoutesFragment extends BaseFragment
                         mFlights.get(position), position));
         transaction.addToBackStack(DirectionInfoFragment.TAG);
         transaction.commit();
-    }
-
-    @Override
-    public void showSavedRouts() {
-        updateDirectionRouts();
-        mAdapter.addItems(mFlights, mDirectionRoutes);
-    }
-
-    @Override
-    public void updateDirectionRouts() {
-        //приоритет принадлежит изменениям в DirectionInfoFragment
-        if(!mChangeDirectionAdapter.isEmpty()) {
-            for(Map.Entry entry : mChangeDirectionAdapter.entrySet()) {
-                int keyPos = (Integer) entry.getKey();
-                int keyDir = (int) entry.getValue();
-                mDirectionRoutes.set(keyPos, keyDir);
-            }
-        }
-        if(!mChangeDirectionFragment.isEmpty()) {
-            int position = mChangeDirectionFragment.size() - 1;
-            mDirectionRoutes.set(mChangeDirectionFragment.get(position).getPosition(),
-                    mChangeDirectionFragment.get(position).getDirectionType());
-        }
-
-        mChangeDirectionFragment.clear();
-        mChangeDirectionAdapter.clear();
     }
 }

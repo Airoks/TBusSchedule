@@ -35,6 +35,7 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
+import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoFragment extends BaseFragment
@@ -71,13 +72,13 @@ public class DirectionInfoFragment extends BaseFragment
 
     private Direction mDirection;
     private int mDirectionType;
-    private Flight mFlight;
+    private FlightVO mFlight;
     private int mPosition;
     private List<Stop> mStops;
 
 
     public static DirectionInfoFragment newInstance(Direction direction,
-                                                    Flight flight, int mPosition) {
+                                                    FlightVO flight, int mPosition) {
         Bundle bundle = new Bundle();
         bundle.putInt(POSITION, mPosition);
         bundle.putParcelable(DIRECTION, direction);
@@ -163,7 +164,7 @@ public class DirectionInfoFragment extends BaseFragment
                         mEventBus.post(directionInfo);*/
 
                         //оповещение в Urban/SuburbanRoutesFragment
-                        if(mFlight.getFlightType() == FlightType.URBAN) {
+                        if(mFlight.getFlightType() == FlightType.URBAN.id) {
                             if(mDirectionType == DIRECT) {
                                 mDirectionType = REVERSE;
 
@@ -178,7 +179,7 @@ public class DirectionInfoFragment extends BaseFragment
                                 mEventBus.post(inFragment);
                             }
                         }
-                        if(mFlight.getFlightType() == FlightType.SUBURBAN) {
+                        if(mFlight.getFlightType() == FlightType.SUBURBAN.id) {
                             if(mDirectionType == DIRECT) {
                                 mDirectionType = REVERSE;
 

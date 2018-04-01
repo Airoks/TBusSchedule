@@ -23,6 +23,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
+import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
@@ -32,7 +33,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int DIRECT_ID = DirectionType.DIRECT.id;
     private static final int REVERSE_ID = DirectionType.REVERSE.id;
 
-    private List<Flight> mFlights;
+    private List<FlightVO> mFlights;
     private List<Integer> mDirectionRouts;
     private RxEventBus mEventBus;
     private int mFlightType;
@@ -76,7 +77,6 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onClick(View view) {
                         int stance = viewHolder.getAdapterPosition();
-                        int directionTypeName = mDirectionRouts.get(stance);
 
                         if(mDirectionRouts.get(stance) == DIRECT_ID) {
                             mDirectionRouts.set(stance, REVERSE_ID);
@@ -86,6 +86,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         notifyItemChanged(stance);
 
+                        int directionTypeName = mDirectionRouts.get(stance);
                         if(mFlightType == FlightType.URBAN.id) {
                             mEventBus.post(new ChangeDirectionUrban
                                     .InAdapter(stance, directionTypeName));
@@ -109,7 +110,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mFlights.size();
     }
 
-    public void addItems(List<Flight> flights, List<Integer> directionRouts) {
+    public void addItems(List<FlightVO> flights, List<Integer> directionRouts) {
         mDirectionRouts.clear();
         mFlights.clear();
         mDirectionRouts.addAll(directionRouts);
