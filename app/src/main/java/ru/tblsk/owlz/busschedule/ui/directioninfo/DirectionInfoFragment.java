@@ -3,6 +3,7 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,11 +78,8 @@ public class DirectionInfoFragment extends BaseFragment
     private List<Stop> mStops;
 
 
-    public static DirectionInfoFragment newInstance(Direction direction,
-                                                    FlightVO flight, int mPosition) {
+    public static DirectionInfoFragment newInstance(@NonNull FlightVO flight) {
         Bundle bundle = new Bundle();
-        bundle.putInt(POSITION, mPosition);
-        bundle.putParcelable(DIRECTION, direction);
         bundle.putParcelable(FLIGHT, flight);
         DirectionInfoFragment newInstance = new DirectionInfoFragment();
         newInstance.setArguments(bundle);
@@ -97,9 +95,10 @@ public class DirectionInfoFragment extends BaseFragment
             mStops = savedInstanceState.getParcelableArrayList(DIRECTIONS);
         }
         Bundle bundle = this.getArguments();
-        mDirection = bundle.getParcelable(DIRECTION);
+
         mFlight = bundle.getParcelable(FLIGHT);
-        mPosition = bundle.getInt(POSITION);
+        mDirection = mFlight.getCurrentDirection();
+        mPosition = mFlight.getPosition();
         mDirectionType = mDirection.getDirectionType().id;
     }
 

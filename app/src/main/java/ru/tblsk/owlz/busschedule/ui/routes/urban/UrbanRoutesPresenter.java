@@ -2,9 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -60,7 +58,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                             flightVO.setFlightType(flights.get(i).getFlightType().id);
                             flightVO.setDirections(flights.get(i).getDirections());
                             flightVO.setPosition(i);
-                            flightVO.setCurrentDirection(DirectionType.DIRECT.id);
+                            flightVO.setCurrentDirectionType(DirectionType.DIRECT.id);
                             flightVOList.add(flightVO);
                         }
                         return flightVOList;

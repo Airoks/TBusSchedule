@@ -58,7 +58,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                             flightVO.setFlightType(flights.get(i).getFlightType().id);
                             flightVO.setDirections(flights.get(i).getDirections());
                             flightVO.setPosition(i);
-                            flightVO.setCurrentDirection(DirectionType.DIRECT.id);
+                            flightVO.setCurrentDirectionType(DirectionType.DIRECT.id);
                             flightVOList.add(flightVO);
                         }
                         return flightVOList;

@@ -14,7 +14,7 @@ public class FlightVO implements Parcelable{
     private String flightNumber;
     private List<Direction> directions;
     private int position;
-    private int currentDirection;
+    private int currentDirectionType;
 
     public FlightVO() {
     }
@@ -29,7 +29,7 @@ public class FlightVO implements Parcelable{
         flightNumber = in.readString();
         directions = in.createTypedArrayList(Direction.CREATOR);
         position = in.readInt();
-        currentDirection = in.readInt();
+        currentDirectionType = in.readInt();
     }
 
     public static final Creator<FlightVO> CREATOR = new Creator<FlightVO>() {
@@ -43,6 +43,16 @@ public class FlightVO implements Parcelable{
             return new FlightVO[size];
         }
     };
+
+    public Direction getCurrentDirection() {
+        List<Direction> directions = getDirections();
+        for(Direction direction : directions) {
+            if(direction.getDirectionType().id == currentDirectionType) {
+                return direction;
+            }
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;
@@ -84,12 +94,12 @@ public class FlightVO implements Parcelable{
         this.position = position;
     }
 
-    public int getCurrentDirection() {
-        return currentDirection;
+    public int getCurrentDirectionType() {
+        return currentDirectionType;
     }
 
-    public void setCurrentDirection(int currentDirection) {
-        this.currentDirection = currentDirection;
+    public void setCurrentDirectionType(int currentDirectionType) {
+        this.currentDirectionType = currentDirectionType;
     }
 
     @Override
@@ -109,6 +119,6 @@ public class FlightVO implements Parcelable{
         parcel.writeString(flightNumber);
         parcel.writeTypedList(directions);
         parcel.writeInt(position);
-        parcel.writeInt(currentDirection);
+        parcel.writeInt(currentDirectionType);
     }
 }

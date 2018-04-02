@@ -54,7 +54,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onClick(View view) {
                 int stance = viewHolder.getAdapterPosition();
-                int directionId = mFlights.get(stance).getCurrentDirection();
+                int directionId = mFlights.get(stance).getCurrentDirectionType();
                 List<Direction> directions = mFlights.get(stance).getDirections();
 
                 for(Direction direction : directions) {
@@ -75,19 +75,19 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     public void onClick(View view) {
                         int stance = viewHolder.getAdapterPosition();
 
-                        if(mFlights.get(stance).getCurrentDirection() == DIRECT_ID) {
+                        if(mFlights.get(stance).getCurrentDirectionType() == DIRECT_ID) {
                             FlightVO flightVO = mFlights.get(stance);
-                            flightVO.setCurrentDirection(REVERSE_ID);
+                            flightVO.setCurrentDirectionType(REVERSE_ID);
                             mFlights.set(stance, flightVO);
                         } else {
                             FlightVO flightVO = mFlights.get(stance);
-                            flightVO.setCurrentDirection(DIRECT_ID);
+                            flightVO.setCurrentDirectionType(DIRECT_ID);
                             mFlights.set(stance, flightVO);
                         }
 
                         notifyItemChanged(stance);
 
-                        int directionTypeName = mFlights.get(stance).getCurrentDirection();
+                        int directionTypeName = mFlights.get(stance).getCurrentDirectionType();
                         if(mFlightType == FlightType.URBAN.id) {
                             mEventBus.post(new ChangeDirectionUrban
                                     .InAdapter(stance, directionTypeName));
@@ -140,7 +140,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             int size = mFlights.get(position).getDirections().size();
             if(size >= 2) {
                 mChangeButton.setVisibility(View.VISIBLE);
-                findByDirectionType(position, mFlights.get(position).getCurrentDirection());
+                findByDirectionType(position, mFlights.get(position).getCurrentDirectionType());
             } else {
                 mChangeButton.setVisibility(View.GONE);
                 mDirectionName.setText(mFlights.get(position)

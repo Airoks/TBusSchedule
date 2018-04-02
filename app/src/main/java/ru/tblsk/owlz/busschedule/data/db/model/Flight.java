@@ -56,16 +56,6 @@ public class Flight implements Parcelable{
         flightNumber = in.readString();
     }
 
-    public Direction getDirectionDyType(DirectionType directionType) {
-        List<Direction> directions = getDirections();
-        for(Direction direction : directions) {
-            if(direction.getDirectionType() == directionType) {
-                return direction;
-            }
-        }
-        return null;
-    }
-
     @Generated(hash = 1944495751)
     public Flight(Long id, @NotNull FlightType flightType,
             @NotNull String flightNumber) {

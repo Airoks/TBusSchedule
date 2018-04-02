@@ -34,6 +34,7 @@ public class UrbanRoutesFragment extends BaseFragment
 
     public static final String TAG = "UrbanRoutesFragment";
     public static final String FLIGHTS = "flights";
+
     public static final int DIRECT = DirectionType.DIRECT.id;
     public static final int REVERSE = DirectionType.REVERSE.id;
 
@@ -139,7 +140,7 @@ public class UrbanRoutesFragment extends BaseFragment
         int directionType = inFragment.getDirectionType();
 
         FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirection(directionType);
+        flightVO.setCurrentDirectionType(directionType);
         mFlights.set(position, flightVO);
     }
 
@@ -149,7 +150,7 @@ public class UrbanRoutesFragment extends BaseFragment
         int directionType = inAdapter.getDirectionType();
 
         FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirection(directionType);
+        flightVO.setCurrentDirectionType(directionType);
         mFlights.set(position, flightVO);
     }
 
@@ -161,9 +162,7 @@ public class UrbanRoutesFragment extends BaseFragment
                 .getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,
-                DirectionInfoFragment.newInstance(
-                        directionUrban.getDirection(),
-                        mFlights.get(position), position));
+                DirectionInfoFragment.newInstance(mFlights.get(position)));
         transaction.addToBackStack(DirectionInfoFragment.TAG);
         transaction.commit();
     }

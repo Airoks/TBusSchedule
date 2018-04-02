@@ -137,7 +137,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         int directionType = inFragment.getDirectionType();
 
         FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirection(directionType);
+        flightVO.setCurrentDirectionType(directionType);
         mFlights.set(position, flightVO);
     }
 
@@ -147,7 +147,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         int directionType = inAdapter.getDirectionType();
 
         FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirection(directionType);
+        flightVO.setCurrentDirectionType(directionType);
         mFlights.set(position, flightVO);
     }
 
@@ -159,9 +159,7 @@ public class SuburbanRoutesFragment extends BaseFragment
                 .getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,
-                DirectionInfoFragment.newInstance(
-                        directionSuburban.getDirection(),
-                        mFlights.get(position), position));
+                DirectionInfoFragment.newInstance(mFlights.get(position)));
         transaction.addToBackStack(DirectionInfoFragment.TAG);
         transaction.commit();
     }
