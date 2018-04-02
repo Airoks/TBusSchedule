@@ -98,12 +98,18 @@ public class AllStopsFragment extends BaseFragment
         mAdapter.addItems(stops);
     }
 
+    @Override
+    public void showSavedAllStops() {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_allstop, container, false);
+        View view = getView() != null ? getView() :
+                inflater.inflate(R.layout.fragment_allstop, container, false);
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
@@ -115,5 +121,10 @@ public class AllStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.all_stops);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

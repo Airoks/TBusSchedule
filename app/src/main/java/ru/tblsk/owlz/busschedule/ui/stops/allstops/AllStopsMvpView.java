@@ -8,4 +8,5 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 
 public interface AllStopsMvpView extends MvpView{
     void showAllStops(List<Stop> stops);
+    void showSavedAllStops();
 }

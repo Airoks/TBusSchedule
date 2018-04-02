@@ -14,6 +14,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
@@ -47,23 +48,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
     public void getUrbanFlights() {
         getCompositeDisposable().add(getDataManager()
                 .getFlightByType(FlightType.URBAN)
-                .map(new Function<List<Flight>, List<FlightVO>>() {
-                    @Override
-                    public List<FlightVO> apply(List<Flight> flights) throws Exception {
-                        List<FlightVO> flightVOList = new ArrayList<>();
-                        for(int i = 0; i < flights.size(); i ++) {
-                            FlightVO flightVO = new FlightVO();
-                            flightVO.setId(flights.get(i).getId());
-                            flightVO.setFlightNumber(flights.get(i).getFlightNumber());
-                            flightVO.setFlightType(flights.get(i).getFlightType().id);
-                            flightVO.setDirections(flights.get(i).getDirections());
-                            flightVO.setPosition(i);
-                            flightVO.setCurrentDirectionType(DirectionType.DIRECT.id);
-                            flightVOList.add(flightVO);
-                        }
-                        return flightVOList;
-                    }
-                })
+                .map(new FlightMapper())
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<FlightVO>>() {

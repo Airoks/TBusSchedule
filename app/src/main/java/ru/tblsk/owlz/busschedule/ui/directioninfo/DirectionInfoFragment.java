@@ -29,7 +29,6 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
@@ -37,9 +36,6 @@ public class DirectionInfoFragment extends BaseFragment
     public static final String TAG = "DirectionInfoFragment";
     public static final String STOPS = "stops";
     public static final String FLIGHT = "flight";
-
-    @Inject
-    RxEventBus mEventBus;
 
     @Inject
     DirectionInfoMvpPresenter<DirectionInfoMvpView> mPresenter;
