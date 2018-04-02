@@ -11,16 +11,23 @@ import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<V>
         implements AllStopsMvpPresenter<V>{
 
+    private StopMapper mStopMapper;
+
     @Inject
     public AllStopsPresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
-                             SchedulerProvider schedulerProvider) {
+                             SchedulerProvider schedulerProvider,
+                             StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
+
+        this.mStopMapper = stopMapper;
     }
 
     @Override
@@ -29,9 +36,10 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
                 .getAllStops()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<List<Stop>>() {
+                .map(mStopMapper)
+                .subscribe(new Consumer<List<StopVO>>() {
                     @Override
-                    public void accept(List<Stop> stops) throws Exception {
+                    public void accept(List<StopVO> stops) throws Exception {
                         getMvpView().showAllStops(stops);
                     }
                 }, new Consumer<Throwable>() {
