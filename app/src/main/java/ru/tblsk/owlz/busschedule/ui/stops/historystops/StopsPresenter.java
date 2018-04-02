@@ -69,4 +69,9 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                     }
                 }));
     }
+
+    @Override
+    public void clickedOnAllStopsButton() {
+        getMvpView().showAllStopsFragment();
+    }
 }

@@ -49,25 +49,21 @@ public class StopsFragment extends BaseFragment
     @Inject
     LinearLayoutManager mLinearLayout;
 
-    @Inject
-    RxEventBus mEventBus;
-
     @BindView(R.id.stopToolbar)
     Toolbar mToolbar;
 
     @BindView(R.id.historyStopRv)
     RecyclerView mRecyclerView;
 
-    private CompositeDisposable mDisposable = new CompositeDisposable();
-    final List<String> list = new ArrayList<>();
-    public static boolean CHECK = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     public static StopsFragment newInstance() {
         return new StopsFragment();
-    }
-    @Override
-    public void showSearchHistoryStops(List<Stop> stops) {
-        mAdapter.addItems(stops);
     }
 
     @Nullable
@@ -93,8 +89,13 @@ public class StopsFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
-        list.clear();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.unsubscribeFromEvents();
+        super.onDestroy();
     }
 
     @Override
@@ -110,26 +111,6 @@ public class StopsFragment extends BaseFragment
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
 
         mPresenter.getSearchHistoryStops();
-
-
-        if(!CHECK) {
-            mDisposable.add(mEventBus
-                    .observable()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(Object o) throws Exception {
-                            if(o instanceof String) {
-                                list.add((String) o);
-                            }
-                        }
-                    }));
-            CHECK = true;
-        }
-        for(String s : list) {
-            Log.d("EBENTBUS", s);
-        }
     }
 
     @Override
@@ -147,6 +128,20 @@ public class StopsFragment extends BaseFragment
         });
     }
 
+    @Override
+    public void showSearchHistoryStops(List<Stop> stops) {
+        mAdapter.addItems(stops);
+    }
+
+    @Override
+    public void showAllStopsFragment() {
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, AllStopsFragment.newInstance());
+        fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
     @OnClick(R.id.deleteButton)
     public void deleteSearchHistoryStops() {
         mPresenter.deleteSearchHistoryStops();
@@ -155,12 +150,6 @@ public class StopsFragment extends BaseFragment
     @OnClick(R.id.allStopsButton)
     public void allStops() {
         //транзакия для запуска фрагмента олстопс
-        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.container, AllStopsFragment.newInstance());
-        fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
-
-        fragmentTransaction.commit();
+        mPresenter.clickedOnAllStopsButton();
     }
 }

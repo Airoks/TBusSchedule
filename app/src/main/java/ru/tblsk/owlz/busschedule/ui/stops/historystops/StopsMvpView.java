@@ -8,4 +8,5 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 
 public interface StopsMvpView extends MvpView{
     void showSearchHistoryStops(List<Stop> stops);
+    void showAllStopsFragment();
 }

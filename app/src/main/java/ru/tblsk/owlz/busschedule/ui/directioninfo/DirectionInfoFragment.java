@@ -191,5 +191,12 @@ public class DirectionInfoFragment extends BaseFragment
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.clickedOnBackButton();
+            }
+        });
     }
 }

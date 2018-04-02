@@ -27,8 +27,6 @@ import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private static final String DIRECT = "direct";
-    private static final String REVERSE = "reverse";
     private static final int DIRECT_ID = DirectionType.DIRECT.id;
     private static final int REVERSE_ID = DirectionType.REVERSE.id;
 
