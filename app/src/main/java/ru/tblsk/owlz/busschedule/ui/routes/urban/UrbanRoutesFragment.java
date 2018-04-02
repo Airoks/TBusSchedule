@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class UrbanRoutesFragment extends BaseFragment
 
     public static final String TAG = "UrbanRoutesFragment";
     public static final String FLIGHTS = "flights";
-    public static final String DIRECTION_ROUTS = "directionRouts";
     public static final int DIRECT = DirectionType.DIRECT.id;
     public static final int REVERSE = DirectionType.REVERSE.id;
 
@@ -53,7 +51,6 @@ public class UrbanRoutesFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private List<FlightVO> mFlights;
-    private List<Integer> mDirectionRoutes;
 
     public static UrbanRoutesFragment newInstance() {
         Bundle args = new Bundle();
@@ -69,7 +66,6 @@ public class UrbanRoutesFragment extends BaseFragment
 
         if(savedInstanceState != null) {
             mFlights = savedInstanceState.getParcelableArrayList(FLIGHTS);
-            mDirectionRoutes = savedInstanceState.getIntegerArrayList(DIRECTION_ROUTS);
         }
     }
 
@@ -108,8 +104,6 @@ public class UrbanRoutesFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
-        outState.putIntegerArrayList(DIRECTION_ROUTS, (ArrayList<Integer>) mDirectionRoutes);
-
     }
 
     @Override
@@ -131,31 +125,32 @@ public class UrbanRoutesFragment extends BaseFragment
     @Override
     public void showUrbanRoutes(List<FlightVO> flights) {
         mFlights = flights;
-        mDirectionRoutes = new ArrayList<>();
-        //при первом запуске пользователь видит прямое направление
-        for(int i = 0; i < mFlights.size(); i++) {
-            mDirectionRoutes.add(DIRECT);
-        }
-        mAdapter.addItems(flights, mDirectionRoutes);
+        mAdapter.addItems(flights);
     }
 
     @Override
     public void showSavedUrbanRoutes() {
-        mAdapter.addItems(mFlights, mDirectionRoutes);
+        mAdapter.addItems(mFlights);
     }
 
     @Override
-    public void updateDirectionFromDirectionInfo(List<ChangeDirectionUrban.InFragment> inFragments) {
-        if(!inFragments.isEmpty()) {
-            int position = inFragments.size() - 1;
-            mDirectionRoutes.set(inFragments.get(position).getPosition(),
-                    inFragments.get(position).getDirectionType());
-        }
+    public void updateDirectionFromDirectionInfo(ChangeDirectionUrban.InFragment inFragment) {
+        int position = inFragment.getPosition();
+        int directionType = inFragment.getDirectionType();
+
+        FlightVO flightVO = mFlights.get(position);
+        flightVO.setCurrentDirection(directionType);
+        mFlights.set(position, flightVO);
     }
 
     @Override
     public void updateDirectionFromAdapter(ChangeDirectionUrban.InAdapter inAdapter) {
-        mDirectionRoutes.set(inAdapter.getPosition(), inAdapter.getDirectionType());
+        int position = inAdapter.getPosition();
+        int directionType = inAdapter.getDirectionType();
+
+        FlightVO flightVO = mFlights.get(position);
+        flightVO.setCurrentDirection(directionType);
+        mFlights.set(position, flightVO);
     }
 
     @Override

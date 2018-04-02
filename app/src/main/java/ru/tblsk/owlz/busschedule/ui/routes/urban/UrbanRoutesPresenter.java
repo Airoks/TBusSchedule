@@ -12,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
@@ -23,7 +24,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
         extends BasePresenter<V> implements UrbanRoutesMvpPresenter<V>{
 
     private RxEventBus mEventBus;
-    private List<ChangeDirectionUrban.InFragment> mChangeInFragment;
+    private ChangeDirectionUrban.InFragment mChangeInFragment;
 
     @Inject
     public UrbanRoutesPresenter(DataManager dataManager,
@@ -33,16 +34,15 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mEventBus = eventBus;
-        mChangeInFragment = new ArrayList<>();
     }
 
     @Override
     public void attachView(V mvpView) {
         super.attachView(mvpView);
-
-
-        getMvpView().updateDirectionFromDirectionInfo(mChangeInFragment);
-        mChangeInFragment.clear();
+        if(mChangeInFragment != null) {
+            getMvpView().updateDirectionFromDirectionInfo(mChangeInFragment);
+        }
+        mChangeInFragment = null;
     }
 
     @Override
@@ -53,12 +53,14 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                     @Override
                     public List<FlightVO> apply(List<Flight> flights) throws Exception {
                         List<FlightVO> flightVOList = new ArrayList<>();
-                        for(Flight flight : flights) {
+                        for(int i = 0; i < flights.size(); i ++) {
                             FlightVO flightVO = new FlightVO();
-                            flightVO.setId(flight.getId());
-                            flightVO.setFlightNumber(flight.getFlightNumber());
-                            flightVO.setFlightType(flight.getFlightType().id);
-                            flightVO.setDirections(flight.getDirections());
+                            flightVO.setId(flights.get(i).getId());
+                            flightVO.setFlightNumber(flights.get(i).getFlightNumber());
+                            flightVO.setFlightType(flights.get(i).getFlightType().id);
+                            flightVO.setDirections(flights.get(i).getDirections());
+                            flightVO.setPosition(i);
+                            flightVO.setCurrentDirection(DirectionType.DIRECT.id);
                             flightVOList.add(flightVO);
                         }
                         return flightVOList;
@@ -96,7 +98,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
                     .subscribe(new Consumer<ChangeDirectionUrban.InFragment>() {
                         @Override
                         public void accept(ChangeDirectionUrban.InFragment inFragment) throws Exception {
-                            mChangeInFragment.add(inFragment);
+                            mChangeInFragment = inFragment;
                         }
                     }, new Consumer<Throwable>() {
                         @Override

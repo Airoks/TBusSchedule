@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
-import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
@@ -34,7 +33,6 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int REVERSE_ID = DirectionType.REVERSE.id;
 
     private List<FlightVO> mFlights;
-    private List<Integer> mDirectionRouts;
     private RxEventBus mEventBus;
     private int mFlightType;
 
@@ -43,7 +41,6 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.mEventBus = eventBus;
         this.mFlightType = flightType;
         mFlights = new ArrayList<>();
-        mDirectionRouts = new ArrayList<>();
     }
 
     @Override
@@ -57,7 +54,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onClick(View view) {
                 int stance = viewHolder.getAdapterPosition();
-                int directionId = mDirectionRouts.get(stance);
+                int directionId = mFlights.get(stance).getCurrentDirection();
                 List<Direction> directions = mFlights.get(stance).getDirections();
 
                 for(Direction direction : directions) {
@@ -78,15 +75,19 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     public void onClick(View view) {
                         int stance = viewHolder.getAdapterPosition();
 
-                        if(mDirectionRouts.get(stance) == DIRECT_ID) {
-                            mDirectionRouts.set(stance, REVERSE_ID);
+                        if(mFlights.get(stance).getCurrentDirection() == DIRECT_ID) {
+                            FlightVO flightVO = mFlights.get(stance);
+                            flightVO.setCurrentDirection(REVERSE_ID);
+                            mFlights.set(stance, flightVO);
                         } else {
-                            mDirectionRouts.set(stance, DIRECT_ID);
+                            FlightVO flightVO = mFlights.get(stance);
+                            flightVO.setCurrentDirection(DIRECT_ID);
+                            mFlights.set(stance, flightVO);
                         }
 
                         notifyItemChanged(stance);
 
-                        int directionTypeName = mDirectionRouts.get(stance);
+                        int directionTypeName = mFlights.get(stance).getCurrentDirection();
                         if(mFlightType == FlightType.URBAN.id) {
                             mEventBus.post(new ChangeDirectionUrban
                                     .InAdapter(stance, directionTypeName));
@@ -110,16 +111,13 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mFlights.size();
     }
 
-    public void addItems(List<FlightVO> flights, List<Integer> directionRouts) {
-        mDirectionRouts.clear();
+    public void addItems(List<FlightVO> flights) {
         mFlights.clear();
-        mDirectionRouts.addAll(directionRouts);
         mFlights.addAll(flights);
         notifyDataSetChanged();
     }
 
-    class RoutesViewHolder extends BaseViewHolder
-            implements View.OnClickListener{
+    class RoutesViewHolder extends BaseViewHolder {
 
         @BindView(R.id.directionNameTextView)
         TextView mDirectionName;
@@ -142,17 +140,12 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             int size = mFlights.get(position).getDirections().size();
             if(size >= 2) {
                 mChangeButton.setVisibility(View.VISIBLE);
-                findByDirectionType(position, mDirectionRouts.get(position));
+                findByDirectionType(position, mFlights.get(position).getCurrentDirection());
             } else {
                 mChangeButton.setVisibility(View.GONE);
                 mDirectionName.setText(mFlights.get(position)
                         .getDirections().get(0).getDirectionName());
             }
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
 
         private void findByDirectionType(int position, int directionId) {
