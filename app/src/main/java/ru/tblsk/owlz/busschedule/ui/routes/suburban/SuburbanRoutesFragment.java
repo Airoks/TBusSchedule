@@ -112,9 +112,7 @@ public class SuburbanRoutesFragment extends BaseFragment
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
 
-        if(mFlights == null || savedInstanceState != null) {
-            mPresenter.subscribeOnEvents();
-        }
+        mPresenter.subscribeOnEvents();
 
         return view;
     }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,9 +99,7 @@ public class UrbanRoutesFragment extends BaseFragment
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
 
-        if(mFlights == null || savedInstanceState != null) {
-            mPresenter.subscribeOnEvents();
-        }
+        mPresenter.subscribeOnEvents();
 
         return view;
     }

@@ -82,52 +82,55 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
 
     @Override
     public void subscribeOnEvents() {
-        //clicked on change direction button in DirectionInfoFragment
-        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.InFragment.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban.InFragment>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban.InFragment inFragment) throws Exception {
-                        changeInFragment.add(inFragment);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+        //если сработал clear, то подписываемся
+       if(getCompositeDisposable().size() == 0) {
+           //clicked on change direction button in DirectionInfoFragment
+           getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.InFragment.class)
+                   .subscribeOn(getSchedulerProvider().io())
+                   .observeOn(getSchedulerProvider().ui())
+                   .subscribe(new Consumer<ChangeDirectionSuburban.InFragment>() {
+                       @Override
+                       public void accept(ChangeDirectionSuburban.InFragment inFragment) throws Exception {
+                           changeInFragment.add(inFragment);
+                       }
+                   }, new Consumer<Throwable>() {
+                       @Override
+                       public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
+                       }
+                   }));
 
-        //clicked on change direction button
-        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.InAdapter.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban.InAdapter>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban.InAdapter inAdapter) throws Exception {
-                        getMvpView().updateDirectionFromAdapter(inAdapter);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+           //clicked on change direction button
+           getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.InAdapter.class)
+                   .subscribeOn(getSchedulerProvider().io())
+                   .observeOn(getSchedulerProvider().ui())
+                   .subscribe(new Consumer<ChangeDirectionSuburban.InAdapter>() {
+                       @Override
+                       public void accept(ChangeDirectionSuburban.InAdapter inAdapter) throws Exception {
+                           getMvpView().updateDirectionFromAdapter(inAdapter);
+                       }
+                   }, new Consumer<Throwable>() {
+                       @Override
+                       public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
+                       }
+                   }));
 
-        //clicked on item recycler view
-        getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<ChangeDirectionSuburban>() {
-                    @Override
-                    public void accept(ChangeDirectionSuburban directionSuburban) throws Exception {
-                        getMvpView().openDirectionInfoFragment(directionSuburban);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+           //clicked on item recycler view
+           getCompositeDisposable().add(mEventBus.filteredObservable(ChangeDirectionSuburban.class)
+                   .subscribeOn(getSchedulerProvider().io())
+                   .observeOn(getSchedulerProvider().ui())
+                   .subscribe(new Consumer<ChangeDirectionSuburban>() {
+                       @Override
+                       public void accept(ChangeDirectionSuburban directionSuburban) throws Exception {
+                           getMvpView().openDirectionInfoFragment(directionSuburban);
+                       }
+                   }, new Consumer<Throwable>() {
+                       @Override
+                       public void accept(Throwable throwable) throws Exception {
 
-                    }
-                }));
+                       }
+                   }));
+       }
     }
 }
