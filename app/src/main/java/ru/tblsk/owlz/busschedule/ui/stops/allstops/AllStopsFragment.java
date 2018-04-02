@@ -26,6 +26,7 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
 public class AllStopsFragment extends BaseFragment
         implements AllStopsMvpView, SetupToolbar{
@@ -50,7 +51,7 @@ public class AllStopsFragment extends BaseFragment
     @BindView(R.id.fastScroll)
     FastScroller mFastScroller;
 
-    private List<Stop> mStops;
+    private List<StopVO> mStops;
 
     public static AllStopsFragment newInstance() {
         return new AllStopsFragment();
@@ -93,7 +94,7 @@ public class AllStopsFragment extends BaseFragment
     }
 
     @Override
-    public void showAllStops(List<Stop> stops) {
+    public void showAllStops(List<StopVO> stops) {
         mStops = stops;
         mAdapter.addItems(stops);
     }

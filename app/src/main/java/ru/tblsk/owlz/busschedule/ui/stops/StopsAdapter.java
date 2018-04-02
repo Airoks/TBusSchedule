@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -16,14 +17,15 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
 public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements SectionTitleProvider{
 
-    private List<Stop> mStops;
+    private List<StopVO> mStops;
 
-    public StopsAdapter(List<Stop> stops) {
-        this.mStops = stops;
+    public StopsAdapter() {
+        mStops = new ArrayList<>();
     }
 
     @Override
@@ -43,7 +45,7 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         return mStops.size();
     }
 
-    public void addItems(List<Stop> stops) {
+    public void addItems(List<StopVO> stops) {
         mStops.clear();
         mStops.addAll(stops);
         notifyDataSetChanged();

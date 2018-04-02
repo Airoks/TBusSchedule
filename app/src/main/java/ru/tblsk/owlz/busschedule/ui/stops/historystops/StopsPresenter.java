@@ -14,17 +14,24 @@ import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 
 public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
         implements StopsMvpPresenter<V> {
 
+    private StopMapper mStopMapper;
+
     @Inject
     public StopsPresenter(DataManager dataManager,
                           CompositeDisposable compositeDisposable,
-                          SchedulerProvider schedulerProvider) {
+                          SchedulerProvider schedulerProvider,
+                          StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
+
+        this.mStopMapper = stopMapper;
     }
 
     @Override
@@ -33,9 +40,10 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                 .getSearchHistoryStops()
                 .subscribeOn(Schedulers.io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<List<Stop>>() {
+                .map(mStopMapper)
+                .subscribe(new Consumer<List<StopVO>>() {
                     @Override
-                    public void accept(List<Stop> stops) throws Exception {
+                    public void accept(List<StopVO> stops) throws Exception {
                         //если что передадим пустой список
                         getMvpView().showSearchHistoryStops(stops);
                     }
@@ -58,7 +66,7 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
-                        getMvpView().showSearchHistoryStops(Collections.<Stop>emptyList());
+                        getMvpView().showSearchHistoryStops(Collections.<StopVO>emptyList());
                     }
                 }, new Consumer<Throwable>() {
                     @Override

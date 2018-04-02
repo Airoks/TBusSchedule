@@ -3,10 +3,10 @@ package ru.tblsk.owlz.busschedule.ui.stops.historystops;
 
 import java.util.List;
 
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.MvpView;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
 public interface StopsMvpView extends MvpView{
-    void showSearchHistoryStops(List<Stop> stops);
+    void showSearchHistoryStops(List<StopVO> stops);
     void showAllStopsFragment();
 }

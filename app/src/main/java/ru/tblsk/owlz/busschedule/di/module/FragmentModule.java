@@ -27,7 +27,7 @@ public class FragmentModule {
 
     @Provides
     StopsAdapter provideStopsAdapter() {
-        return new StopsAdapter(new ArrayList<Stop>());
+        return new StopsAdapter();
     }
 
     @Provides
