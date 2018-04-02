@@ -13,6 +13,8 @@ import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpView;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
@@ -103,6 +105,16 @@ public class ActivityModule {
     @Provides
     LinearLayoutManager provideLinearLayoutManager(@ActivityContext Context context) {
         return new LinearLayoutManager(context);
+    }
+
+    @Provides
+    FlightMapper provideFlightMapper() {
+        return new FlightMapper();
+    }
+
+    @Provides
+    StopMapper provideStopMapper() {
+        return new StopMapper();
     }
 
 }

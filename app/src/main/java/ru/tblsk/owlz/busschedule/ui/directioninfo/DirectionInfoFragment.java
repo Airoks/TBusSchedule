@@ -29,6 +29,7 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
 public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
@@ -56,7 +57,7 @@ public class DirectionInfoFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private FlightVO mFlight;
-    private List<Stop> mStops;
+    private List<StopVO> mStops;
 
 
     public static DirectionInfoFragment newInstance(@NonNull FlightVO flight) {
@@ -140,7 +141,7 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
-    public void showStopsOnDirection(List<Stop> stops) {
+    public void showStopsOnDirection(List<StopVO> stops) {
         mStops = stops;
         mAdapter.addItems(mStops);
     }

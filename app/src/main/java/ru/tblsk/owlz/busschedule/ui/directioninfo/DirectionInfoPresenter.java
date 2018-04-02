@@ -12,9 +12,11 @@ import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
@@ -25,15 +27,18 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
     private static final int REVERSE = DirectionType.REVERSE.id;
 
     private RxEventBus mEventBus;
+    private StopMapper mStopMapper;
 
     @Inject
     public DirectionInfoPresenter(DataManager dataManager,
                                   CompositeDisposable compositeDisposable,
                                   SchedulerProvider schedulerProvider,
-                                  RxEventBus eventBus) {
+                                  RxEventBus eventBus,
+                                  StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mEventBus = eventBus;
+        this.mStopMapper = stopMapper;
     }
 
     @Override
@@ -41,9 +46,10 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
         getCompositeDisposable().add(getDataManager().getStopsOnDirection(directionId)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<List<Stop>>() {
+                .map(mStopMapper)
+                .subscribe(new Consumer<List<StopVO>>() {
                     @Override
-                    public void accept(List<Stop> stops) throws Exception {
+                    public void accept(List<StopVO> stops) throws Exception {
                         getMvpView().showStopsOnDirection(stops);
                     }
                 }, new Consumer<Throwable>() {

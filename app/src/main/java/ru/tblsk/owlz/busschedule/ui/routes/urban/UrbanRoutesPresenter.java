@@ -1,17 +1,13 @@
 package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.DataManager;
-import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
-import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
@@ -23,16 +19,19 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
         extends BasePresenter<V> implements UrbanRoutesMvpPresenter<V>{
 
     private RxEventBus mEventBus;
+    private FlightMapper mFlightMapper;
     private ChangeDirectionUrban.InFragment mChangeInFragment;
 
     @Inject
     public UrbanRoutesPresenter(DataManager dataManager,
                                 CompositeDisposable compositeDisposable,
                                 SchedulerProvider schedulerProvider,
-                                RxEventBus eventBus) {
+                                RxEventBus eventBus,
+                                FlightMapper flightMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mEventBus = eventBus;
+        this.mFlightMapper = flightMapper;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class UrbanRoutesPresenter<V extends UrbanRoutesMvpView>
     public void getUrbanFlights() {
         getCompositeDisposable().add(getDataManager()
                 .getFlightByType(FlightType.URBAN)
-                .map(new FlightMapper())
+                .map(mFlightMapper)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<FlightVO>>() {

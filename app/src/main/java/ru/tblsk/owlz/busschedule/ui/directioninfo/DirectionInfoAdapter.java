@@ -17,12 +17,13 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private RxEventBus mEventBus;
-    private List<Stop> mStops;
+    private List<StopVO> mStops;
 
     @Inject
     public DirectionInfoAdapter(RxEventBus eventBus) {
@@ -42,7 +43,7 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         holder.onBind(position);
     }
 
-    public void addItems(List<Stop> stops) {
+    public void addItems(List<StopVO> stops) {
         this.mStops.clear();
         this.mStops.addAll(stops);
         notifyDataSetChanged();

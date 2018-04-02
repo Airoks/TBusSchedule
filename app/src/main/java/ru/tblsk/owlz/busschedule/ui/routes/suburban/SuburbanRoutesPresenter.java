@@ -1,19 +1,16 @@
 package ru.tblsk.owlz.busschedule.ui.routes.suburban;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.DataManager;
-import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
-import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
@@ -22,16 +19,19 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
         extends BasePresenter<V> implements SuburbanRoutesMvpPresenter<V> {
 
     private RxEventBus mEventBus;
+    private FlightMapper mFlightMapper;
     private ChangeDirectionSuburban.InFragment mChangeInFragment;
 
     @Inject
     public SuburbanRoutesPresenter(DataManager dataManager,
                                    CompositeDisposable compositeDisposable,
                                    SchedulerProvider schedulerProvider,
-                                   RxEventBus eventBus) {
+                                   RxEventBus eventBus,
+                                   FlightMapper flightMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mEventBus = eventBus;
+        this.mFlightMapper = flightMapper;
     }
 
     @Override
@@ -47,23 +47,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
     public void getSuburbanFlights() {
         getCompositeDisposable().add(getDataManager()
                 .getFlightByType(FlightType.SUBURBAN)
-                .map(new Function<List<Flight>, List<FlightVO>>() {
-                    @Override
-                    public List<FlightVO> apply(List<Flight> flights) throws Exception {
-                        List<FlightVO> flightVOList = new ArrayList<>();
-                        for(int i = 0; i < flights.size(); i ++) {
-                            FlightVO flightVO = new FlightVO();
-                            flightVO.setId(flights.get(i).getId());
-                            flightVO.setFlightNumber(flights.get(i).getFlightNumber());
-                            flightVO.setFlightType(flights.get(i).getFlightType().id);
-                            flightVO.setDirections(flights.get(i).getDirections());
-                            flightVO.setPosition(i);
-                            flightVO.setCurrentDirectionType(DirectionType.DIRECT.id);
-                            flightVOList.add(flightVO);
-                        }
-                        return flightVOList;
-                    }
-                })
+                .map(mFlightMapper)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<FlightVO>>() {
