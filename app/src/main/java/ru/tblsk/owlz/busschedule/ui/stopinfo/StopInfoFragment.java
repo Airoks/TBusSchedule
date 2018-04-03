@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -34,6 +35,12 @@ public class StopInfoFragment extends BaseFragment
 
     @Inject
     StopInfoMvpPresenter<StopInfoMvpView> mPresenter;
+
+    @Inject
+    StopInfoAdapter mAdapter;
+
+    @Inject
+    LinearLayoutManager mLinearLayout;
 
     @BindView(R.id.toolbar_stopinfo)
     Toolbar mToolbar;
@@ -99,6 +106,17 @@ public class StopInfoFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
+        setupToolbar();
+
+        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setAdapter(mAdapter);
+
+        if(mDirections == null) {
+            mPresenter.getDirectionsByStop(mStop.getId());
+        } else {
+            mPresenter.getSavedDirectionsByStop();
+        }
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
@@ -118,13 +136,14 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
-    public void showDirectionsByStop() {
-
+    public void showDirectionsByStop(List<DirectionVO> directions) {
+        mDirections = directions;
+        mAdapter.addItems(mDirections);
     }
 
     @Override
     public void showSavedDirectionsByStop() {
-
+        mAdapter.addItems(mDirections);
     }
 
     @Override

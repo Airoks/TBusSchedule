@@ -13,6 +13,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
@@ -58,5 +59,10 @@ public class FragmentModule {
     @Type("suburban")
     RoutesAdapter provideSuburbanRoutesAdapter(RxEventBus eventBus) {
         return new RoutesAdapter(eventBus, FlightType.SUBURBAN.id);
+    }
+
+    @Provides
+    StopInfoAdapter provideStopInfoAdapter() {
+        return new StopInfoAdapter();
     }
 }

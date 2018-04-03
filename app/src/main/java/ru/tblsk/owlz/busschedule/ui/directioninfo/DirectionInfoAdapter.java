@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
