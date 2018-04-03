@@ -15,6 +15,9 @@ public final class AppConstants {
     public static final String SEED_DB_STOPS = "db/Stop.json";
     public static final String SEED_DB_STOPS_ON_ROUTS = "db/StopOnRouts.json";
 
+    public static final int STOPS_ADAPTER = 0;
+    public static final int ALL_STOPS_ADAPTER = 1;
+
     private AppConstants() {
 
     }

@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -39,6 +40,7 @@ public class AllStopsFragment extends BaseFragment
     AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
 
     @Inject
+    @Type("allstops")
     StopsAdapter mAdapter;
 
     @Inject

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
@@ -12,18 +13,24 @@ import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.AppConstants;
 
 public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements SectionTitleProvider{
 
     private List<StopVO> mStops;
+    private  int mTypeAdapter;
 
-    public StopsAdapter() {
+    @Inject
+    public StopsAdapter(int typeAdapter) {
+        this.mTypeAdapter = typeAdapter;
         mStops = new ArrayList<>();
     }
 
@@ -65,9 +72,17 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         @BindView(R.id.textview_stop_stopname)
         TextView mStopName;
 
+        @BindView(R.id.imageview_stop_bench)
+        ImageView mChangeDirection;
+
         public StopViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            if(mTypeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
+                mChangeDirection.setVisibility(View.INVISIBLE);
+            }
+
             itemView.setOnClickListener(this);
         }
 

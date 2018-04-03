@@ -14,6 +14,7 @@ import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
+import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 @Module
@@ -26,8 +27,15 @@ public class FragmentModule {
     }
 
     @Provides
+    @Type("stops")
     StopsAdapter provideStopsAdapter() {
-        return new StopsAdapter();
+        return new StopsAdapter(AppConstants.STOPS_ADAPTER);
+    }
+
+    @Provides
+    @Type("allstops")
+    StopsAdapter provideAllStopsAdapter() {
+        return new StopsAdapter(AppConstants.ALL_STOPS_ADAPTER);
     }
 
     @Provides
