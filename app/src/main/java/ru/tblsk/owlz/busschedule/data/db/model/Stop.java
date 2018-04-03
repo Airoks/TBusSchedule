@@ -1,13 +1,12 @@
 package ru.tblsk.owlz.busschedule.data.db.model;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.OrderBy;
@@ -15,11 +14,9 @@ import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 
 @Entity(active = true)
-public class Stop implements Parcelable{
+public class Stop{
     @Expose
     @SerializedName("id")
     @Property(nameInDb = "stop_id")
@@ -36,15 +33,6 @@ public class Stop implements Parcelable{
     @OrderBy("stopPosition ASC")
     private List<StopsOnRouts> stopsOnRouts;
 
-    protected Stop(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readLong();
-        }
-        stopName = in.readString();
-    }
-
     @Generated(hash = 590245342)
     public Stop(Long id, @NotNull String stopName) {
         this.id = id;
@@ -55,18 +43,6 @@ public class Stop implements Parcelable{
     public Stop() {
     }
 
-    public static final Creator<Stop> CREATOR = new Creator<Stop>() {
-        @Override
-        public Stop createFromParcel(Parcel in) {
-            return new Stop(in);
-        }
-
-        @Override
-        public Stop[] newArray(int size) {
-            return new Stop[size];
-        }
-    };
-
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
@@ -74,22 +50,6 @@ public class Stop implements Parcelable{
     /** Used for active entity operations. */
     @Generated(hash = 1582113218)
     private transient StopDao myDao;
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        parcel.writeString(stopName);
-    }
 
     public Long getId() {
         return this.id;

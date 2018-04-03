@@ -10,7 +10,6 @@ import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
@@ -106,6 +105,6 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
 
     @Override
     public void clickedOnBackButton() {
-        getMvpView().showPreviousFragment();
+        getMvpView().openPreviousFragment();
     }
 }

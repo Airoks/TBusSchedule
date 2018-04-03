@@ -71,4 +71,9 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
                     }
                 }));
     }
+
+    @Override
+    public void clickedOnBackButton() {
+        getMvpView().openPreviousFragment();
+    }
 }

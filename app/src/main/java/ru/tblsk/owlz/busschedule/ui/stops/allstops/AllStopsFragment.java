@@ -93,6 +93,17 @@ public class AllStopsFragment extends BaseFragment
         mAdapter.addItems(mStops);
     }
 
+    @Override
+    public void openStopInfoFragment(StopVO stop) {
+
+    }
+
+    @Override
+    public void openPreviousFragment() {
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        fragmentManager.popBackStack();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -147,9 +158,7 @@ public class AllStopsFragment extends BaseFragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //back to history stops fragment
-                FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                mPresenter.clickedOnBackButton();
             }
         });
     }

@@ -31,7 +31,7 @@ public interface DbHelper {
 
     Single<List<Stop>> getAllStops();
     Single<List<Flight>> getFlightByType(FlightType flightType);
-    Single<List<Direction>> getDirectionByStop(long stopId);
+    Single<List<Direction>> getDirectionsByStop(long stopId);
     Single<List<Schedule>> getSchedule(long stopId, long directionId);
     Single<List<Stop>> getStopsOnDirection(long directionId);
 

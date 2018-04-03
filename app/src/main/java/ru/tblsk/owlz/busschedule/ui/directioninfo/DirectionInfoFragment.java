@@ -138,6 +138,9 @@ public class DirectionInfoFragment extends BaseFragment
         } else {
             mPresenter.getSavedStopsOnDirection();
         }
+
+        ((MainActivity)getBaseActivity()).lockDrawer();
+        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
     }
 
     @Override
@@ -152,7 +155,7 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
-    public void showPreviousFragment() {
+    public void openPreviousFragment() {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }
@@ -185,9 +188,6 @@ public class DirectionInfoFragment extends BaseFragment
                 return false;
             }
         });
-
-        ((MainActivity)getBaseActivity()).lockDrawer();
-        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

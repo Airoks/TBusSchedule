@@ -17,4 +17,19 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
                              SchedulerProvider schedulerProvider) {
         super(dataManager, compositeDisposable, schedulerProvider);
     }
+
+    @Override
+    public void getDirectionsByStop(Long stopId) {
+
+    }
+
+    @Override
+    public void getSavedDirectionsByStop() {
+        getMvpView().showSavedDirectionsByStop();
+    }
+
+    @Override
+    public void clickedOnBackButton() {
+        getMvpView().openPreviousFragment();
+    }
 }

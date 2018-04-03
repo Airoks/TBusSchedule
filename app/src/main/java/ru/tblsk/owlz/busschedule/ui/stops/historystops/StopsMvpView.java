@@ -9,4 +9,5 @@ import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 public interface StopsMvpView extends MvpView{
     void showSearchHistoryStops(List<StopVO> stops);
     void showAllStopsFragment();
+    void openStopInfoFragment(StopVO stop);
 }

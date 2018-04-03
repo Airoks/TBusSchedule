@@ -7,4 +7,5 @@ public interface AllStopsMvpPresenter<V extends AllStopsMvpView> extends MvpPres
     void getAllStops();
     void getSavedAllStops();
     void insertSearchHistoryStops(long stopId);
+    void clickedOnBackButton();
 }

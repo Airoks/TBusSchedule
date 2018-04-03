@@ -182,7 +182,7 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<List<Direction>> getDirectionByStop(final long stopId) {
+    public Single<List<Direction>> getDirectionsByStop(final long stopId) {
         return Single.fromCallable(new Callable<List<Direction>>() {
             @Override
             public List<Direction> call() throws Exception {

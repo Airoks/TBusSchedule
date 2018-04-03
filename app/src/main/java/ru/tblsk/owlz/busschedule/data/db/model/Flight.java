@@ -19,7 +19,7 @@ import org.greenrobot.greendao.annotation.ToMany;
 import java.util.List;
 
 @Entity(active = true)
-public class Flight implements Parcelable{
+public class Flight{
     @Expose
     @SerializedName("id")
     @Property(nameInDb = "flight_id")
@@ -42,20 +42,6 @@ public class Flight implements Parcelable{
     @ToMany(referencedJoinProperty = "flightId")
     private List<Direction> directions;
 
-    protected Flight(Parcel in) {
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readLong();
-        }
-        if (in.readByte() == 0) {
-            flightType = null;
-        } else {
-            flightType = FlightType.valueOf(in.readString());
-        }
-        flightNumber = in.readString();
-    }
-
     @Generated(hash = 1944495751)
     public Flight(Long id, @NotNull FlightType flightType,
             @NotNull String flightNumber) {
@@ -68,18 +54,6 @@ public class Flight implements Parcelable{
     public Flight() {
     }
 
-    public static final Creator<Flight> CREATOR = new Creator<Flight>() {
-        @Override
-        public Flight createFromParcel(Parcel in) {
-            return new Flight(in);
-        }
-
-        @Override
-        public Flight[] newArray(int size) {
-            return new Flight[size];
-        }
-    };
-
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
@@ -87,28 +61,6 @@ public class Flight implements Parcelable{
     /** Used for active entity operations. */
     @Generated(hash = 1011557899)
     private transient FlightDao myDao;
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(id);
-        }
-        if (flightType == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeString(flightType.name());
-        }
-        parcel.writeString(flightNumber);
-    }
 
     public Long getId() {
         return this.id;

@@ -137,6 +137,11 @@ public class StopsFragment extends BaseFragment
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void openStopInfoFragment(StopVO stop) {
+
+    }
+
     @OnClick(R.id.imagebutton_stop_delete)
     public void deleteSearchHistoryStops() {
         mPresenter.deleteSearchHistoryStops();
