@@ -9,7 +9,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
@@ -47,6 +46,11 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
                     public void accept(Throwable throwable) throws Exception {
                     }
                 }));
+    }
+
+    @Override
+    public void getSavedAllStops() {
+        getMvpView().showSavedAllStops();
     }
 
     @Override

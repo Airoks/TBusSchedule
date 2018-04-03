@@ -82,6 +82,28 @@ public class SuburbanRoutesFragment extends BaseFragment
         super.onDestroy();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_suburbanroutes, container, false);
+        getBaseActivity().getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);
+        setUnbinder(ButterKnife.bind(this, view));
+
+        mPresenter.attachView(this);
+        mPresenter.subscribeOnEvents();
+
+        return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
+    }
+
     @Override
     protected void setUp(View view) {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,28 +118,6 @@ public class SuburbanRoutesFragment extends BaseFragment
         } else {
             mPresenter.getSavedSuburbanFlights();
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_suburbanroutes, container, false);
-        getBaseActivity().getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);
-        setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
-
-        mPresenter.subscribeOnEvents();
-
-        return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(FLIGHTS, (ArrayList<? extends Parcelable>) mFlights);
     }
 
     @Override

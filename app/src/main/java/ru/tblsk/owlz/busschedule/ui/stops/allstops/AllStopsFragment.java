@@ -83,36 +83,6 @@ public class AllStopsFragment extends BaseFragment
     }
 
     @Override
-    protected void setUp(View view) {
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
-        mRecyclerView.setAdapter(mAdapter);
-        mFastScroller.setRecyclerView(mRecyclerView);
-        setupToolbar();
-        mPresenter.getAllStops();
-    }
-
-    @Override
-    public void setupToolbar() {
-        getBaseActivity().setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
-        mToolbar.setTitle(R.string.all_stops);
-        mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
-
-        ((MainActivity)getBaseActivity()).lockDrawer();
-        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //back to history stops fragment
-                FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
-            }
-        });
-    }
-
-    @Override
     public void showAllStops(List<StopVO> stops) {
         mStops = stops;
         mAdapter.addItems(stops);
@@ -120,7 +90,7 @@ public class AllStopsFragment extends BaseFragment
 
     @Override
     public void showSavedAllStops() {
-
+        mAdapter.addItems(mStops);
     }
 
     @Nullable
@@ -147,5 +117,40 @@ public class AllStopsFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(STOPS, (ArrayList<? extends Parcelable>) mStops);
+    }
+
+    @Override
+    protected void setUp(View view) {
+        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setAdapter(mAdapter);
+        mFastScroller.setRecyclerView(mRecyclerView);
+        setupToolbar();
+
+        if(mStops == null) {
+            mPresenter.getAllStops();
+        } else {
+            mPresenter.getSavedAllStops();
+        }
+    }
+
+    @Override
+    public void setupToolbar() {
+        getBaseActivity().setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
+        mToolbar.setTitle(R.string.all_stops);
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
+
+        ((MainActivity)getBaseActivity()).lockDrawer();
+        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //back to history stops fragment
+                FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
+            }
+        });
     }
 }

@@ -94,8 +94,8 @@ public class UrbanRoutesFragment extends BaseFragment
                 .fragmentComponent(new FragmentModule(this)).inject(this);
 
         setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
 
+        mPresenter.attachView(this);
         mPresenter.subscribeOnEvents();
 
         return view;
