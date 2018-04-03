@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.stops.allstops;
 
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.futuremind.recyclerviewfastscroll.FastScroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,7 +22,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -32,6 +33,7 @@ public class AllStopsFragment extends BaseFragment
         implements AllStopsMvpView, SetupToolbar{
 
     public static final String TAG = "AllStopsFragment";
+    public static final String STOPS = "stops";
 
     @Inject
     AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
@@ -42,13 +44,13 @@ public class AllStopsFragment extends BaseFragment
     @Inject
     LinearLayoutManager mLinearLayout;
 
-    @BindView(R.id.allStopToolbar)
+    @BindView(R.id.toolbar_allstop)
     Toolbar mToolbar;
 
-    @BindView(R.id.allStopRv)
+    @BindView(R.id.recyclerview_allstop)
     RecyclerView mRecyclerView;
 
-    @BindView(R.id.fastScroll)
+    @BindView(R.id.fastscroll_allstop)
     FastScroller mFastScroller;
 
     private List<StopVO> mStops;
@@ -58,9 +60,24 @@ public class AllStopsFragment extends BaseFragment
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            mStops = savedInstanceState.getParcelableArrayList(STOPS);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        mPresenter.unsubscribeFromEvents();
+        super.onDestroy();
     }
 
     @Override
@@ -127,5 +144,6 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STOPS, (ArrayList<? extends Parcelable>) mStops);
     }
 }

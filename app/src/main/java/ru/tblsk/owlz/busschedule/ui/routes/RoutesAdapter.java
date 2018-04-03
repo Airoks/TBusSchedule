@@ -67,7 +67,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
         });
 
-        viewHolder.itemView.findViewById(R.id.directionChangeButton)
+        viewHolder.itemView.findViewById(R.id.imagebutton_route_change)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -117,13 +117,13 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     class RoutesViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.directionNameTextView)
+        @BindView(R.id.textview_route_directionname)
         TextView mDirectionName;
 
-        @BindView(R.id.flightNumberTextView)
+        @BindView(R.id.textview_route_flightnumber)
         TextView mFlightNumber;
 
-        @BindView(R.id.directionChangeButton)
+        @BindView(R.id.imagebutton_route_change)
         ImageButton mChangeButton;
 
         public RoutesViewHolder(View itemView) {

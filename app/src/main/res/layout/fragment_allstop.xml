@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/allStopsAppBar"
+        android:id="@+id/appbarlayout_allstop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/allStopToolbar"
+            android:id="@+id/toolbar_allstop"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/colorPrimary"
@@ -23,15 +23,15 @@
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/allStopsAppBar">
+        app:layout_constraintTop_toBottomOf="@id/appbarlayout_allstop">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/allStopRv"
+            android:id="@+id/recyclerview_allstop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <com.futuremind.recyclerviewfastscroll.FastScroller
-            android:id="@+id/fastScroll"
+            android:id="@+id/fastscroll_allstop"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"

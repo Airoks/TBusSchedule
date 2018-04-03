@@ -1,9 +1,22 @@
 <component name="ProjectDictionaryState">
   <dictionary name="owlznew">
     <words>
+      <w>allstop</w>
+      <w>appbarlayout</w>
+      <w>changehorizblack</w>
       <w>directioninfo</w>
       <w>directionname</w>
+      <w>flightnumber</w>
+      <w>imagebutton</w>
+      <w>imageview</w>
+      <w>recyclerview</w>
+      <w>routecontainer</w>
+      <w>routescontainer</w>
+      <w>shapeoval</w>
+      <w>stopinfo</w>
+      <w>stopname</w>
       <w>textview</w>
+      <w>urbanroutes</w>
     </words>
   </dictionary>
 </component>

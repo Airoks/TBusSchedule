@@ -42,10 +42,10 @@ public class StopsFragment extends BaseFragment
     @Inject
     LinearLayoutManager mLinearLayout;
 
-    @BindView(R.id.stopToolbar)
+    @BindView(R.id.toolbar_stop)
     Toolbar mToolbar;
 
-    @BindView(R.id.historyStopRv)
+    @BindView(R.id.recyclerview_stop)
     RecyclerView mRecyclerView;
 
 
@@ -135,12 +135,12 @@ public class StopsFragment extends BaseFragment
         fragmentTransaction.commit();
     }
 
-    @OnClick(R.id.deleteButton)
+    @OnClick(R.id.imagebutton_stop_delete)
     public void deleteSearchHistoryStops() {
         mPresenter.deleteSearchHistoryStops();
     }
 
-    @OnClick(R.id.allStopsButton)
+    @OnClick(R.id.button_stop_allstop)
     public void allStops() {
         //транзакия для запуска фрагмента олстопс
         mPresenter.clickedOnAllStopsButton();

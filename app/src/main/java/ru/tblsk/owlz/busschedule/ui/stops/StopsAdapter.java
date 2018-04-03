@@ -15,7 +15,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
@@ -63,7 +62,7 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
     class StopViewHolder extends BaseViewHolder
             implements View.OnClickListener{
-        @BindView(R.id.stopTextView)
+        @BindView(R.id.textview_stop_stopname)
         TextView mStopName;
 
         public StopViewHolder(View itemView) {

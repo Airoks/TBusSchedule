@@ -17,18 +17,17 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
 public class MainActivity extends BaseActivity {
 
     public static final String CURRENT_PAGE_ID = "currentPageId";
 
-    @BindView(R.id.bottom_navigation)
+    @BindView(R.id.bottomnavigationview_mainscreen)
     BottomNavigationView mBottomNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
-    @BindView(R.id.nav_view)
+    @BindView(R.id.navigationview_main)
     NavigationView mNavigationView;
 
     private int currentPageId = - 1;

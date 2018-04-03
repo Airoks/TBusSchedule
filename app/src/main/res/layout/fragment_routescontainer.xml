@@ -6,19 +6,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/routesContainerAppbar"
+        android:id="@+id/appbarlayout_routescontainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/routesContainerToolbar"
+            android:id="@+id/toolbar_routescontainer"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             app:layout_scrollFlags="scroll|enterAlways|snap">
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/routesContainerTab"
+            android:id="@+id/tablayout_routescontainer"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
 
@@ -27,10 +27,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/routesContainerViewpager"
+        android:id="@+id/viewpager_routescontainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/routesContainerAppbar"
+        android:layout_below="@id/appbarlayout_routescontainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

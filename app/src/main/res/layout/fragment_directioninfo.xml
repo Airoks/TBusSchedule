@@ -14,10 +14,7 @@
             android:id="@+id/toolbar_directioninfo"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
-
-
-        </android.support.v7.widget.Toolbar>
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
 
         <LinearLayout
             android:layout_width="match_parent"

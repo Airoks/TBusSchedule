@@ -48,7 +48,7 @@ public class UrbanRoutesFragment extends BaseFragment
     @Type("urban")
     RoutesAdapter mAdapter;
 
-    @BindView(R.id.urbanRouteRv)
+    @BindView(R.id.recyclerview_urbanroutes)
     RecyclerView mRecyclerView;
 
     private List<FlightVO> mFlights;

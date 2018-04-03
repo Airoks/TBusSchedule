@@ -9,7 +9,7 @@
     android:background="?attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/stopImageView"
+        android:id="@+id/imageview_stop_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -19,17 +19,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_bench_blue"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/stops" />
 
     <TextView
-        android:id="@+id/stopTextView"
+        android:id="@+id/textview_stop_stopname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/stopImageView"
+        app:layout_constraintLeft_toRightOf="@id/imageview_stop_bench"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="20dp" />
 

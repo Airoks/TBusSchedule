@@ -33,13 +33,13 @@ public class RoutesContainerFragment extends BaseFragment
     @Inject
     RoutesPagerAdapter mPagerAdapter;
 
-    @BindView(R.id.routesContainerToolbar)
+    @BindView(R.id.toolbar_routescontainer)
     Toolbar mToolbar;
 
-    @BindView(R.id.routesContainerViewpager)
+    @BindView(R.id.viewpager_routescontainer)
     ViewPager mViewPager;
 
-    @BindView(R.id.routesContainerTab)
+    @BindView(R.id.tablayout_routescontainer)
     TabLayout mTabLayout;
 
     public static RoutesContainerFragment newInstance() {
