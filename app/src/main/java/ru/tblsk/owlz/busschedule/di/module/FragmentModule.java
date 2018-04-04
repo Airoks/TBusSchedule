@@ -29,14 +29,14 @@ public class FragmentModule {
 
     @Provides
     @Type("stops")
-    StopsAdapter provideStopsAdapter() {
-        return new StopsAdapter(AppConstants.STOPS_ADAPTER);
+    StopsAdapter provideStopsAdapter(RxEventBus eventBus) {
+        return new StopsAdapter(eventBus, AppConstants.STOPS_ADAPTER);
     }
 
     @Provides
     @Type("allstops")
-    StopsAdapter provideAllStopsAdapter() {
-        return new StopsAdapter(AppConstants.ALL_STOPS_ADAPTER);
+    StopsAdapter provideAllStopsAdapter(RxEventBus eventBus) {
+        return new StopsAdapter(eventBus, AppConstants.ALL_STOPS_ADAPTER);
     }
 
     @Provides

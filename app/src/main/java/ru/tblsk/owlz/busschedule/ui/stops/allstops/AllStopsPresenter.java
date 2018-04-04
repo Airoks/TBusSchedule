@@ -11,22 +11,27 @@ import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
+import ru.tblsk.owlz.busschedule.ui.stops.SelectedStop;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<V>
         implements AllStopsMvpPresenter<V>{
 
     private StopMapper mStopMapper;
+    private RxEventBus mEventBus;
 
     @Inject
     public AllStopsPresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
                              SchedulerProvider schedulerProvider,
-                             StopMapper stopMapper) {
+                             StopMapper stopMapper,
+                             RxEventBus eventBus) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mStopMapper = stopMapper;
+        this.mEventBus = eventBus;
     }
 
     @Override
@@ -75,5 +80,25 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
     @Override
     public void clickedOnBackButton() {
         getMvpView().openPreviousFragment();
+    }
+
+    @Override
+    public void subscribeOnEvents() {
+        if(getCompositeDisposable().size() == 0) {
+            getCompositeDisposable().add(mEventBus.filteredObservable(SelectedStop.InAllStops.class)
+                    .subscribeOn(getSchedulerProvider().io())
+                    .observeOn(getSchedulerProvider().ui())
+                    .subscribe(new Consumer<SelectedStop.InAllStops>() {
+                        @Override
+                        public void accept(SelectedStop.InAllStops inAllStops) throws Exception {
+                            getMvpView().openStopInfoFragment(inAllStops.getStop());
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+
+                        }
+                    }));
+        }
     }
 }

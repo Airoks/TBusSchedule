@@ -24,6 +24,7 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
@@ -70,6 +71,7 @@ public class StopsFragment extends BaseFragment
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
+        mPresenter.subscribeOnEvents();
         setUnbinder(ButterKnife.bind(this, view));
 
         return view;
@@ -133,13 +135,17 @@ public class StopsFragment extends BaseFragment
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, AllStopsFragment.newInstance());
-        fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
+        fragmentTransaction.addToBackStack(StopsFragment.TAG);
         fragmentTransaction.commit();
     }
 
     @Override
     public void openStopInfoFragment(StopVO stop) {
-
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop));
+        fragmentTransaction.addToBackStack(StopsFragment.TAG);
+        fragmentTransaction.commit();
     }
 
     @OnClick(R.id.imagebutton_stop_delete)

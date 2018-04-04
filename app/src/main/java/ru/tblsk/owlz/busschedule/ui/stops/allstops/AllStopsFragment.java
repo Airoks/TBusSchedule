@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
@@ -95,7 +97,11 @@ public class AllStopsFragment extends BaseFragment
 
     @Override
     public void openStopInfoFragment(StopVO stop) {
-
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop));
+        fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -114,6 +120,7 @@ public class AllStopsFragment extends BaseFragment
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
+        mPresenter.subscribeOnEvents();
         setUnbinder(ButterKnife.bind(this, view));
         return view;
     }

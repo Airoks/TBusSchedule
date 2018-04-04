@@ -21,16 +21,19 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements SectionTitleProvider{
 
     private List<StopVO> mStops;
     private  int mTypeAdapter;
+    private RxEventBus mEventBus;
 
     @Inject
-    public StopsAdapter(int typeAdapter) {
-        this.mTypeAdapter = typeAdapter;
+    public StopsAdapter(RxEventBus eventBus, int typeAdapter) {
+        mTypeAdapter = typeAdapter;
+        mEventBus = eventBus;
         mStops = new ArrayList<>();
     }
 
@@ -38,7 +41,26 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_stop, parent, false);
-        return new StopViewHolder(itemView);
+
+        final StopViewHolder stopViewHolder = new StopViewHolder(itemView);
+
+        stopViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = stopViewHolder.getAdapterPosition();
+                StopVO stop = mStops.get(position);
+
+                if(mTypeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
+                    SelectedStop.InAllStops selected = new SelectedStop.InAllStops(stop);
+                    mEventBus.post(selected);
+                } else {
+                    SelectedStop.InHistoryStops selected = new SelectedStop.InHistoryStops(stop);
+                    mEventBus.post(selected);
+                }
+            }
+        });
+
+        return stopViewHolder;
     }
 
     @Override

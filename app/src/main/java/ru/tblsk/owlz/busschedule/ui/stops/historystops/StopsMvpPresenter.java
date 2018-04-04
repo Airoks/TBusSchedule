@@ -8,4 +8,5 @@ public interface StopsMvpPresenter<V extends StopsMvpView>
     void getSearchHistoryStops();
     void deleteSearchHistoryStops();
     void clickedOnAllStopsButton();
+    void subscribeOnEvents();
 }

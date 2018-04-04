@@ -51,16 +51,16 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int stance = viewHolder.getAdapterPosition();
-                int directionId = mFlights.get(stance).getCurrentDirectionType();
-                List<Direction> directions = mFlights.get(stance).getDirections();
+                int position = viewHolder.getAdapterPosition();
+                int directionId = mFlights.get(position).getCurrentDirectionType();
+                List<Direction> directions = mFlights.get(position).getDirections();
 
                 for(Direction direction : directions) {
                     if(direction.getDirectionType().id == directionId) {
                         if(mFlightType == FlightType.URBAN.id) {
-                            mEventBus.post(new ChangeDirectionUrban(direction, stance));
+                            mEventBus.post(new ChangeDirectionUrban(direction, position));
                         } else {
-                            mEventBus.post(new ChangeDirectionSuburban(direction, stance));
+                            mEventBus.post(new ChangeDirectionSuburban(direction, position));
                         }
                     }
                 }
@@ -71,27 +71,29 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int stance = viewHolder.getAdapterPosition();
+                        int position = viewHolder.getAdapterPosition();
 
-                        if(mFlights.get(stance).getCurrentDirectionType() == DIRECT_ID) {
-                            FlightVO flightVO = mFlights.get(stance);
+                        if(mFlights.get(position).getCurrentDirectionType() == DIRECT_ID) {
+                            FlightVO flightVO = mFlights.get(position);
                             flightVO.setCurrentDirectionType(REVERSE_ID);
-                            mFlights.set(stance, flightVO);
+                            mFlights.set(position, flightVO);
                         } else {
-                            FlightVO flightVO = mFlights.get(stance);
+                            FlightVO flightVO = mFlights.get(position);
                             flightVO.setCurrentDirectionType(DIRECT_ID);
-                            mFlights.set(stance, flightVO);
+                            mFlights.set(position, flightVO);
                         }
 
-                        notifyItemChanged(stance);
+                        notifyItemChanged(position);
 
-                        int directionTypeName = mFlights.get(stance).getCurrentDirectionType();
+                        int directionTypeName = mFlights.get(position).getCurrentDirectionType();
                         if(mFlightType == FlightType.URBAN.id) {
-                            mEventBus.post(new ChangeDirectionUrban
-                                    .InAdapter(stance, directionTypeName));
+                            ChangeDirectionUrban.InAdapter change =
+                                    new ChangeDirectionUrban.InAdapter(position, directionTypeName);
+                            mEventBus.post(change);
                         } else {
-                            mEventBus.post(new ChangeDirectionSuburban
-                                    .InAdapter(stance, directionTypeName));
+                            ChangeDirectionSuburban.InAdapter change =
+                                    new ChangeDirectionSuburban.InAdapter(position, directionTypeName);
+                            mEventBus.post(change);
                         }
                     }
                 });
