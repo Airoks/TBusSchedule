@@ -16,7 +16,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
@@ -52,17 +51,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onClick(View view) {
                 int position = viewHolder.getAdapterPosition();
-                int directionId = mFlights.get(position).getCurrentDirectionType();
-                List<Direction> directions = mFlights.get(position).getDirections();
-
-                for(Direction direction : directions) {
-                    if(direction.getDirectionType().id == directionId) {
-                        if(mFlightType == FlightType.URBAN.id) {
-                            mEventBus.post(new ChangeDirectionUrban(direction, position));
-                        } else {
-                            mEventBus.post(new ChangeDirectionSuburban(direction, position));
-                        }
-                    }
+                if(mFlightType == FlightType.URBAN.id) {
+                    mEventBus.post(new ChangeDirectionUrban(position));
+                } else {
+                    mEventBus.post(new ChangeDirectionSuburban(position));
                 }
             }
         });

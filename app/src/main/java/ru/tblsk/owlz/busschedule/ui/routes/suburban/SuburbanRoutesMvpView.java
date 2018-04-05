@@ -9,7 +9,6 @@ import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
 public interface SuburbanRoutesMvpView extends MvpView{
     void showSuburbanRoutes(List<FlightVO> flights);
     void showSavedSuburbanRoutes();
-    void updateDirectionFromDirectionInfo(ChangeDirectionSuburban.InFragment inFragment);
-    void updateDirectionFromAdapter(ChangeDirectionSuburban.InAdapter inAdapter);
-    void openDirectionInfoFragment(ChangeDirectionSuburban directionSuburban);
+    void changeDirection(int position, int directionType);
+    void openDirectionInfoFragment(int position);
 }

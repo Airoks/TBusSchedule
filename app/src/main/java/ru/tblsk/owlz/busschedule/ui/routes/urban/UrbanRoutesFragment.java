@@ -135,35 +135,20 @@ public class UrbanRoutesFragment extends BaseFragment
     }
 
     @Override
-    public void updateDirectionFromDirectionInfo(ChangeDirectionUrban.InFragment inFragment) {
-        int position = inFragment.getPosition();
-        int directionType = inFragment.getDirectionType();
-
-        FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirectionType(directionType);
-        mFlights.set(position, flightVO);
-    }
-
-    @Override
-    public void updateDirectionFromAdapter(ChangeDirectionUrban.InAdapter inAdapter) {
-        int position = inAdapter.getPosition();
-        int directionType = inAdapter.getDirectionType();
-
-        FlightVO flightVO = mFlights.get(position);
-        flightVO.setCurrentDirectionType(directionType);
-        mFlights.set(position, flightVO);
-    }
-
-    @Override
-    public void openDirectionInfoFragment(ChangeDirectionUrban directionUrban) {
-        int position = directionUrban.getFlightPosition();
-
+    public void openDirectionInfoFragment(int position) {
         FragmentManager fragmentManager = getBaseActivity()
                 .getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,
                 DirectionInfoFragment.newInstance(mFlights.get(position)));
-        transaction.addToBackStack(DirectionInfoFragment.TAG);
+        transaction.addToBackStack(UrbanRoutesFragment.TAG);
         transaction.commit();
+    }
+
+    @Override
+    public void changeDirection(int position, int directionType) {
+        FlightVO flightVO = mFlights.get(position);
+        flightVO.setCurrentDirectionType(directionType);
+        mFlights.set(position, flightVO);
     }
 }

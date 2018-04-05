@@ -20,7 +20,6 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
 
     private RxEventBus mEventBus;
     private FlightMapper mFlightMapper;
-    private ChangeDirectionSuburban.InFragment mChangeInFragment;
 
     @Inject
     public SuburbanRoutesPresenter(DataManager dataManager,
@@ -32,15 +31,6 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
 
         this.mEventBus = eventBus;
         this.mFlightMapper = flightMapper;
-    }
-
-    @Override
-    public void attachView(V mvpView) {
-        super.attachView(mvpView);
-        if(mChangeInFragment != null) {
-            getMvpView().updateDirectionFromDirectionInfo(mChangeInFragment);
-        }
-        mChangeInFragment = null;
     }
 
     @Override
@@ -79,7 +69,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                    .subscribe(new Consumer<ChangeDirectionSuburban.InFragment>() {
                        @Override
                        public void accept(ChangeDirectionSuburban.InFragment inFragment) throws Exception {
-                           mChangeInFragment = inFragment;
+                           getMvpView().changeDirection(inFragment.getPosition(), inFragment.getDirectionType());
                        }
                    }, new Consumer<Throwable>() {
                        @Override
@@ -95,7 +85,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                    .subscribe(new Consumer<ChangeDirectionSuburban.InAdapter>() {
                        @Override
                        public void accept(ChangeDirectionSuburban.InAdapter inAdapter) throws Exception {
-                           getMvpView().updateDirectionFromAdapter(inAdapter);
+                           getMvpView().changeDirection(inAdapter.getPosition(), inAdapter.getDirectionType());
                        }
                    }, new Consumer<Throwable>() {
                        @Override
@@ -111,7 +101,7 @@ public class SuburbanRoutesPresenter<V extends SuburbanRoutesMvpView>
                    .subscribe(new Consumer<ChangeDirectionSuburban>() {
                        @Override
                        public void accept(ChangeDirectionSuburban directionSuburban) throws Exception {
-                           getMvpView().openDirectionInfoFragment(directionSuburban);
+                           getMvpView().openDirectionInfoFragment(directionSuburban.getFlightPosition());
                        }
                    }, new Consumer<Throwable>() {
                        @Override

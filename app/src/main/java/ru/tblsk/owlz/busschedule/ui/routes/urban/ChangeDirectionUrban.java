@@ -1,21 +1,15 @@
 package ru.tblsk.owlz.busschedule.ui.routes.urban;
 
 
-import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 
 public class ChangeDirectionUrban {
 
-    private Direction direction;
     private int flightPosition;
 
-    public ChangeDirectionUrban(Direction direction, int flightPosition) {
-        this.direction = direction;
+    public ChangeDirectionUrban(int flightPosition) {
         this.flightPosition = flightPosition;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
 
     public int getFlightPosition() {
         return flightPosition;
