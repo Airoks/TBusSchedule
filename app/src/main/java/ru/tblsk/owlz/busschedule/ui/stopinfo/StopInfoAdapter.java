@@ -65,7 +65,8 @@ public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @Override
         public void onBind(int position) {
-
+            mDirectionName.setText(mDirections.get(position).getDirectionName());
+            mFlightNumber.setText(mDirections.get(position).getFlightNumber());
         }
     }
 }

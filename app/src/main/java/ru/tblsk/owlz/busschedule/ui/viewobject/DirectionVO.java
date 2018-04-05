@@ -9,6 +9,10 @@ public class DirectionVO implements Parcelable{
     private Long flightId;
     private int directionType;
     private String directionName;
+    private String flightNumber;
+
+    public DirectionVO() {
+    }
 
     protected DirectionVO(Parcel in) {
         if (in.readByte() == 0) {
@@ -23,6 +27,7 @@ public class DirectionVO implements Parcelable{
         }
         directionType = in.readInt();
         directionName = in.readString();
+        flightNumber = in.readString();
     }
 
     public static final Creator<DirectionVO> CREATOR = new Creator<DirectionVO>() {
@@ -36,9 +41,6 @@ public class DirectionVO implements Parcelable{
             return new DirectionVO[size];
         }
     };
-
-    public DirectionVO() {
-    }
 
     public Long getId() {
         return id;
@@ -72,6 +74,14 @@ public class DirectionVO implements Parcelable{
         this.directionName = directionName;
     }
 
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -93,5 +103,6 @@ public class DirectionVO implements Parcelable{
         }
         parcel.writeInt(directionType);
         parcel.writeString(directionName);
+        parcel.writeString(flightNumber);
     }
 }

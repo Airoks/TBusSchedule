@@ -92,6 +92,7 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
                         @Override
                         public void accept(SelectedStop.InAllStops inAllStops) throws Exception {
                             getMvpView().openStopInfoFragment(inAllStops.getStop());
+                            insertSearchHistoryStops(inAllStops.getStop().getId());
                         }
                     }, new Consumer<Throwable>() {
                         @Override

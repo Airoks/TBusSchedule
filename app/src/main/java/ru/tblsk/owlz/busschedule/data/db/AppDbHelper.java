@@ -344,14 +344,14 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<String> getFlightNumber(final long flightId) {
-        return Single.fromCallable(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return mDaoSession.getFlightDao().queryBuilder()
-                        .where(FlightDao.Properties.Id.eq(flightId)).unique().getFlightNumber();
-            }
-        });
+    public List<String> getFlightNumbers(final List<Direction> directions) {
+        List<String> flightNumbers = new ArrayList<>();
+        for(Direction direction : directions) {
+            String flightNumber = mDaoSession.getFlightDao().queryBuilder()
+                    .where(FlightDao.Properties.Id.eq(direction.getFlightId())).unique().getFlightNumber();
+            flightNumbers.add(flightNumber);
+        }
+        return flightNumbers;
     }
 
 }
