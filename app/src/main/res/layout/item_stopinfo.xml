@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
     android:background="?attr/selectableItemBackground"
     android:focusable="true">
@@ -25,7 +25,9 @@
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/textview_stopinfo_flightnumber"
         android:layout_marginStart="16dp"
-        android:layout_toEndOf="@+id/textview_stopinfo_flightnumber" />
+        android:layout_toEndOf="@+id/textview_stopinfo_flightnumber"
+        android:layout_toLeftOf="@id/view_stopinfo_verticalline"
+        android:layout_toStartOf="@id/view_stopinfo_verticalline" />
 
     <View
         android:layout_width="match_parent"
@@ -34,5 +36,17 @@
         android:layout_alignParentBottom="true"
         android:background="#E0E0E0"
         android:layout_marginStart="72dp" />
+
+    <View
+        android:id="@+id/view_stopinfo_verticalline"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="72dp"
+        android:layout_marginRight="72dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/gray"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

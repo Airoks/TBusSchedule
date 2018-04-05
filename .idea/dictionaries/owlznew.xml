@@ -4,6 +4,7 @@
       <w>allstop</w>
       <w>allstops</w>
       <w>appbarlayout</w>
+      <w>bottomline</w>
       <w>changehorizblack</w>
       <w>directioninfo</w>
       <w>directionname</w>
@@ -20,6 +21,7 @@
       <w>textview</w>
       <w>unsubscribe</w>
       <w>urbanroutes</w>
+      <w>verticalline</w>
     </words>
   </dictionary>
 </component>
