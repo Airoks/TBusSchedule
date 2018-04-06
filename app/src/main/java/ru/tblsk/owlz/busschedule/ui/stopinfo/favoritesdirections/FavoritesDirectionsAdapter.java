@@ -68,7 +68,8 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
         @Override
         public void onBind(int position) {
-
+            mFlightNumber.setText(mDirections.get(position).getFlightNumber());
+            mDirectionName.setText(mDirections.get(position).getDirectionName());
         }
     }
 }

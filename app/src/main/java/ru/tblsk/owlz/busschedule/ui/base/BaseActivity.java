@@ -17,7 +17,7 @@ import ru.tblsk.owlz.busschedule.di.module.ActivityModule;
 
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements MvpView, BaseFragment.Callback {
+        implements MvpView {
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong();

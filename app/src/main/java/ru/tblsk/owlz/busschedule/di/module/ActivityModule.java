@@ -31,6 +31,9 @@ import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoMvpView;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoPresenter;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsMvpView;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsPresenter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpView;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsPresenter;
@@ -110,6 +113,13 @@ public class ActivityModule {
     @PerActivity
     StopInfoMvpPresenter<StopInfoMvpView> provideStopInfoPresenter(
             StopInfoPresenter<StopInfoMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    FavoritesDirectionsMvpPresenter<FavoritesDirectionsMvpView> provideFavoritesDirectionsPresenter(
+            FavoritesDirectionsPresenter<FavoritesDirectionsMvpView> presenter) {
         return presenter;
     }
 
