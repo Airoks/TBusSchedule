@@ -8,4 +8,5 @@ public interface StopInfoMvpPresenter<V extends StopInfoMvpView>
     void getDirectionsByStop(Long stopId);
     void getSavedDirectionsByStop();
     void clickedOnBackButton();
+    void clickedOnButtonAddFavorites();
 }

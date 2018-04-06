@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +25,7 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
 import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
 
@@ -135,6 +137,18 @@ public class StopInfoFragment extends BaseFragment
                 mPresenter.clickedOnBackButton();
             }
         });
+
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_stopinfo_star:
+                        mPresenter.clickedOnButtonAddFavorites();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -152,5 +166,12 @@ public class StopInfoFragment extends BaseFragment
     public void openPreviousFragment() {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
+    }
+
+    @Override
+    public void openFavoritesDirectionsDialog() {
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections);
+        dialog.show(fragmentManager, "FavoritesDirectionsDialog");
     }
 }

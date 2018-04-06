@@ -3,7 +3,6 @@ package ru.tblsk.owlz.busschedule.ui.base;
 
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {

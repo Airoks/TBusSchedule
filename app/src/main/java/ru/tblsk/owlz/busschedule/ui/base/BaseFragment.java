@@ -4,13 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
 import butterknife.Unbinder;
-import ru.tblsk.owlz.busschedule.di.component.ActivityComponent;
-import ru.tblsk.owlz.busschedule.di.component.FragmentComponent;
-import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 
 
 public abstract class BaseFragment extends Fragment implements MvpView {
@@ -28,11 +24,6 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         if(context instanceof BaseActivity) {
             mActivity = (BaseActivity) context;
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -67,8 +58,4 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     }
 
     protected abstract void setUp(View view);
-
-    public interface Callback {
-        //калбэки для взаимодествия между фрагментами
-    }
 }

@@ -60,4 +60,9 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
     public void clickedOnBackButton() {
         getMvpView().openPreviousFragment();
     }
+
+    @Override
+    public void clickedOnButtonAddFavorites() {
+        getMvpView().openFavoritesDirectionsDialog();
+    }
 }

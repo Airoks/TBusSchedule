@@ -10,4 +10,5 @@ public interface StopInfoMvpView extends MvpView{
     void showDirectionsByStop(List<DirectionVO> directions);
     void showSavedDirectionsByStop();
     void openPreviousFragment();
+    void openFavoritesDirectionsDialog();
 }
