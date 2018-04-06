@@ -1,16 +1,19 @@
 package ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +78,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.dialogfragment_favoritesdirections, container, false);
+        View view = getView() != null ? getView() :
+                inflater.inflate(R.layout.dialogfragment_favoritesdirections, container, false);
 
         ((BaseActivity)getContext()).getActivityComponent()
                 .fragmentComponent(new FragmentModule(this)).inject(this);
@@ -90,8 +94,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUp();
-
-        setStyle(STYLE_NO_TITLE, 0);
     }
 
     public void setUp() {

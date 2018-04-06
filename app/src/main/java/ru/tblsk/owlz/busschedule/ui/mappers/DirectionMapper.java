@@ -21,6 +21,7 @@ public class DirectionMapper
             directionVO.setDirectionType(directions.get(i).getDirectionType().id);
             directionVO.setFlightId(directions.get(i).getFlightId());
             directionVO.setFlightNumber(flightNumber.get(i));
+            directionVO.setAddInFavorite(true);
             directionsVO.add(directionVO);
         }
         return directionsVO;

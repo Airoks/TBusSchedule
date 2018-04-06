@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
         @BindView(R.id.textview_favoritesdirections_directionname)
         TextView mDirectionName;
 
+        @BindView(R.id.checkbox_favoritesdirections)
+        CheckBox mAddInFavorite;
+
         public FavoritesDirectionsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -68,6 +72,11 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
         @Override
         public void onBind(int position) {
+            if(mDirections.get(position).isAddInFavorite()) {
+                mAddInFavorite.setChecked(true);
+            } else {
+                mAddInFavorite.setChecked(false);
+            }
             mFlightNumber.setText(mDirections.get(position).getFlightNumber());
             mDirectionName.setText(mDirections.get(position).getDirectionName());
         }

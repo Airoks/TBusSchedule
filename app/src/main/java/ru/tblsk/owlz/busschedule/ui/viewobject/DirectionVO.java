@@ -10,6 +10,7 @@ public class DirectionVO implements Parcelable{
     private int directionType;
     private String directionName;
     private String flightNumber;
+    private boolean addInFavorite;
 
     public DirectionVO() {
     }
@@ -28,6 +29,7 @@ public class DirectionVO implements Parcelable{
         directionType = in.readInt();
         directionName = in.readString();
         flightNumber = in.readString();
+        addInFavorite = in.readByte() != 0;
     }
 
     public static final Creator<DirectionVO> CREATOR = new Creator<DirectionVO>() {
@@ -82,6 +84,14 @@ public class DirectionVO implements Parcelable{
         this.flightNumber = flightNumber;
     }
 
+    public boolean isAddInFavorite() {
+        return addInFavorite;
+    }
+
+    public void setAddInFavorite(boolean addInFavorite) {
+        this.addInFavorite = addInFavorite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,5 +114,6 @@ public class DirectionVO implements Parcelable{
         parcel.writeInt(directionType);
         parcel.writeString(directionName);
         parcel.writeString(flightNumber);
+        parcel.writeByte((byte) (addInFavorite ? 1 : 0));
     }
 }

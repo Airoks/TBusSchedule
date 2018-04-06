@@ -27,4 +27,5 @@
 
     <string name="directioninfo_rout">маршрут</string>
     <string name="stopinfo_favorites">Добавить в избранное</string>
+    <string name="favoritesdirections_add">Добавить</string>
 </resources>
