@@ -127,6 +127,8 @@ public class StopInfoFragment extends BaseFragment
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.setTitle(mStop.getStopName());
 
+        mToolbar.inflateMenu(R.menu.menu_stopinfo);
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

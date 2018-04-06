@@ -26,4 +26,5 @@
     <string name="change_direction">Сменить направление</string>
 
     <string name="directioninfo_rout">маршрут</string>
+    <string name="stopinfo_favorites">Добавить в избранное</string>
 </resources>
