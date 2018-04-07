@@ -22,10 +22,9 @@
         android:layout_height="72dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:clickable="true"
         android:background="?selectableItemBackgroundBorderless"
         android:layout_alignParentEnd="true"
-        android:focusable="true" />
+        android:clickable="false" />
 
     <TextView
         android:id="@+id/textview_favoritesdirections_directionname"

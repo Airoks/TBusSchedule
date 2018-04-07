@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
@@ -344,8 +345,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<Boolean> isFavoriteStop(final long stopId) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public Observable<Boolean> isFavoriteStop(final long stopId) {
+        return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();

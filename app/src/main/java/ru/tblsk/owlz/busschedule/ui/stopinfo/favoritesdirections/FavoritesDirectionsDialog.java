@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
@@ -68,6 +69,12 @@ public class FavoritesDirectionsDialog extends DialogFragment
         super.onDestroyView();
     }
 
+    @Override
+    public void onDestroy() {
+        mPresenter.unsubscribeFromEvents();
+        super.onDestroy();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -81,7 +88,11 @@ public class FavoritesDirectionsDialog extends DialogFragment
                 .fragmentComponent(new FragmentModule(this)).inject(this);
 
         mUnbinder = ButterKnife.bind(this, view);
+
         mPresenter.attachView(this);
+        mPresenter.subscribeOnEvents();
+
+        setCancelable(true);
 
         return view;
     }
@@ -108,5 +119,17 @@ public class FavoritesDirectionsDialog extends DialogFragment
     @Override
     public void showDirections() {
         mAdapter.addItems(mDirections);
+    }
+
+    @Override
+    public void changeFavoriteDirections(int position, boolean isFavorite) {
+        DirectionVO direction = mDirections.get(position);
+        direction.setFavorite(isFavorite);
+        mDirections.set(position, direction);
+    }
+
+    @OnClick(R.id.button_favoritesdirections_add)
+    public void clickAddButton() {
+        getDialog().dismiss();
     }
 }

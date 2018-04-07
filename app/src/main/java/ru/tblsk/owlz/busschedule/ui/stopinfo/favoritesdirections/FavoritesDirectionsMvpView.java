@@ -5,4 +5,5 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 
 public interface FavoritesDirectionsMvpView extends MvpView {
     void showDirections();
+    void changeFavoriteDirections(int position, boolean isFavorite);
 }

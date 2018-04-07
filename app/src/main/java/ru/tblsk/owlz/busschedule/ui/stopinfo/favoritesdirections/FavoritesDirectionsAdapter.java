@@ -35,7 +35,34 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_favoritesdirections, parent, false);
-        return new FavoritesDirectionsViewHolder(itemView);
+
+        final FavoritesDirectionsViewHolder holder = new FavoritesDirectionsViewHolder(itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                boolean isFavorite = mDirections.get(position).isFavorite();
+
+                DirectionVO direction = mDirections.get(position);
+
+                ChangeFavoriteDirection change = new ChangeFavoriteDirection();
+                change.setPosition(position);
+                if(isFavorite) {
+                    change.setFavorite(false);
+                    direction.setFavorite(false);
+                } else {
+                    change.setFavorite(true);
+                    direction.setFavorite(true);
+                }
+                mEventBus.post(change);
+
+                mDirections.set(position, direction);
+                notifyItemChanged(position);
+            }
+        });
+
+        return holder;
     }
 
     @Override
@@ -72,7 +99,7 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
         @Override
         public void onBind(int position) {
-            if(mDirections.get(position).isAddInFavorite()) {
+            if(mDirections.get(position).isFavorite()) {
                 mAddInFavorite.setChecked(true);
             } else {
                 mAddInFavorite.setChecked(false);
