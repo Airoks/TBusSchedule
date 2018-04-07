@@ -1,9 +1,12 @@
 package ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections;
 
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
@@ -49,5 +52,23 @@ public class FavoritesDirectionsPresenter<V extends FavoritesDirectionsMvpView>
                         }
                     }));
         }
+    }
+
+    @Override
+    public void addFavoriteDirections(long stopId, List<Long> directions) {
+        getCompositeDisposable().add(getDataManager().insertFavoriteStops(stopId, directions)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
     }
 }

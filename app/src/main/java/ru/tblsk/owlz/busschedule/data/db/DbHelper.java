@@ -40,7 +40,7 @@ public interface DbHelper {
     Single<List<Stop>> getSearchHistoryStops();
     Completable deleteSearchHistory();
 
-    Completable insertFavoriteStops(long stopId, long directionId);
+    Completable insertFavoriteStops(long stopId, List<Long> directions);
     Single<List<Stop>> getFavoriteStop();
     Single<List<Direction>> getFavoriteDirection(long stopId);
     Observable<Boolean> isFavoriteStop(long stopId);

@@ -285,18 +285,20 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Completable insertFavoriteStops(final long stopId, final long directionId) {
+    public Completable insertFavoriteStops(final long stopId, final List<Long> directions) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                //сохраняем только остановку с оперделенным направлением
-                long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                        .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
-                                StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
-                        .unique().getId();
-                FavoriteStops favoriteStops = new FavoriteStops();
-                favoriteStops.setStopsOnRoutsId(stopsOnRoutsId);
-                mDaoSession.getFavoriteStopsDao().insert(favoriteStops);
+                for(Long directionId : directions) {
+                    //сохраняем только остановку с оперделенным направлением
+                    long stopsOnRoutsId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId))
+                            .unique().getId();
+                    FavoriteStops favoriteStops = new FavoriteStops();
+                    favoriteStops.setStopsOnRoutsId(stopsOnRoutsId);
+                    mDaoSession.getFavoriteStopsDao().insert(favoriteStops);
+                }
             }
         });
     }

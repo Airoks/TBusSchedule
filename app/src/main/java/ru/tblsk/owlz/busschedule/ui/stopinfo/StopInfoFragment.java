@@ -183,7 +183,7 @@ public class StopInfoFragment extends BaseFragment
     @Override
     public void openFavoritesDirectionsDialog() {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-        FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections);
+        FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections, mStop.getId());
         dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         dialog.show(fragmentManager, "FavoritesDirectionsDialog");
     }
@@ -192,7 +192,6 @@ public class StopInfoFragment extends BaseFragment
     public void setFavoriteIcon(boolean isFavorite) {
         if(isFavorite) {
             mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mTimati);
-
         } else {
             mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mWhiteStar);
         }

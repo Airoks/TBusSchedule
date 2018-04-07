@@ -170,8 +170,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Completable insertFavoriteStops(long stopId, long directionId) {
-        return dbHelper.insertFavoriteStops(stopId, directionId);
+    public Completable insertFavoriteStops(long stopId, List<Long> directions) {
+        return dbHelper.insertFavoriteStops(stopId, directions);
     }
 
     @Override
