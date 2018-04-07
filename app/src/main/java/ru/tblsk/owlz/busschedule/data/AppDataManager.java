@@ -184,6 +184,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Single<Boolean> isFavoriteStop(long stopId) {
+        return dbHelper.isFavoriteStop(stopId);
+    }
+
+    @Override
     public List<String> getFlightNumbers(List<Direction> directions) {
         return dbHelper.getFlightNumbers(directions);
     }

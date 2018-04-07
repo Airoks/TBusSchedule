@@ -42,6 +42,8 @@ public interface DbHelper {
     Completable insertFavoriteStops(long stopId, long directionId);
     Single<List<Stop>> getFavoriteStop();
     Single<List<Direction>> getFavoriteDirection(long stopId);
+    Single<Boolean> isFavoriteStop(long stopId);
+
     List<String> getFlightNumbers(List<Direction> directions);
 
 }

@@ -344,6 +344,26 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Single<Boolean> isFavoriteStop(final long stopId) {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
+
+                for(FavoriteStops favorite : favorites) {
+                    StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getStopsOnRoutsId()),
+                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique();
+                    if(stopsOnRouts != null) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
     public List<String> getFlightNumbers(final List<Direction> directions) {
         List<String> flightNumbers = new ArrayList<>();
         for(Direction direction : directions) {
