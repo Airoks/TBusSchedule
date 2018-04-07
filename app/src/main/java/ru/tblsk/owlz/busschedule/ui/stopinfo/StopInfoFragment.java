@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.ui.stopinfo;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
@@ -50,6 +53,12 @@ public class StopInfoFragment extends BaseFragment
 
     @BindView(R.id.recyclerview_stopinfo)
     RecyclerView mRecyclerView;
+
+    @BindDrawable(R.drawable.stopinfo_starborderblack_24dp)
+    Drawable mWhiteStar;
+
+    @BindDrawable(R.drawable.stopinfo_starblack_24dp)
+    Drawable mTimati;
 
     private List<DirectionVO> mDirections;
     private StopVO mStop;
@@ -132,6 +141,8 @@ public class StopInfoFragment extends BaseFragment
 
         mToolbar.inflateMenu(R.menu.menu_stopinfo);
 
+        mPresenter.isFavoriteStop(mStop.getId());
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,5 +186,15 @@ public class StopInfoFragment extends BaseFragment
         FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections);
         dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         dialog.show(fragmentManager, "FavoritesDirectionsDialog");
+    }
+
+    @Override
+    public void setFavoriteIcon(boolean isFavorite) {
+        if(isFavorite) {
+            mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mTimati);
+
+        } else {
+            mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mWhiteStar);
+        }
     }
 }

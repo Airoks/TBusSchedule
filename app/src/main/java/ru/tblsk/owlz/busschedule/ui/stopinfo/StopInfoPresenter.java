@@ -65,4 +65,22 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
     public void clickedOnButtonAddFavorites() {
         getMvpView().openFavoritesDirectionsDialog();
     }
+
+    @Override
+    public void isFavoriteStop(Long stopId) {
+        getCompositeDisposable().add(getDataManager().isFavoriteStop(stopId)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean isFavorite) throws Exception {
+                        getMvpView().setFavoriteIcon(isFavorite);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+    }
 }
