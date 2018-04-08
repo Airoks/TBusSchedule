@@ -131,6 +131,7 @@ public class DirectionInfoFragment extends BaseFragment
 
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
         if(mStops == null) {

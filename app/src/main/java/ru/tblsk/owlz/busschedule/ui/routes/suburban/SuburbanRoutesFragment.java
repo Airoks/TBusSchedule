@@ -108,6 +108,7 @@ public class SuburbanRoutesFragment extends BaseFragment
     protected void setUp(View view) {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
         ((MainActivity)getBaseActivity()).unlockDrawer();

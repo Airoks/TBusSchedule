@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.DataManager;
@@ -84,5 +85,23 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
                         }
                     }));
         }
+    }
+
+    @Override
+    public void deleteFavoriteStop(Long stopId) {
+        getCompositeDisposable().add(getDataManager().deleteFavoriteStop(stopId)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        getMvpView().showSnackBarDeleted();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                }));
     }
 }

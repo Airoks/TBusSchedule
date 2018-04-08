@@ -4,7 +4,6 @@ package ru.tblsk.owlz.busschedule.data.db;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
@@ -41,9 +40,10 @@ public interface DbHelper {
     Completable deleteSearchHistory();
 
     Completable insertFavoriteStops(long stopId, List<Long> directions);
+    Completable deleteFavoriteStop(long stopId);
     Single<List<Stop>> getFavoriteStop();
     Single<List<Direction>> getFavoriteDirection(long stopId);
-    Observable<Boolean> isFavoriteStop(long stopId);
+    Single<Boolean> isFavoriteStop(long stopId);
 
     List<String> getFlightNumbers(List<Direction> directions);
 

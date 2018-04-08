@@ -12,4 +12,5 @@ public interface StopInfoMvpView extends MvpView{
     void openPreviousFragment();
     void openFavoritesDirectionsDialog();
     void setFavoriteIcon(boolean isFavorite);
+    void showSnackBarDeleted();
 }

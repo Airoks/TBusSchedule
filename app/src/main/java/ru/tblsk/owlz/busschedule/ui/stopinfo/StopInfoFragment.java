@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
+import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -62,6 +62,7 @@ public class StopInfoFragment extends BaseFragment
 
     private List<DirectionVO> mDirections;
     private StopVO mStop;
+    private boolean mIsFavorite;
 
     public static  StopInfoFragment newInstance(StopVO stop) {
         Bundle args = new Bundle();
@@ -122,6 +123,7 @@ public class StopInfoFragment extends BaseFragment
 
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
         if(mDirections == null) {
@@ -182,18 +184,31 @@ public class StopInfoFragment extends BaseFragment
 
     @Override
     public void openFavoritesDirectionsDialog() {
-        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-        FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections, mStop.getId());
-        dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        dialog.show(fragmentManager, "FavoritesDirectionsDialog");
+        if(mIsFavorite) {
+            mPresenter.deleteFavoriteStop(mStop.getId());
+            mPresenter.isFavoriteStop(mStop.getId());
+        } else {
+            mPresenter.isFavoriteStop(mStop.getId());
+            FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+            FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections, mStop.getId());
+            dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            dialog.show(fragmentManager, "FavoritesDirectionsDialog");
+        }
     }
 
     @Override
     public void setFavoriteIcon(boolean isFavorite) {
         if(isFavorite) {
             mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mTimati);
+            mIsFavorite = true;
         } else {
             mToolbar.getMenu().findItem(R.id.item_stopinfo_star).setIcon(mWhiteStar);
+            mIsFavorite = false;
         }
+    }
+
+    @Override
+    public void showSnackBarDeleted() {
+        getBaseActivity().showSnackBar(getString(R.string.stopinfo_deletefavorite));
     }
 }

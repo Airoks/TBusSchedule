@@ -10,4 +10,5 @@ public interface StopInfoMvpPresenter<V extends StopInfoMvpView>
     void clickedOnBackButton();
     void clickedOnButtonAddFavorites();
     void isFavoriteStop(Long stopId);
+    void deleteFavoriteStop(Long stopId);
 }

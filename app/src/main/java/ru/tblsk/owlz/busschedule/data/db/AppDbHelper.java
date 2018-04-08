@@ -304,6 +304,26 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Completable deleteFavoriteStop(final long stopId) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
+
+                for(FavoriteStops favorite : favorites) {
+                    StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getStopsOnRoutsId()),
+                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique();
+                    if(stopsOnRouts != null) {
+                        mDaoSession.getFavoriteStopsDao().deleteByKey(favorite.getId());
+                        //mDaoSession.getFavoriteStopsDao().detach(favorite);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public Single<List<Stop>> getFavoriteStop() {
         return Single.fromCallable(new Callable<List<Stop>>() {
             @Override
@@ -347,8 +367,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> isFavoriteStop(final long stopId) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Single<Boolean> isFavoriteStop(final long stopId) {
+        return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();

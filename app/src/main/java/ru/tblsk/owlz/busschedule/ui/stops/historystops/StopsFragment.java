@@ -99,6 +99,7 @@ public class StopsFragment extends BaseFragment
     protected void setUp(View view) {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);//резкая прокрутка
         mRecyclerView.setFocusable(false);//без начальной фокусациии на rv

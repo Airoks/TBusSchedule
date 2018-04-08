@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -175,6 +174,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable deleteFavoriteStop(long stopId) {
+        return dbHelper.deleteFavoriteStop(stopId);
+    }
+
+    @Override
     public Single<List<Stop>> getFavoriteStop() {
         return dbHelper.getFavoriteStop();
     }
@@ -185,7 +189,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> isFavoriteStop(long stopId) {
+    public Single<Boolean> isFavoriteStop(long stopId) {
         return dbHelper.isFavoriteStop(stopId);
     }
 

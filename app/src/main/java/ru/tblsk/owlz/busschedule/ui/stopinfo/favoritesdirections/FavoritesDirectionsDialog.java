@@ -4,14 +4,12 @@ package ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +53,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDirections = getDirections();
+        mStopId = getArguments().getLong(STOP_ID);
     }
 
     public static FavoritesDirectionsDialog newInstance(List<DirectionVO> directions, long stopId) {
@@ -93,13 +93,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
 
         mUnbinder = ButterKnife.bind(this, view);
 
-        mDirections = getArguments().getParcelableArrayList(DIRECTIONS);
-        mStopId = getArguments().getLong(STOP_ID);
-
-        for(DirectionVO direction : mDirections) {
-            System.out.println(direction.isFavorite());
-        }
-
         mPresenter.attachView(this);
         mPresenter.subscribeOnEvents();
 
@@ -117,6 +110,7 @@ public class FavoritesDirectionsDialog extends DialogFragment
     public void setUp() {
         mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayout);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.getFavoritesDirections();
@@ -157,8 +151,28 @@ public class FavoritesDirectionsDialog extends DialogFragment
         for(DirectionVO direction : mDirections) {
             if(direction.isFavorite()) {
                 directionsId.add(direction.getId());
+                System.out.println(direction.getDirectionName());
             }
         }
         return directionsId;
+    }
+
+    private List<DirectionVO> getDirections() {
+        List<DirectionVO> copy = new ArrayList<>();
+        List<DirectionVO> original;
+        original = getArguments().getParcelableArrayList(DIRECTIONS);
+        for (DirectionVO direction : original) {
+            DirectionVO copyDirection = new DirectionVO();
+
+            copyDirection.setId(direction.getId());
+            copyDirection.setFlightId(direction.getFlightId());
+            copyDirection.setFavorite(direction.isFavorite());
+            copyDirection.setFlightNumber(direction.getFlightNumber());
+            copyDirection.setDirectionType(direction.getDirectionType());
+            copyDirection.setDirectionName(direction.getDirectionName());
+
+            copy.add(copyDirection);
+        }
+        return copy;
     }
 }
