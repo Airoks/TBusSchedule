@@ -21,7 +21,6 @@
             android:id="@+id/tablayout_routescontainer"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-
             app:tabGravity="fill" />
 
     </android.support.design.widget.AppBarLayout>

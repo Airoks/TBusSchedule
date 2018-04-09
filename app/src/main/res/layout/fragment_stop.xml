@@ -39,7 +39,7 @@
                 android:text="@string/all_stops_button"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/button_contour"
+                android:background="@drawable/all_contour"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

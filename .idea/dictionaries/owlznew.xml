@@ -18,11 +18,15 @@
       <w>notselected</w>
       <w>recyclerview</w>
       <w>routecontainer</w>
+      <w>routename</w>
+      <w>routenumber</w>
       <w>routescontainer</w>
+      <w>schedulecontainer</w>
       <w>shapeoval</w>
       <w>starborderblack</w>
       <w>stopinfo</w>
       <w>stopname</w>
+      <w>tablayout</w>
       <w>textview</w>
       <w>timati</w>
       <w>unbinder</w>
