@@ -15,6 +15,7 @@
       <w>flightnumber</w>
       <w>imagebutton</w>
       <w>imageview</w>
+      <w>notselected</w>
       <w>recyclerview</w>
       <w>routecontainer</w>
       <w>routescontainer</w>

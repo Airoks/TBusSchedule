@@ -23,6 +23,7 @@ import butterknife.Unbinder;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
 
 public class FavoritesDirectionsDialog extends DialogFragment
@@ -138,11 +139,12 @@ public class FavoritesDirectionsDialog extends DialogFragment
         List<Long> directionsId = getDirectionsId();
         if(!directionsId.isEmpty()) {
             mPresenter.addFavoriteDirections(mStopId, directionsId);
-            ((BaseActivity)getContext()).showSnackBar("Добавлено в избранное");
+            ((StopInfoFragment)this.getTargetFragment()).setFavoriteIcon(true);
+            ((BaseActivity)getContext()).showSnackBar(getString(R.string.stopinfo_addfavorite));
             getDialog().dismiss();
         } else {
             getDialog().dismiss();
-            ((BaseActivity)getContext()).showSnackBar("Вы не выбрали ни одного направления");
+            ((BaseActivity)getContext()).showSnackBar(getString(R.string.stopinfo_notselected));
         }
     }
 
@@ -151,7 +153,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
         for(DirectionVO direction : mDirections) {
             if(direction.isFavorite()) {
                 directionsId.add(direction.getId());
-                System.out.println(direction.getDirectionName());
             }
         }
         return directionsId;

@@ -25,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
-import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -100,9 +99,19 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) mDirections);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -186,11 +195,11 @@ public class StopInfoFragment extends BaseFragment
     public void openFavoritesDirectionsDialog() {
         if(mIsFavorite) {
             mPresenter.deleteFavoriteStop(mStop.getId());
-            mPresenter.isFavoriteStop(mStop.getId());
+            setFavoriteIcon(false);
         } else {
-            mPresenter.isFavoriteStop(mStop.getId());
             FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
             FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections, mStop.getId());
+            dialog.setTargetFragment(this, 0);
             dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             dialog.show(fragmentManager, "FavoritesDirectionsDialog");
         }
