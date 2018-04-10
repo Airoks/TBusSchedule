@@ -32,7 +32,7 @@ public interface DbHelper {
     Single<List<Stop>> getAllStops();
     Single<List<Flight>> getFlightByType(FlightType flightType);
     Single<List<Direction>> getDirectionsByStop(long stopId);
-    Single<List<Schedule>> getSchedule(long stopId, long directionId);
+    Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType);
     Single<List<Stop>> getStopsOnDirection(long directionId);
 
     Completable insertSearchHistoryStops(long stopId);

@@ -25,6 +25,9 @@ import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpPresenter;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpView;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.SchedulePresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
@@ -120,6 +123,13 @@ public class ActivityModule {
     @PerActivity
     FavoritesDirectionsMvpPresenter<FavoritesDirectionsMvpView> provideFavoritesDirectionsPresenter(
             FavoritesDirectionsPresenter<FavoritesDirectionsMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    ScheduleMvpPresenter<ScheduleMvpView> provideSchedulePresenter(
+            SchedulePresenter<ScheduleMvpView> presenter) {
         return presenter;
     }
 

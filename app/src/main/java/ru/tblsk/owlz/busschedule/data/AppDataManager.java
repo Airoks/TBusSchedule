@@ -144,8 +144,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<Schedule>> getSchedule(long stopId, long directionId) {
-        return dbHelper.getSchedule(stopId, directionId);
+    public Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType) {
+        return dbHelper.getSchedule(stopId, directionId, scheduleType);
     }
 
     @Override

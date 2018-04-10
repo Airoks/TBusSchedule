@@ -200,17 +200,28 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<List<Schedule>> getSchedule(final long stopId, final long directionId) {
-        return Single.fromCallable(new Callable<List<Schedule>>() {
+    public Single<List<DepartureTime>> getSchedule(final long stopId,
+                                                   final long directionId,
+                                                   final int scheduleType) {
+        return Single.fromCallable(new Callable<List<DepartureTime>>() {
             @Override
-            public List<Schedule> call() throws Exception {
+            public List<DepartureTime> call() throws Exception {
                 List<Schedule> schedules = new ArrayList<>();
+                List<DepartureTime> departureTimes = new ArrayList<>();
+
                 StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
                                 StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
                 //what value return getSchedulers() if scheduler is not ??????
                 schedules = stopOnRout.getSchedules();
-                return schedules;
+
+                for(Schedule schedule : schedules) {
+                    if(schedule.getScheduleType().id == scheduleType) {
+                        departureTimes = schedule.getDepartureTimes();
+                    }
+                }
+
+                return departureTimes;
             }
         });
     }
