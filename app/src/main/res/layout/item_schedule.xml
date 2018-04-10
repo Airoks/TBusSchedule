@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/textview_schedule_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        android:textSize="10pt" />
+
+    <TextView
+        android:id="@+id/textview_schedule_minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="72dp"
+        android:layout_toRightOf="@+id/textview_schedule_hours"
+        android:layout_marginStart="72dp"
+        android:layout_toEndOf="@+id/textview_schedule_hours" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="72dp"
+        android:layout_alignParentBottom="true"
+        android:background="#E0E0E0"
+        android:layout_marginStart="72dp" />
+
+</RelativeLayout>
