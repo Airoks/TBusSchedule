@@ -23,13 +23,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
@@ -45,7 +44,7 @@ public class DirectionInfoFragment extends BaseFragment
     DirectionInfoAdapter mAdapter;
 
     @Inject
-    LinearLayoutManager mLinearLayout;
+    LinearLayoutManager mLayoutManager;
 
     @BindView(R.id.toolbar_directioninfo)
     Toolbar mToolbar;
@@ -129,8 +128,8 @@ public class DirectionInfoFragment extends BaseFragment
         setupToolbar();
         setDirectionTitle();
 
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 

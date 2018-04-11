@@ -7,7 +7,7 @@ import java.util.List;
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 
 public class FlightMapper implements Function<List<Flight>, List<FlightVO>>{
     @Override

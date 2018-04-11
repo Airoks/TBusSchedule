@@ -31,7 +31,7 @@ public class RoutesContainerFragment extends BaseFragment
     RoutesContainerMvpPresenter<RoutesContainerMvpView> mPresenter;
 
     @Inject
-    RoutesPagerAdapter mPagerAdapter;
+    AllScreenPagerAdapter mPagerAdapter;
 
     @BindView(R.id.toolbar_routescontainer)
     Toolbar mToolbar;

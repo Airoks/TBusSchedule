@@ -24,7 +24,7 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 
 public class FavoritesDirectionsDialog extends DialogFragment
         implements FavoritesDirectionsMvpView{
@@ -36,7 +36,7 @@ public class FavoritesDirectionsDialog extends DialogFragment
     FavoritesDirectionsAdapter mAdapter;
 
     @Inject
-    LinearLayoutManager mLinearLayout;
+    LinearLayoutManager mLayoutManager;
 
     @Inject
     FavoritesDirectionsMvpPresenter<FavoritesDirectionsMvpView> mPresenter;
@@ -109,8 +109,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
     }
 
     public void setUp() {
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 

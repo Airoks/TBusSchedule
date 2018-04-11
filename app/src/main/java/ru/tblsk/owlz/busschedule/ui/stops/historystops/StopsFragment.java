@@ -27,7 +27,7 @@ import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 
 public class StopsFragment extends BaseFragment
@@ -43,7 +43,7 @@ public class StopsFragment extends BaseFragment
     StopsAdapter mAdapter;
 
     @Inject
-    LinearLayoutManager mLinearLayout;
+    LinearLayoutManager mLayoutManager;
 
     @BindView(R.id.toolbar_stop)
     Toolbar mToolbar;
@@ -97,8 +97,8 @@ public class StopsFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);//резкая прокрутка

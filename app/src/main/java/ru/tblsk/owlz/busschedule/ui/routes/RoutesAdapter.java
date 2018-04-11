@@ -21,7 +21,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
@@ -51,10 +51,12 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onClick(View view) {
                 int position = viewHolder.getAdapterPosition();
-                if(mFlightType == FlightType.URBAN.id) {
-                    mEventBus.post(new ChangeDirectionUrban(position));
-                } else {
-                    mEventBus.post(new ChangeDirectionSuburban(position));
+                if(position != RecyclerView.NO_POSITION) {
+                    if(mFlightType == FlightType.URBAN.id) {
+                        mEventBus.post(new ChangeDirectionUrban(position));
+                    } else {
+                        mEventBus.post(new ChangeDirectionSuburban(position));
+                    }
                 }
             }
         });

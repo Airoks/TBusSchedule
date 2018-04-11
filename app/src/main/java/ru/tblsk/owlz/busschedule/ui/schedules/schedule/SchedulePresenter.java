@@ -8,22 +8,27 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
-import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.ScheduleType;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class SchedulePresenter<V extends ScheduleMvpView>
         extends BasePresenter<V> implements ScheduleMvpPresenter<V> {
 
-    private List<DepartureTime> mScheduleWorkday;
-    private List<DepartureTime> mScheduleWeekend;
+    private List<DepartureTimeVO> mScheduleWorkday;
+    private List<DepartureTimeVO> mScheduleWeekend;
+    private DepartureTimeMapper mDepartureTimeMapper;
 
     @Inject
     public SchedulePresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
-                             SchedulerProvider schedulerProvider) {
+                             SchedulerProvider schedulerProvider,
+                             DepartureTimeMapper mapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
+
+        this.mDepartureTimeMapper = mapper;
     }
 
     @Override
@@ -34,12 +39,18 @@ public class SchedulePresenter<V extends ScheduleMvpView>
             } else {
                 getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)
                         .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().io())
+                        .map(mDepartureTimeMapper)
                         .observeOn(getSchedulerProvider().ui())
-                        .subscribe(new Consumer<List<DepartureTime>>() {
+                        .subscribe(new Consumer<List<DepartureTimeVO>>() {
                             @Override
-                            public void accept(List<DepartureTime> departureTimes) throws Exception {
+                            public void accept(List<DepartureTimeVO> departureTimes) throws Exception {
                                 mScheduleWorkday = departureTimes;
-                                getMvpView().showSchedule(mScheduleWorkday);
+                                if(departureTimes.isEmpty()) {
+                                    getMvpView().showEmptyScreen();
+                                } else {
+                                    getMvpView().showSchedule(mScheduleWorkday);
+                                }
                             }
                         }, new Consumer<Throwable>() {
                             @Override
@@ -54,12 +65,18 @@ public class SchedulePresenter<V extends ScheduleMvpView>
             } else {
                 getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)
                         .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().io())
+                        .map(mDepartureTimeMapper)
                         .observeOn(getSchedulerProvider().ui())
-                        .subscribe(new Consumer<List<DepartureTime>>() {
+                        .subscribe(new Consumer<List<DepartureTimeVO>>() {
                             @Override
-                            public void accept(List<DepartureTime> departureTimes) throws Exception {
+                            public void accept(List<DepartureTimeVO> departureTimes) throws Exception {
                                 mScheduleWeekend = departureTimes;
-                                getMvpView().showSchedule(mScheduleWeekend);
+                                if(departureTimes.isEmpty()) {
+                                    getMvpView().showEmptyScreen();
+                                } else {
+                                    getMvpView().showSchedule(mScheduleWeekend);
+                                }
                             }
                         }, new Consumer<Throwable>() {
                             @Override

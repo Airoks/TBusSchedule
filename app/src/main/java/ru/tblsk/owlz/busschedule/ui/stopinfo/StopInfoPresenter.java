@@ -13,7 +13,7 @@ import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
-import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<V>

@@ -14,8 +14,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 

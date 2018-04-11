@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
-import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 
 public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 

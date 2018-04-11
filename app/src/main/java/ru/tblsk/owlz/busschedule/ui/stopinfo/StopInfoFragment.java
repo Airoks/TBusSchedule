@@ -29,8 +29,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
-import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class StopInfoFragment extends BaseFragment
         implements StopInfoMvpView, SetupToolbar{
@@ -45,7 +45,7 @@ public class StopInfoFragment extends BaseFragment
     StopInfoAdapter mAdapter;
 
     @Inject
-    LinearLayoutManager mLinearLayout;
+    LinearLayoutManager mLayoutManager;
 
     @BindView(R.id.toolbar_stopinfo)
     Toolbar mToolbar;
@@ -130,8 +130,8 @@ public class StopInfoFragment extends BaseFragment
     protected void setUp(View view) {
         setupToolbar();
 
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 

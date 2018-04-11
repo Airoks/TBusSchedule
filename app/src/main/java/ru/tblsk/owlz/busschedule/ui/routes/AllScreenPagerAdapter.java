@@ -8,12 +8,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoutesPagerAdapter extends FragmentPagerAdapter{
+public class AllScreenPagerAdapter extends FragmentPagerAdapter{
 
     private final List<Fragment> Fragments = new ArrayList<>();
     private final List<String> FragmentTitles = new ArrayList<>();
 
-    public RoutesPagerAdapter(FragmentManager fm) {
+    public AllScreenPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.reactivex.functions.BiFunction;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
-import ru.tblsk.owlz.busschedule.ui.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 
 public class DirectionMapper
         implements BiFunction<List<Direction>, List<String>, List<DirectionVO>> {

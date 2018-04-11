@@ -8,6 +8,7 @@ import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
+import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
@@ -26,4 +27,5 @@ public interface FragmentComponent {
     void inject(StopInfoFragment stopInfoFragment);
     void inject(FavoritesDirectionsDialog favoritesDirectionsDialog);
     void inject(ScheduleFragment scheduleFragment);
+    void inject(ScheduleContainerFragment scheduleContainerFragment);
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class StopMapper implements Function<List<Stop>, List<StopVO>>{
 

@@ -3,16 +3,14 @@ package ru.tblsk.owlz.busschedule.di.module;
 
 import android.support.v4.app.Fragment;
 
-import java.util.ArrayList;
-
 import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
-import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
+import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesPagerAdapter;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
@@ -41,8 +39,8 @@ public class FragmentModule {
     }
 
     @Provides
-    RoutesPagerAdapter provideRoutesPagerAdapter() {
-        return new RoutesPagerAdapter(mFragment.getChildFragmentManager());
+    AllScreenPagerAdapter provideRoutesPagerAdapter() {
+        return new AllScreenPagerAdapter(mFragment.getChildFragmentManager());
     }
 
     @Provides
@@ -70,5 +68,10 @@ public class FragmentModule {
     @Provides
     FavoritesDirectionsAdapter provideFavoritesDirectionsAdapter(RxEventBus eventBus) {
         return new FavoritesDirectionsAdapter(eventBus);
+    }
+
+    @Provides
+    ScheduleAdapter provideScheduleAdapter() {
+        return new ScheduleAdapter();
     }
 }

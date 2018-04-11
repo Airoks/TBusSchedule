@@ -27,7 +27,7 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 
 public class UrbanRoutesFragment extends BaseFragment
         implements UrbanRoutesMvpView {
@@ -42,7 +42,7 @@ public class UrbanRoutesFragment extends BaseFragment
     UrbanRoutesMvpPresenter<UrbanRoutesMvpView> mPresenter;
 
     @Inject
-    LinearLayoutManager mLinearLayout;
+    LinearLayoutManager mLayoutManager;
 
     @Inject
     @Type("urban")
@@ -109,8 +109,8 @@ public class UrbanRoutesFragment extends BaseFragment
 
     @Override
     protected void setUp(View view) {
-        mLinearLayout.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayout);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 

@@ -4,8 +4,8 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 import java.util.List;
 
 import ru.tblsk.owlz.busschedule.ui.base.MvpView;
-import ru.tblsk.owlz.busschedule.ui.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.ui.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public interface DirectionInfoMvpView extends MvpView{
     void showStopsOnDirection(List<StopVO> stops);
