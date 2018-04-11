@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.ui.directioninfo;
 
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,7 +32,6 @@ public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
 
     public static final String TAG = "DirectionInfoFragment";
-    public static final String STOPS = "stops";
     public static final String FLIGHT = "flight";
 
     @Inject
@@ -55,10 +52,6 @@ public class DirectionInfoFragment extends BaseFragment
     @BindView(R.id.recyclerview_directioninfo_stops)
     RecyclerView mRecyclerView;
 
-    private FlightVO mFlight;
-    private List<StopVO> mStops;
-
-
     public static DirectionInfoFragment newInstance(@NonNull FlightVO flight) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(FLIGHT, flight);
@@ -71,14 +64,6 @@ public class DirectionInfoFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        if(savedInstanceState != null) {
-            mStops = savedInstanceState.getParcelableArrayList(STOPS);
-            mFlight = savedInstanceState.getParcelable(FLIGHT);
-        } else {
-            Bundle bundle = this.getArguments();
-            mFlight = bundle.getParcelable(FLIGHT);
-        }
     }
 
     @Override
@@ -90,6 +75,7 @@ public class DirectionInfoFragment extends BaseFragment
     @Override
     public void onDestroy() {
         mPresenter.unsubscribeFromEvents();
+        mPresenter.clearData();
         super.onDestroy();
     }
 
@@ -106,38 +92,23 @@ public class DirectionInfoFragment extends BaseFragment
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
+        mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        String s = getResources().getString(R.string.directioninfo_rout);
-        mToolbar.setTitle(mFlight.getFlightNumber() + " " + s);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(STOPS, (ArrayList<? extends Parcelable>) mStops);
-        outState.putParcelable(FLIGHT, mFlight);
     }
 
     @Override
     protected void setUp(View view) {
         setupToolbar();
-        setDirectionTitle();
 
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        if(mStops == null) {
-            mPresenter.getStopsOnDirection(mFlight.getCurrentDirection().getId());
-        } else {
-            mPresenter.getSavedStopsOnDirection();
-        }
+        mPresenter.getStopsOnDirection();
+        mPresenter.setChangeButton();
+
+
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
@@ -145,13 +116,7 @@ public class DirectionInfoFragment extends BaseFragment
 
     @Override
     public void showStopsOnDirection(List<StopVO> stops) {
-        mStops = stops;
-        mAdapter.addItems(mStops);
-    }
-
-    @Override
-    public void showSavedStopsOnDirection() {
-        mAdapter.addItems(mStops);
+        mAdapter.addItems(stops);
     }
 
     @Override
@@ -161,28 +126,32 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
-    public void updateFlight(FlightVO flight) {
-        mFlight = flight;
+    public void setDirectionTitle(String directionName) {
+        mDirectionName.setText(directionName);
     }
 
     @Override
-    public void setDirectionTitle() {
-        mDirectionName.setText(mFlight.getCurrentDirection().getDirectionName());
+    public void setFlightNumber(String flightNumber) {
+        mToolbar.setTitle(flightNumber + getString(R.string.directioninfo_rout));
+    }
+
+    @Override
+    public void showChangeButton(boolean flag) {
+        mToolbar.getMenu().findItem(R.id.item_directioninfo_change)
+                .setVisible(flag);
     }
 
     @Override
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.inflateMenu(R.menu.menu_directioninfo);
-        mToolbar.getMenu().findItem(R.id.item_directioninfo_change)
-                .setVisible(mFlight.getDirections().size() > 1);
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_directioninfo_change:
-                        mPresenter.clickedOnChangeDirectionButton(mFlight);
+                        mPresenter.clickedOnChangeDirectionButton();
                         return true;
                 }
                 return false;

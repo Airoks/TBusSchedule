@@ -7,8 +7,10 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 public interface DirectionInfoMvpPresenter<V extends DirectionInfoMvpView>
         extends MvpPresenter<V>{
 
-    void getStopsOnDirection(Long directionId);
-    void getSavedStopsOnDirection();
-    void clickedOnChangeDirectionButton(FlightVO flight);
+    void getStopsOnDirection();
+    void clickedOnChangeDirectionButton();
     void clickedOnBackButton();
+    void clearData();
+    void setData(FlightVO flight);
+    void setChangeButton();
 }
