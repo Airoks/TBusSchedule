@@ -12,6 +12,6 @@ public interface DirectionInfoMvpView extends MvpView{
     void openPreviousFragment();
     void openScheduleContainerFragment(long stopId, long directionId);
     void setDirectionTitle(String directionName);
-    void setFlightNumber(String flightNumber);
+    void setToolbarTitle(String flightNumber);
     void showChangeButton(boolean flag);
 }

@@ -146,7 +146,7 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
-    public void setFlightNumber(String flightNumber) {
+    public void setToolbarTitle(String flightNumber) {
         mToolbar.setTitle(flightNumber + getString(R.string.directioninfo_rout));
     }
 

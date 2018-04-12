@@ -109,8 +109,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
         long stopId = getArguments().getLong(STOP_ID);
         long directionId = getArguments().getLong(DIRECTION_ID);
         int scheduleType = getArguments().getInt(SCHEDULE_TYPE);
@@ -125,6 +123,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
     @Override
     public void showEmptyScreen() {
         mRecyclerView.setVisibility(View.GONE);
+        mEmptyTextView.setVisibility(View.VISIBLE);
         int scheduleType = getArguments().getInt(SCHEDULE_TYPE);
         if(scheduleType == WORKDAY) {
             mEmptyTextView.setText(getString(R.string.schedule_empty_workday));

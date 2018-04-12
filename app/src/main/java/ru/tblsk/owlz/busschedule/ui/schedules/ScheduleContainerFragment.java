@@ -22,7 +22,8 @@ import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleFragment;
 
-public class ScheduleContainerFragment extends BaseFragment implements SetupToolbar{
+public class ScheduleContainerFragment extends BaseFragment
+        implements ScheduleContainerMvpView, SetupToolbar{
 
     public static final String STOP_ID = "stopId";
     public static final String DIRECTION_ID = "directionId";
@@ -64,6 +65,12 @@ public class ScheduleContainerFragment extends BaseFragment implements SetupTool
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setToolbarTitle();
+    }
+
+    @Override
     protected void setUp(View view) {
         setupToolbar();
         setupViewPager(mViewPager);
@@ -77,9 +84,7 @@ public class ScheduleContainerFragment extends BaseFragment implements SetupTool
     public void setupToolbar() {
         getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
-        mToolbar.setTitle(R.string.schedule);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
-
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,5 +102,10 @@ public class ScheduleContainerFragment extends BaseFragment implements SetupTool
         mPagerAdapter.addFragments(ScheduleFragment.newInstance(stopId, directionId, WEEKEND),
                 getString(R.string.schedule_weekend));
         viewPager.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    public void setToolbarTitle() {
+        mToolbar.setTitle(R.string.schedule);
     }
 }

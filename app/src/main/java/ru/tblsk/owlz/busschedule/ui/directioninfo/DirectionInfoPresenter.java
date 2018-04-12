@@ -46,7 +46,7 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
 
     @Override
     public void getStopsOnDirection() {
-        getMvpView().setFlightNumber(mFlight.getFlightNumber());
+        getMvpView().setToolbarTitle(mFlight.getFlightNumber());
         if(mStops != null) {
             getMvpView().showStopsOnDirection(mStops);
             getMvpView().setDirectionTitle(mFlight.getCurrentDirection().getDirectionName());

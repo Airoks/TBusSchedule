@@ -26,7 +26,7 @@
     <string name="suburban_routes">Пригородные</string>
     <string name="change_direction">Сменить направление</string>
 
-    <string name="directioninfo_rout">маршрут</string>
+    <string name="directioninfo_rout">\u0020 маршрут</string>
     <string name="stopinfo_favorites">Добавить в избранное</string>
     <string name="favoritesdirections_add">Добавить</string>
 
