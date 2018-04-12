@@ -34,7 +34,19 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_directioninfo, parent, false);
-        return new DirectionInfoAdapter.DirectionInfoViewHolder(itemView);
+
+        final DirectionInfoViewHolder holder = new DirectionInfoViewHolder(itemView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Position newPosition = new Position();
+                newPosition.setPosition(holder.getAdapterPosition());
+                mEventBus.post(newPosition);
+            }
+        });
+
+        return holder;
     }
 
     @Override

@@ -13,4 +13,5 @@ public interface DirectionInfoMvpPresenter<V extends DirectionInfoMvpView>
     void clearData();
     void setData(FlightVO flight);
     void setChangeButton();
+    void setClickListenerForAdapter();
 }

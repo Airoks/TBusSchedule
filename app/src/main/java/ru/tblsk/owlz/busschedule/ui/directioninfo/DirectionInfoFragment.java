@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,8 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
+import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 
 public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoMvpView, SetupToolbar{
@@ -93,6 +96,7 @@ public class DirectionInfoFragment extends BaseFragment
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
         mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
+        mPresenter.setClickListenerForAdapter();
         return view;
     }
 
@@ -123,6 +127,17 @@ public class DirectionInfoFragment extends BaseFragment
     public void openPreviousFragment() {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
+    }
+
+    @Override
+    public void openScheduleContainerFragment(long stopId, long directionId) {
+        FragmentManager fragmentManager = getBaseActivity()
+                .getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,
+                ScheduleContainerFragment.newInstance(stopId, directionId));
+        transaction.addToBackStack(DirectionInfoFragment.TAG);
+        transaction.commit();
     }
 
     @Override

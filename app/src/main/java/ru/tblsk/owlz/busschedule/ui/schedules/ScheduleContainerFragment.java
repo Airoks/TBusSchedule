@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -58,6 +59,7 @@ public class ScheduleContainerFragment extends BaseFragment implements SetupTool
                 inflater.inflate(R.layout.fragment_schedulecontainer, container, false);
         getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
                 .inject(this);
+        setUnbinder(ButterKnife.bind(this, view));
         return view;
     }
 
@@ -67,8 +69,8 @@ public class ScheduleContainerFragment extends BaseFragment implements SetupTool
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        ((MainActivity)getBaseActivity()).unlockDrawer();
-        ((MainActivity)getBaseActivity()).showBottomNavigationView();
+        ((MainActivity)getBaseActivity()).lockDrawer();
+        ((MainActivity)getBaseActivity()).hideBottomNavigationView();
     }
 
     @Override

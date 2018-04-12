@@ -17,9 +17,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
+import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
-import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
 
 public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
@@ -29,9 +30,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
     public static final String SCHEDULE_TYPE = "scheduleType";
     public static final int WORKDAY = 0;
     public static final int WEEKEND = 1;
-
-    @Inject
-    ScheduleMvpPresenter<ScheduleMvpView> mPresenter;
 
     @Inject
     LinearLayoutManager mLayoutManager;
@@ -45,6 +43,8 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
     @BindView(R.id.textview_schedule_empty)
     TextView mEmptyTextView;
 
+    ScheduleMvpPresenter<ScheduleMvpView> mPresenter;
+
     public static ScheduleFragment newInstance(long stopId, long directionId, int scheduleType) {
         Bundle args = new Bundle();
         args.putLong(STOP_ID, stopId);
@@ -53,6 +53,17 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
         ScheduleFragment fragment = new ScheduleFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Inject
+    public void setPresenter(@WorkdaySchedule ScheduleMvpPresenter<ScheduleMvpView> workdayPresenter,
+                              @WeekendSchedule ScheduleMvpPresenter<ScheduleMvpView> weekendPresenter) {
+        int type = getArguments().getInt(SCHEDULE_TYPE);
+        if(type == WORKDAY) {
+            mPresenter = workdayPresenter;
+        } else if(type == WEEKEND) {
+            mPresenter = weekendPresenter;
+        }
     }
 
     @Override
@@ -71,6 +82,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
 
         getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
                 .inject(this);
+
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
 
@@ -97,8 +109,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        ((MainActivity)getBaseActivity()).unlockDrawer();
-        ((MainActivity)getBaseActivity()).showBottomNavigationView();
+
 
         long stopId = getArguments().getLong(STOP_ID);
         long directionId = getArguments().getLong(DIRECTION_ID);

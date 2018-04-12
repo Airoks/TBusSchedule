@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
@@ -27,6 +28,7 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
 
     private RxEventBus mEventBus;
     private StopMapper mStopMapper;
+    private Disposable mDisposable;
     private FlightVO mFlight;
     private List<StopVO> mStops;
 
@@ -113,6 +115,30 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
         getMvpView().showChangeButton(flag);
     }
 
+    @Override
+    public void setClickListenerForAdapter() {
+        if(mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+
+        mDisposable = mEventBus.filteredObservable(Position.class)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().io())
+                .subscribe(new Consumer<Position>() {
+                    @Override
+                    public void accept(Position position) throws Exception {
+                        long stopId = mStops.get(position.getPosition()).getId();
+                        long directionId = mFlight.getCurrentDirection().getId();
+                        getMvpView().openScheduleContainerFragment(stopId, directionId);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+    }
+
     private void updateStops() {
         long directionId = mFlight.getCurrentDirection().getId();
         getCompositeDisposable().add(getDataManager().getStopsOnDirection(directionId)
@@ -133,5 +159,13 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
 
                     }
                 }));
+    }
+
+    @Override
+    public void detachView() {
+        if(mDisposable != null) {
+            mDisposable.dispose();
+        }
+        super.detachView();
     }
 }

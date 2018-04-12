@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.schedules.schedule;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,12 +66,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @Override
         public void onBind(int position) {
-            for(DepartureTimeVO time : mDepartureTime) {
-                mHours.setText(time.getHours());
-                for(Integer minute : time.getMinute()) {
-                    mMinute.setText(minute + R.string.tab);
-                }
+            DepartureTimeVO time = mDepartureTime.get(position);
+            String hours = time.getHours() + "";
+            StringBuilder minute = new StringBuilder();
+            for(Integer minuteList : time.getMinute()) {
+                minute.append(minuteList).append("\t");
             }
+            mHours.setText(hours);
+            mMinute.setText(minute);
         }
     }
 }

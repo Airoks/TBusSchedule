@@ -4,12 +4,14 @@ package ru.tblsk.owlz.busschedule.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 
 import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
+import ru.tblsk.owlz.busschedule.di.annotation.Type;
+import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
+import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpView;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
@@ -28,7 +30,8 @@ import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpView;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.SchedulePresenter;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WeekendSchedulePresenter;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WorkdaySchedulePresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
@@ -128,9 +131,18 @@ public class ActivityModule {
     }
 
     @Provides
+    @WorkdaySchedule
     @PerActivity
-    ScheduleMvpPresenter<ScheduleMvpView> provideSchedulePresenter(
-            SchedulePresenter<ScheduleMvpView> presenter) {
+    ScheduleMvpPresenter<ScheduleMvpView> provideWorkdaySchedulePresenter(
+            WorkdaySchedulePresenter<ScheduleMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @WeekendSchedule
+    @PerActivity
+    ScheduleMvpPresenter<ScheduleMvpView> provideWeekendSchedulePresenter(
+            WeekendSchedulePresenter<ScheduleMvpView> presenter) {
         return presenter;
     }
 

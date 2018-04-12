@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -219,6 +221,10 @@ public class AppDbHelper implements DbHelper {
                     if(schedule.getScheduleType().id == scheduleType) {
                         departureTimes = schedule.getDepartureTimes();
                     }
+                }
+                if(!departureTimes.isEmpty()) {
+                    String s = scheduleType + "";
+                    Log.d("DepartureTime", "TYPE-" + s + " NOT EMPTY");
                 }
 
                 return departureTimes;
