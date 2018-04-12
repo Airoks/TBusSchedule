@@ -12,6 +12,7 @@
         android:id="@+id/textview_route_flightnumber"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:textColor="@color/black"
         android:layout_centerVertical="true"
         android:background="@drawable/route_shapeoval"
         android:layout_marginLeft="16dp"
@@ -35,11 +36,12 @@
         android:id="@+id/textview_route_directionname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:layout_centerInParent="true"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_toLeftOf="@id/imagebutton_route_change"
         android:layout_toRightOf="@+id/textview_route_flightnumber"
-        android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/textview_route_flightnumber"
         android:layout_toStartOf="@id/imagebutton_route_change" />
 

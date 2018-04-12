@@ -70,7 +70,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             String hours = time.getHours() + "";
             StringBuilder minute = new StringBuilder();
             for(Integer minuteList : time.getMinute()) {
-                minute.append(minuteList).append("\t");
+                minute.append(minuteList).append("\t\t");
             }
             mHours.setText(hours);
             mMinute.setText(minute);
