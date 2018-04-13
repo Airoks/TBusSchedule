@@ -172,12 +172,12 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
                 .subscribe(new Consumer<FlightVO>() {
                     @Override
                     public void accept(FlightVO flightVO) throws Exception {
-
+                        getMvpView().openScheduleContainerFragment(flightVO);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        throwable.printStackTrace();
                     }
                 });
     }

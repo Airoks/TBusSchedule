@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,10 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
@@ -35,6 +39,7 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 public class StopInfoFragment extends BaseFragment
         implements StopInfoMvpView, SetupToolbar{
 
+    public static final String TAG = "StopInfoFragment";
     public static final String STOP = "stop";
     public static final String DIRECTIONS = "directions";
 
@@ -95,12 +100,8 @@ public class StopInfoFragment extends BaseFragment
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
+        mPresenter.setClickListenerForAdapter();
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -203,6 +204,17 @@ public class StopInfoFragment extends BaseFragment
             dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             dialog.show(fragmentManager, "FavoritesDirectionsDialog");
         }
+    }
+
+    @Override
+    public void openScheduleContainerFragment(FlightVO flight) {
+        FragmentManager fragmentManager = getBaseActivity()
+                .getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,
+                ScheduleContainerFragment.newInstance(mStop, flight));
+        transaction.addToBackStack(StopInfoFragment.TAG);
+        transaction.commit();
     }
 
     @Override
