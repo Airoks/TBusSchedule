@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -20,6 +21,7 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
         implements StopInfoMvpPresenter<V>{
 
     private DirectionMapper mDirectionMapper;
+    private Disposable mDisposable;
 
     @Inject
     public StopInfoPresenter(DataManager dataManager,
@@ -34,6 +36,8 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
     @Override
     public void getDirectionsByStop(Long stopId) {
         getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().io())
                 .zipWith(getDataManager().getDirectionsByStop(stopId).map(
                         new Function<List<Direction>, List<String>>() {
                     @Override
@@ -41,7 +45,6 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
                         return getDataManager().getFlightNumbers(directions);
                     }
                 }), mDirectionMapper)
-                .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<DirectionVO>>() {
                     @Override
@@ -101,5 +104,20 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
                         throwable.printStackTrace();
                     }
                 }));
+    }
+
+    @Override
+    public void setClickListenerForAdapter() {
+        if(mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+    }
+
+    @Override
+    public void detachView() {
+        if(mDisposable != null) {
+            mDisposable.dispose();
+        }
+        super.detachView();
     }
 }

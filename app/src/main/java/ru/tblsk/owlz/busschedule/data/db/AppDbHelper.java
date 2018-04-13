@@ -222,11 +222,6 @@ public class AppDbHelper implements DbHelper {
                         departureTimes = schedule.getDepartureTimes();
                     }
                 }
-                if(!departureTimes.isEmpty()) {
-                    String s = scheduleType + "";
-                    Log.d("DepartureTime", "TYPE-" + s + " NOT EMPTY");
-                }
-
                 return departureTimes;
             }
         });

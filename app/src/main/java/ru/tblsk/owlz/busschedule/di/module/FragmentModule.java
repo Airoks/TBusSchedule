@@ -61,8 +61,8 @@ public class FragmentModule {
     }
 
     @Provides
-    StopInfoAdapter provideStopInfoAdapter() {
-        return new StopInfoAdapter();
+    StopInfoAdapter provideStopInfoAdapter(RxEventBus eventBus) {
+        return new StopInfoAdapter(eventBus);
     }
 
     @Provides

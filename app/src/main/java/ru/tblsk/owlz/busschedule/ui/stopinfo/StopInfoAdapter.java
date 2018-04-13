@@ -17,13 +17,16 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<DirectionVO> mDirections;
+    private RxEventBus mEventBus;
 
     @Inject
-    public StopInfoAdapter() {
+    public StopInfoAdapter(RxEventBus eventBus) {
+        this.mEventBus = eventBus;
         this.mDirections = new ArrayList<>();
     }
 
@@ -31,7 +34,22 @@ public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_stopinfo, parent, false);
-        return new StopInfoViewHolder(itemView);
+
+        final StopInfoViewHolder holder = new StopInfoViewHolder(itemView);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                StopInfoEvent event = new StopInfoEvent();
+                event.setDirectionId(mDirections.get(position).getId());
+                event.setDirectionType(mDirections.get(position).getDirectionType());
+                mEventBus.post(event);
+            }
+        });
+
+        return holder;
     }
 
     @Override

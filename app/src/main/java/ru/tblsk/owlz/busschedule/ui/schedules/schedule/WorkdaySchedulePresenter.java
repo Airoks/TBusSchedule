@@ -52,7 +52,7 @@ public class WorkdaySchedulePresenter<V extends ScheduleMvpView>
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-
+                            throwable.printStackTrace();
                         }
                     }));
         }

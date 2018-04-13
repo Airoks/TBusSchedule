@@ -3,7 +3,6 @@ package ru.tblsk.owlz.busschedule.di.module;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import javax.inject.Singleton;
 
@@ -71,7 +70,6 @@ public class ApplicationModule {
     @Provides
     @Singleton
     RxEventBus provideRxEventBus() {
-        Log.d("EVENTBUS", "NEW EVENT BUS");
         return new RxEventBus();
     }
 
