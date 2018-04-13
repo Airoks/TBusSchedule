@@ -28,7 +28,6 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 
 public class DirectionInfoFragment extends BaseFragment
@@ -130,12 +129,12 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
-    public void openScheduleContainerFragment(long stopId, long directionId) {
+    public void openScheduleContainerFragment(StopVO stop, FlightVO flight) {
         FragmentManager fragmentManager = getBaseActivity()
                 .getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container,
-                ScheduleContainerFragment.newInstance(stopId, directionId));
+                ScheduleContainerFragment.newInstance(stop, flight));
         transaction.addToBackStack(DirectionInfoFragment.TAG);
         transaction.commit();
     }

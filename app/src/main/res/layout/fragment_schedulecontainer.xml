@@ -25,7 +25,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="12dp"
             android:orientation="vertical"
-            android:background="@drawable/all_contour">
+            android:background="@color/white">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -55,11 +55,6 @@
                     android:layout_marginStart="17dp" />
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorAccent"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

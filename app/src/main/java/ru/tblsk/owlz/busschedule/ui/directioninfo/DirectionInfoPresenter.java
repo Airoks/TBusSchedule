@@ -127,9 +127,8 @@ public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends Base
                 .subscribe(new Consumer<Position>() {
                     @Override
                     public void accept(Position position) throws Exception {
-                        long stopId = mStops.get(position.getPosition()).getId();
-                        long directionId = mFlight.getCurrentDirection().getId();
-                        getMvpView().openScheduleContainerFragment(stopId, directionId);
+                        StopVO stop = mStops.get(position.getPosition());
+                        getMvpView().openScheduleContainerFragment(stop, mFlight);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

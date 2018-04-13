@@ -31,7 +31,7 @@ public class WeekendSchedulePresenter<V extends ScheduleMvpView>
 
     @Override
     public void getSchedule(long stopId, long directionId, int scheduleType) {
-        if(mScheduleWeekend != null) {
+        if(mScheduleWeekend != null && !mScheduleWeekend.isEmpty()) {
             getMvpView().showSchedule(mScheduleWeekend);
         } else {
             getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)

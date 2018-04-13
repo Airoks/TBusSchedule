@@ -17,4 +17,9 @@ public class ScheduleContainerPresenter<V extends ScheduleContainerMvpView>
                                       SchedulerProvider schedulerProvider) {
         super(dataManager, compositeDisposable, schedulerProvider);
     }
+
+    @Override
+    public void clickedOnBackButton() {
+        getMvpView().openPreviousFragment();
+    }
 }
