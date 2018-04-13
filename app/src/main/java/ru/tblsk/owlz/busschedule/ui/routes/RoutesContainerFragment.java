@@ -87,6 +87,7 @@ public class RoutesContainerFragment extends BaseFragment
 
     @Override
     public void setupToolbar() {
+
         getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.routs);
@@ -97,7 +98,6 @@ public class RoutesContainerFragment extends BaseFragment
                 ((MainActivity)getBaseActivity()).openDrawer();
             }
         });
-
 
     }
     public void setupViewPager(ViewPager viewPager) {

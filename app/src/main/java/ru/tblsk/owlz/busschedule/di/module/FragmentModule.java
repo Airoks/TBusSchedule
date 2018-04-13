@@ -3,11 +3,13 @@ package ru.tblsk.owlz.busschedule.di.module;
 
 import android.support.v4.app.Fragment;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
+import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
@@ -73,5 +75,10 @@ public class FragmentModule {
     @Provides
     ScheduleAdapter provideScheduleAdapter() {
         return new ScheduleAdapter();
+    }
+
+    @Provides
+    FavoriteStopsAdapter provideFavoriteStopsAdapter(RxEventBus eventBus) {
+        return new FavoriteStopsAdapter(eventBus);
     }
 }

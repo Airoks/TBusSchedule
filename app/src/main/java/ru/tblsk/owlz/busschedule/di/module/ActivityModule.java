@@ -9,12 +9,13 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
-import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpView;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
+import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsContract;
+import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsPresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
@@ -153,6 +154,13 @@ public class ActivityModule {
     @PerActivity
     ScheduleContainerMvpPresenter<ScheduleContainerMvpView> provideScheduleContainerPresenter(
             ScheduleContainerPresenter<ScheduleContainerMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    FavoriteStopsContract.Presenter provideFavoriteStopsPresenter(
+            FavoriteStopsPresenter presenter) {
         return presenter;
     }
 

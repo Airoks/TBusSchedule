@@ -16,8 +16,6 @@ import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
-import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
-import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
@@ -26,8 +24,6 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<V>
         implements StopInfoMvpPresenter<V>{
 
-    private DirectionMapper mDirectionMapper;
-    private FlightMapper mFlightMapper;
     private RxEventBus mEventBus;
     private Disposable mDisposable;
 
@@ -35,13 +31,9 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
     public StopInfoPresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
                              SchedulerProvider schedulerProvider,
-                             DirectionMapper directionMapper,
-                             FlightMapper flightMapper,
                              RxEventBus eventBus) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
-        this.mDirectionMapper = directionMapper;
-        this.mFlightMapper = flightMapper;
         this.mEventBus = eventBus;
     }
 

@@ -15,7 +15,9 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.data.db.model.FavoriteStops;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
+import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
@@ -25,8 +27,10 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.bottomnavigationview_mainscreen)
     BottomNavigationView mBottomNavigationView;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
+
     @BindView(R.id.navigationview_main)
     NavigationView mNavigationView;
 
@@ -55,6 +59,7 @@ public class MainActivity extends BaseActivity {
     protected void setUp() {
         setupNavView();
         setupBotNavView();
+        mBottomNavigationView.setSelectedItemId(R.id.navigation_main);
     }
 
     @Override
@@ -99,6 +104,9 @@ public class MainActivity extends BaseActivity {
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             switch (item.getItemId()) {
                                 case R.id.navigation_main:
+                                    fragmentTransaction.replace(R.id.container,
+                                            FavoriteStopsFragment.newInstance());
+                                    fragmentTransaction.commit();
                                     return true;
                                 case R.id.navigation_stops:
                                     fragmentTransaction.replace(R.id.container,

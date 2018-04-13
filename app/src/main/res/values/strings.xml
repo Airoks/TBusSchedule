@@ -11,6 +11,7 @@
     <string name="stops">Остановки</string>
     <string name="routs">Маршруты</string>
     <string name="main">Главная</string>
+    <string name="favorite">Избранное</string>
     <string name="schedule">Расписание</string>
 
     <string name="all_stops">Все Остановки</string>
@@ -39,4 +40,6 @@
     <string name="schedule_weekend">Выходные дни</string>
     <string name="schedule_empty_workday">Данный рейс не совершает перевозок в рабочие дни</string>
     <string name="schedule_empty_weekend">Данный рейс не совершает перевозок в выходные дни</string>
+
+    <string name="favoritestops_empty">Вы пока не добавили ни одной остановки в избранное</string>
 </resources>

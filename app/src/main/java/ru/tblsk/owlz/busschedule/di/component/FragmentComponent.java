@@ -5,6 +5,7 @@ import dagger.Subcomponent;
 import ru.tblsk.owlz.busschedule.di.annotation.PerFragment;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
+import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
@@ -28,4 +29,5 @@ public interface FragmentComponent {
     void inject(FavoritesDirectionsDialog favoritesDirectionsDialog);
     void inject(ScheduleFragment scheduleFragment);
     void inject(ScheduleContainerFragment scheduleContainerFragment);
+    void inject(FavoriteStopsFragment favoriteStopsFragment);
 }
