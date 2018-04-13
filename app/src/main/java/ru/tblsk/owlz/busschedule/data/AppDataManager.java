@@ -215,7 +215,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public List<String> getFlightNumbers(List<Direction> directions) {
+    public Single<Flight> getFlightByDirection(long directionId) {
+        return dbHelper.getFlightByDirection(directionId);
+    }
+
+    @Override
+    public Single<List<String>> getFlightNumbers(List<Direction> directions) {
         return dbHelper.getFlightNumbers(directions);
     }
 

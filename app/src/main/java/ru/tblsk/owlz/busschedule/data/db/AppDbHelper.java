@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -398,14 +396,26 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public List<String> getFlightNumbers(final List<Direction> directions) {
+    public Single<Flight> getFlightByDirection(final long directionId) {
+        return Single.fromCallable(new Callable<Flight>() {
+            @Override
+            public Flight call() throws Exception {
+                long flightId = mDaoSession.getDirectionDao().queryBuilder()
+                        .where(DirectionDao.Properties.Id.eq(directionId)).unique().getFlightId();
+                return mDaoSession.getFlightDao().load(flightId);
+            }
+        });
+    }
+
+    @Override
+    public Single<List<String>> getFlightNumbers(final List<Direction> directions) {
         List<String> flightNumbers = new ArrayList<>();
         for(Direction direction : directions) {
             String flightNumber = mDaoSession.getFlightDao().queryBuilder()
                     .where(FlightDao.Properties.Id.eq(direction.getFlightId())).unique().getFlightNumber();
             flightNumbers.add(flightNumber);
         }
-        return flightNumbers;
+        return Single.just(flightNumbers);
     }
 
 }
