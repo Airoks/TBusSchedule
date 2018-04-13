@@ -131,17 +131,13 @@ public class MainActivity extends BaseActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         mDrawer.closeDrawer(GravityCompat.START);
                         switch (item.getItemId()) {
-                            case R.id.nav_camera:
-                                return true;
-                            case R.id.nav_gallery:
-                                return true;
-                            case R.id.nav_slideshow:
-                                return true;
-                            case R.id.nav_manage:
-                                return true;
-                            case R.id.nav_share:
+                            case R.id.nav_setting:
                                 return true;
                             case R.id.nav_send:
+                                return true;
+                            case R.id.nav_market:
+                                return true;
+                            case R.id.nav_share:
                                 return true;
                         }
                         return false;

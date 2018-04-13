@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/navigation_main"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/stopinfo_starblack_24dp"
         android:title="@string/favorite"
         android:enabled="true"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/navigation_stops"
-        android:icon="@drawable/ic_bench_black"
+        android:icon="@drawable/ic_park_bench_black"
         android:title="@string/stops"
         android:enabled="true"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/navigation_routs"
-        android:icon="@drawable/ic_bus"
+        android:icon="@drawable/ic_newbus_black"
         android:title="@string/routs"
         android:enabled="true"
         app:showAsAction="always"/>

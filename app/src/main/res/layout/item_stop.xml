@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/ic_bench_blue"
+        app:srcCompat="@drawable/ic_park_bench_blue"
         android:contentDescription="@string/stops" />
 
     <TextView

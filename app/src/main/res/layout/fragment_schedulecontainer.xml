@@ -74,7 +74,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_centerVertical="true"
                     android:background="@drawable/route_shapeoval"
-                    app:srcCompat="@drawable/ic_bench_blue"
+                    app:srcCompat="@drawable/ic_park_bench_blue"
                     android:contentDescription="@string/stops" />
 
                 <TextView
