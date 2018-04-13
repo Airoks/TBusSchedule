@@ -3,6 +3,8 @@ package ru.tblsk.owlz.busschedule.ui.favorites;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +25,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
+import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
 
 public class FavoriteStopsFragment extends BaseFragment
         implements FavoriteStopsContract.View, SetupToolbar {
@@ -47,6 +51,8 @@ public class FavoriteStopsFragment extends BaseFragment
     @BindView(R.id.textview_favoritestops_empty)
     TextView mEmptyTextView;
 
+    private boolean isFavoriteStop;
+
     public static FavoriteStopsFragment newInstance() {
         Bundle args = new Bundle();
         FavoriteStopsFragment fragment = new FavoriteStopsFragment();
@@ -64,6 +70,8 @@ public class FavoriteStopsFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        isFavoriteStop = true;
     }
 
     @Nullable
@@ -78,6 +86,7 @@ public class FavoriteStopsFragment extends BaseFragment
                 .inject(this);
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
+        mPresenter.setClickListenerForAdapter();
         return view;
     }
 
@@ -101,6 +110,9 @@ public class FavoriteStopsFragment extends BaseFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        ((MainActivity)getBaseActivity()).showBottomNavigationView();
+        ((MainActivity)getBaseActivity()).unlockDrawer();
+
         mPresenter.getFavoriteStops();
     }
 
@@ -111,7 +123,11 @@ public class FavoriteStopsFragment extends BaseFragment
 
     @Override
     public void openStopInfoFragment(StopVO stop) {
-
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop, isFavoriteStop));
+        fragmentTransaction.addToBackStack(StopsFragment.TAG);
+        fragmentTransaction.commit();
     }
 
     @Override

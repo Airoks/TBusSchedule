@@ -58,6 +58,7 @@ public class AllStopsFragment extends BaseFragment
     FastScroller mFastScroller;
 
     private List<StopVO> mStops;
+    private boolean isFavoriteStop;
 
     public static AllStopsFragment newInstance() {
         return new AllStopsFragment();
@@ -66,6 +67,8 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        isFavoriteStop = false;
 
         if(savedInstanceState != null) {
             mStops = savedInstanceState.getParcelableArrayList(STOPS);
@@ -99,7 +102,7 @@ public class AllStopsFragment extends BaseFragment
     public void openStopInfoFragment(StopVO stop) {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop));
+        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop, isFavoriteStop));
         fragmentTransaction.addToBackStack(AllStopsFragment.TAG);
         fragmentTransaction.commit();
     }

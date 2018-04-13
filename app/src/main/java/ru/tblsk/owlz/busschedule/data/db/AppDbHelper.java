@@ -364,11 +364,16 @@ public class AppDbHelper implements DbHelper {
                 List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
 
                 for(FavoriteStops favorite : favorites) {
-                    Long directionId = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getId()),
-                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique().getDirectionId();
-                    directions.add(mDaoSession.getDirectionDao().queryBuilder()
-                    .where(DirectionDao.Properties.Id.eq(directionId)).unique());
+
+                    StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getStopsOnRoutsId()),
+                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique();
+
+                    if(stopsOnRouts != null) {
+                        long directionId = stopsOnRouts.getDirectionId();
+                        directions.add(mDaoSession.getDirectionDao().queryBuilder()
+                                .where(DirectionDao.Properties.Id.eq(directionId)).unique());
+                    }
                 }
                 return directions;
             }

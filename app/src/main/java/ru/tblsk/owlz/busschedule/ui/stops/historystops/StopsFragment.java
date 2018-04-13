@@ -51,11 +51,15 @@ public class StopsFragment extends BaseFragment
     @BindView(R.id.recyclerview_stop)
     RecyclerView mRecyclerView;
 
+    private boolean isFavoriteStop;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        isFavoriteStop = false;
     }
 
     public static StopsFragment newInstance() {
@@ -144,7 +148,7 @@ public class StopsFragment extends BaseFragment
     public void openStopInfoFragment(StopVO stop) {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop));
+        fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop, isFavoriteStop));
         fragmentTransaction.addToBackStack(StopsFragment.TAG);
         fragmentTransaction.commit();
     }

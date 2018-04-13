@@ -38,46 +38,12 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
     }
 
     @Override
-    public void getDirectionsByStop(Long stopId) {
-        getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
-                .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
-                    @Override
-                    public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {
-                        return getDataManager().getFlightNumbers(directions)
-                                .map(new Function<List<String>, List<DirectionVO>>() {
-                                    @Override
-                                    public List<DirectionVO> apply(List<String> flightNumber) throws Exception {
-                                        List<DirectionVO> directionsVO = new ArrayList<>();
-                                        for(int i = 0; i < directions.size(); i ++) {
-                                            DirectionVO directionVO = new DirectionVO();
-                                            directionVO.setId(directions.get(i).getId());
-                                            directionVO.setDirectionName(directions.get(i).getDirectionName());
-                                            directionVO.setDirectionType(directions.get(i).getDirectionType().id);
-                                            directionVO.setFlightId(directions.get(i).getFlightId());
-                                            directionVO.setFlightNumber(flightNumber.get(i));
-                                            directionVO.setFavorite(true);
-                                            directionsVO.add(directionVO);
-                                        }
-                                        return directionsVO;
-                                    }
-                                });
-                    }
-                })
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(new Consumer<List<DirectionVO>>() {
-                    @Override
-                    public void accept(List<DirectionVO> directionVOS) throws Exception {
-                        getMvpView().showDirectionsByStop(directionVOS);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                }));
-
+    public void getDirectionsByStop(Long stopId, boolean isFavoriteStop) {
+        if(isFavoriteStop) {
+            getFavoriteDirection(stopId);
+        } else {
+            getDirection(stopId);
+        }
     }
 
     @Override
@@ -180,5 +146,89 @@ public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<
             mDisposable.dispose();
         }
         super.detachView();
+    }
+
+    private void getDirection(long stopId) {
+
+        getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().io())
+                .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
+                    @Override
+                    public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {
+                        return getDataManager().getFlightNumbers(directions)
+                                .map(new Function<List<String>, List<DirectionVO>>() {
+                                    @Override
+                                    public List<DirectionVO> apply(List<String> flightNumber) throws Exception {
+                                        List<DirectionVO> directionsVO = new ArrayList<>();
+                                        for(int i = 0; i < directions.size(); i ++) {
+                                            DirectionVO directionVO = new DirectionVO();
+                                            directionVO.setId(directions.get(i).getId());
+                                            directionVO.setDirectionName(directions.get(i).getDirectionName());
+                                            directionVO.setDirectionType(directions.get(i).getDirectionType().id);
+                                            directionVO.setFlightId(directions.get(i).getFlightId());
+                                            directionVO.setFlightNumber(flightNumber.get(i));
+                                            directionVO.setFavorite(true);
+                                            directionsVO.add(directionVO);
+                                        }
+                                        return directionsVO;
+                                    }
+                                });
+                    }
+                })
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<List<DirectionVO>>() {
+                    @Override
+                    public void accept(List<DirectionVO> directionVOS) throws Exception {
+                        getMvpView().showDirectionsByStop(directionVOS);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+
+    }
+
+    private void getFavoriteDirection(long stopId) {
+        getCompositeDisposable().add(getDataManager().getFavoriteDirection(stopId)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().io())
+                .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
+                    @Override
+                    public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {
+                        return getDataManager().getFlightNumbers(directions)
+                                .map(new Function<List<String>, List<DirectionVO>>() {
+                                    @Override
+                                    public List<DirectionVO> apply(List<String> flightNumber) throws Exception {
+                                        List<DirectionVO> directionsVO = new ArrayList<>();
+                                        for(int i = 0; i < directions.size(); i ++) {
+                                            DirectionVO directionVO = new DirectionVO();
+                                            directionVO.setId(directions.get(i).getId());
+                                            directionVO.setDirectionName(directions.get(i).getDirectionName());
+                                            directionVO.setDirectionType(directions.get(i).getDirectionType().id);
+                                            directionVO.setFlightId(directions.get(i).getFlightId());
+                                            directionVO.setFlightNumber(flightNumber.get(i));
+                                            directionVO.setFavorite(true);
+                                            directionsVO.add(directionVO);
+                                        }
+                                        return directionsVO;
+                                    }
+                                });
+                    }
+                })
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<List<DirectionVO>>() {
+                    @Override
+                    public void accept(List<DirectionVO> directionVOS) throws Exception {
+                        getMvpView().showDirectionsByStop(directionVOS);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                }));
     }
 }

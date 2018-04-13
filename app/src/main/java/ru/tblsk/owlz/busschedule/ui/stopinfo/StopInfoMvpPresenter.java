@@ -5,7 +5,7 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 
 public interface StopInfoMvpPresenter<V extends StopInfoMvpView>
         extends MvpPresenter<V>{
-    void getDirectionsByStop(Long stopId);
+    void getDirectionsByStop(Long stopId, boolean isFavoriteStop);
     void getSavedDirectionsByStop();
     void clickedOnBackButton();
     void clickedOnButtonAddFavorites();

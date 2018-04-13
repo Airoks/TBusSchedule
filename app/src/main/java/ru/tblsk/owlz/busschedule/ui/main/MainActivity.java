@@ -59,7 +59,10 @@ public class MainActivity extends BaseActivity {
     protected void setUp() {
         setupNavView();
         setupBotNavView();
-        mBottomNavigationView.setSelectedItemId(R.id.navigation_main);
+
+        if(currentPageId == -1) {
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_main);
+        }
     }
 
     @Override

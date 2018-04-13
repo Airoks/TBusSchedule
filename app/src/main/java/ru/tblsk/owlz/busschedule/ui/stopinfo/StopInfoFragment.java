@@ -28,7 +28,6 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
-import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
@@ -42,6 +41,7 @@ public class StopInfoFragment extends BaseFragment
     public static final String TAG = "StopInfoFragment";
     public static final String STOP = "stop";
     public static final String DIRECTIONS = "directions";
+    public static final String IS_FAVORITE_STOP = "isFavoriteStop";
 
     @Inject
     StopInfoMvpPresenter<StopInfoMvpView> mPresenter;
@@ -68,9 +68,10 @@ public class StopInfoFragment extends BaseFragment
     private StopVO mStop;
     private boolean mIsFavorite;
 
-    public static  StopInfoFragment newInstance(StopVO stop) {
+    public static  StopInfoFragment newInstance(StopVO stop, boolean isFavoriteStop) {
         Bundle args = new Bundle();
         args.putParcelable(STOP, stop);
+        args.putBoolean(IS_FAVORITE_STOP, isFavoriteStop);
         StopInfoFragment fragment = new StopInfoFragment();
         fragment.setArguments(args);
         return fragment;
@@ -136,8 +137,9 @@ public class StopInfoFragment extends BaseFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        boolean isFavoriteStop = getArguments().getBoolean(IS_FAVORITE_STOP);
         if(mDirections == null) {
-            mPresenter.getDirectionsByStop(mStop.getId());
+            mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
         } else {
             mPresenter.getSavedDirectionsByStop();
         }
