@@ -27,7 +27,7 @@ import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleFragment;
 
 public class ScheduleContainerFragment extends BaseFragment
-        implements ScheduleContainerMvpView, SetupToolbar{
+        implements ScheduleContainerContract.View, SetupToolbar{
 
     public static final String STOP = "stop";
     public static final String FLIGHT = "flight";
@@ -38,7 +38,7 @@ public class ScheduleContainerFragment extends BaseFragment
     AllScreenPagerAdapter mPagerAdapter;
 
     @Inject
-    ScheduleContainerMvpPresenter<ScheduleContainerMvpView> mPresenter;
+    ScheduleContainerContract.Presenter mPresenter;
 
     @BindView(R.id.toolbar_schedulecontainer)
     Toolbar mToolbar;

@@ -28,8 +28,7 @@ import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerMvpView;
+import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerContract;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpView;
@@ -151,8 +150,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    ScheduleContainerMvpPresenter<ScheduleContainerMvpView> provideScheduleContainerPresenter(
-            ScheduleContainerPresenter<ScheduleContainerMvpView> presenter) {
+    ScheduleContainerContract.Presenter provideScheduleContainerPresenter(
+            ScheduleContainerPresenter presenter) {
         return presenter;
     }
 
