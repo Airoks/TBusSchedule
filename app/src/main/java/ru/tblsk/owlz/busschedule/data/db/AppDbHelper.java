@@ -21,7 +21,6 @@ import ru.tblsk.owlz.busschedule.data.db.model.DirectionDao;
 import ru.tblsk.owlz.busschedule.data.db.model.FavoriteStops;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightDao;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStops;
 import ru.tblsk.owlz.busschedule.data.db.model.SearchHistoryStopsDao;
@@ -170,12 +169,12 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<List<Flight>> getFlightByType(final FlightType flightType) {
+    public Single<List<Flight>> getFlightByType(final int flightType) {
         return Single.fromCallable(new Callable<List<Flight>>() {
             @Override
             public List<Flight> call() throws Exception {
                 return mDaoSession.getFlightDao().queryBuilder()
-                        .where(FlightDao.Properties.FlightType.eq(flightType.id))
+                        .where(FlightDao.Properties.FlightType.eq(flightType))
                         .list();
             }
         });

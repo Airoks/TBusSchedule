@@ -27,7 +27,6 @@ import ru.tblsk.owlz.busschedule.data.db.DbHelper;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
@@ -134,7 +133,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<Flight>> getFlightByType(FlightType flightType) {
+    public Single<List<Flight>> getFlightByType(int flightType) {
         return dbHelper.getFlightByType(flightType);
     }
 

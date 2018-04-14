@@ -8,7 +8,6 @@ import io.reactivex.Single;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
@@ -30,7 +29,7 @@ public interface DbHelper {
     Single<Boolean> isEmptyDepartureTime();
 
     Single<List<Stop>> getAllStops();
-    Single<List<Flight>> getFlightByType(FlightType flightType);
+    Single<List<Flight>> getFlightByType(int flightType);
     Single<List<Direction>> getDirectionsByStop(long stopId);
     Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType);
     Single<List<Stop>> getStopsOnDirection(long directionId);

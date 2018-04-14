@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.routes;
+package ru.tblsk.owlz.busschedule.ui.routes.route;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +19,6 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.ChangeDirectionSuburban;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
@@ -53,9 +51,9 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 int position = viewHolder.getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
                     if(mFlightType == FlightType.URBAN.id) {
-                        mEventBus.post(new ChangeDirectionUrban(position));
+                        mEventBus.post(new UrbanDirectionEvent(position));
                     } else {
-                        mEventBus.post(new ChangeDirectionSuburban(position));
+                        mEventBus.post(new SuburbanDirectionEvent(position));
                     }
                 }
             }
@@ -81,12 +79,12 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         int directionTypeName = mFlights.get(position).getCurrentDirectionType();
                         if(mFlightType == FlightType.URBAN.id) {
-                            ChangeDirectionUrban.InAdapter change =
-                                    new ChangeDirectionUrban.InAdapter(position, directionTypeName);
+                            UrbanDirectionEvent.InAdapter change =
+                                    new UrbanDirectionEvent.InAdapter(position, directionTypeName);
                             mEventBus.post(change);
                         } else {
-                            ChangeDirectionSuburban.InAdapter change =
-                                    new ChangeDirectionSuburban.InAdapter(position, directionTypeName);
+                            SuburbanDirectionEvent.InAdapter change =
+                                    new SuburbanDirectionEvent.InAdapter(position, directionTypeName);
                             mEventBus.post(change);
                         }
                     }

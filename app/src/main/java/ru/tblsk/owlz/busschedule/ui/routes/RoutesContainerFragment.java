@@ -19,13 +19,14 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
+import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesFragment;
 
 public class RoutesContainerFragment extends BaseFragment
         implements SetupToolbar, RoutesContainerContract.View{
 
     public static final String TAG = "RoutesContainerFragment";
+    public static final int URBAN = 0;
+    public static final int SUBURBAN = 1;
 
     @Inject
     RoutesContainerContract.Presenter mPresenter;
@@ -101,9 +102,9 @@ public class RoutesContainerFragment extends BaseFragment
 
     }
     public void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragments(UrbanRoutesFragment.newInstance(),
+        mPagerAdapter.addFragments(RoutesFragment.newInstance(URBAN),
                 getResources().getString(R.string.urban_routes));
-        mPagerAdapter.addFragments(SuburbanRoutesFragment.newInstance(),
+        mPagerAdapter.addFragments(RoutesFragment.newInstance(SUBURBAN),
                 getResources().getString(R.string.suburban_routes));
         viewPager.setAdapter(mPagerAdapter);
     }

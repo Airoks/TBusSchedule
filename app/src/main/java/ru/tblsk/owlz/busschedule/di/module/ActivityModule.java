@@ -9,6 +9,8 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
+import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
@@ -21,12 +23,9 @@ import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerContract;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesMvpView;
-import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
-import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.routes.route.RouteContract;
+import ru.tblsk.owlz.busschedule.ui.routes.route.SuburbanRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.routes.route.UrbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerContract;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleContract;
@@ -79,8 +78,7 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    StopsContract.Presenter provideStopsPresenter(
-            StopsPresenter presenter) {
+    StopsContract.Presenter provideStopsPresenter(StopsPresenter presenter) {
         return presenter;
     }
 
@@ -92,16 +90,18 @@ public class ActivityModule {
     }
 
     @Provides
+    @UrbanRoutes
     @PerActivity
-    UrbanRoutesMvpPresenter<UrbanRoutesMvpView> provideUrbanRoutesPresenter(
-            UrbanRoutesPresenter<UrbanRoutesMvpView> presenter) {
+    RouteContract.Presenter provideUrbanRoutesPresenter(
+            UrbanRoutesPresenter presenter) {
         return presenter;
     }
 
     @Provides
+    @SuburbanRoutes
     @PerActivity
-    SuburbanRoutesMvpPresenter<SuburbanRoutesMvpView> provideSuburbanRoutesPresenter(
-            SuburbanRoutesPresenter<SuburbanRoutesMvpView> presenter) {
+    RouteContract.Presenter provideSuburbanRoutesPresenter(
+            SuburbanRoutesPresenter presenter) {
         return presenter;
     }
 

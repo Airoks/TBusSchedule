@@ -1,15 +1,14 @@
-package ru.tblsk.owlz.busschedule.ui.routes.urban;
+package ru.tblsk.owlz.busschedule.ui.routes.route;
 
 
 
-public class ChangeDirectionUrban {
+public class UrbanDirectionEvent {
 
     private int flightPosition;
 
-    public ChangeDirectionUrban(int flightPosition) {
+    public UrbanDirectionEvent(int flightPosition) {
         this.flightPosition = flightPosition;
     }
-
 
     public int getFlightPosition() {
         return flightPosition;

@@ -3,15 +3,16 @@ package ru.tblsk.owlz.busschedule.di.module;
 
 import android.support.v4.app.Fragment;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
+import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.Type;
+import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesAdapter;
+import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsAdapter;
@@ -51,15 +52,15 @@ public class FragmentModule {
     }
 
     @Provides
-    @Type("urban")
+    @UrbanRoutes
     RoutesAdapter provideUrbanRoutesAdapter(RxEventBus eventBus) {
-        return new RoutesAdapter(eventBus, FlightType.URBAN.id);
+        return new RoutesAdapter(eventBus, AppConstants.URBAN);
     }
 
     @Provides
-    @Type("suburban")
+    @SuburbanRoutes
     RoutesAdapter provideSuburbanRoutesAdapter(RxEventBus eventBus) {
-        return new RoutesAdapter(eventBus, FlightType.SUBURBAN.id);
+        return new RoutesAdapter(eventBus, AppConstants.SUBURBAN);
     }
 
     @Provides
