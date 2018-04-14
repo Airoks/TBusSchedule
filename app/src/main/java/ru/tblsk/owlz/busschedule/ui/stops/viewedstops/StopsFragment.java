@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.stops.historystops;
+package ru.tblsk.owlz.busschedule.ui.stops.viewedstops;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,12 +31,12 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 
 public class StopsFragment extends BaseFragment
-        implements StopsMvpView, SetupToolbar {
+        implements StopsContract.View, SetupToolbar {
 
     public static final String TAG = "StopsFragment";
 
     @Inject
-    StopsMvpPresenter<StopsMvpView> mPresenter;
+    StopsContract.Presenter mPresenter;
 
     @Inject
     @Type("stops")

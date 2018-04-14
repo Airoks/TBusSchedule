@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.stops.historystops;
+package ru.tblsk.owlz.busschedule.ui.stops.viewedstops;
 
 import android.util.Log;
 
@@ -20,8 +20,8 @@ import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 
-public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
-        implements StopsMvpPresenter<V> {
+public class StopsPresenter extends BasePresenter<StopsContract.View>
+        implements StopsContract.Presenter {
 
     private StopMapper mStopMapper;
     private RxEventBus mEventBus;
@@ -43,8 +43,9 @@ public class StopsPresenter<V extends StopsMvpView> extends BasePresenter<V>
         getCompositeDisposable().add(getDataManager()
                 .getSearchHistoryStops()
                 .subscribeOn(Schedulers.io())
-                .observeOn(getSchedulerProvider().ui())
+                .observeOn(getSchedulerProvider().io())
                 .map(mStopMapper)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<StopVO>>() {
                     @Override
                     public void accept(List<StopVO> stops) throws Exception {

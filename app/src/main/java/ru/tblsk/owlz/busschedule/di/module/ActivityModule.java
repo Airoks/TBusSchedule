@@ -43,9 +43,8 @@ import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirect
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsMvpView;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsPresenter;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsMvpView;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsPresenter;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsContract;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsPresenter;
 
 @Module
 public class ActivityModule {
@@ -82,8 +81,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    StopsMvpPresenter<StopsMvpView> provideStopsPresenter(
-            StopsPresenter<StopsMvpView> presenter) {
+    StopsContract.Presenter provideStopsPresenter(
+            StopsPresenter presenter) {
         return presenter;
     }
 

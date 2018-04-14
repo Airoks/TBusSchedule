@@ -14,7 +14,7 @@ import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
 
 @PerFragment
 @Subcomponent(modules = FragmentModule.class)

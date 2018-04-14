@@ -26,7 +26,7 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
 
 public class FavoriteStopsFragment extends BaseFragment
         implements FavoriteStopsContract.View, SetupToolbar {

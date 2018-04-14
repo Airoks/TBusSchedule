@@ -18,7 +18,7 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.historystops.StopsFragment;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
 
 public class MainActivity extends BaseActivity {
 
