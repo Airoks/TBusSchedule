@@ -33,13 +33,13 @@ import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class AllStopsFragment extends BaseFragment
-        implements AllStopsMvpView, SetupToolbar{
+        implements AllStopsContract.View, SetupToolbar{
 
     public static final String TAG = "AllStopsFragment";
     public static final String STOPS = "stops";
 
     @Inject
-    AllStopsMvpPresenter<AllStopsMvpView> mPresenter;
+    AllStopsContract.Presenter mPresenter;
 
     @Inject
     @Type("allstops")
@@ -123,7 +123,7 @@ public class AllStopsFragment extends BaseFragment
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
-        mPresenter.subscribeOnEvents();
+        mPresenter.setClickListenerForAdapter();
         setUnbinder(ButterKnife.bind(this, view));
         return view;
     }

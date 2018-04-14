@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
@@ -16,11 +17,12 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<V>
-        implements AllStopsMvpPresenter<V>{
+public class AllStopsPresenter extends BasePresenter<AllStopsContract.View>
+        implements AllStopsContract.Presenter{
 
     private StopMapper mStopMapper;
     private RxEventBus mEventBus;
+    private Disposable mDisposable;
 
     @Inject
     public AllStopsPresenter(DataManager dataManager,
@@ -39,8 +41,9 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
         getCompositeDisposable().add(getDataManager()
                 .getAllStops()
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
+                .observeOn(getSchedulerProvider().io())
                 .map(mStopMapper)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<StopVO>>() {
                     @Override
                     public void accept(List<StopVO> stops) throws Exception {
@@ -83,23 +86,33 @@ public class AllStopsPresenter<V extends AllStopsMvpView> extends BasePresenter<
     }
 
     @Override
-    public void subscribeOnEvents() {
-        if(getCompositeDisposable().size() == 0) {
-            getCompositeDisposable().add(mEventBus.filteredObservable(SelectedStop.InAllStops.class)
-                    .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<SelectedStop.InAllStops>() {
-                        @Override
-                        public void accept(SelectedStop.InAllStops inAllStops) throws Exception {
-                            getMvpView().openStopInfoFragment(inAllStops.getStop());
-                            insertSearchHistoryStops(inAllStops.getStop().getId());
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
+    public void setClickListenerForAdapter() {
+        if(mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+
+        mDisposable = mEventBus.filteredObservable(SelectedStop.InAllStops.class)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<SelectedStop.InAllStops>() {
+                    @Override
+                    public void accept(SelectedStop.InAllStops inAllStops) throws Exception {
+                        getMvpView().openStopInfoFragment(inAllStops.getStop());
+                        insertSearchHistoryStops(inAllStops.getStop().getId());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+    }
+
+    @Override
+    public void detachView() {
+        if(mDisposable != null) {
+            mDisposable.dispose();
+        }
+        super.detachView();
     }
 }
