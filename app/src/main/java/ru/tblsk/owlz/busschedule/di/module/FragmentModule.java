@@ -18,6 +18,7 @@ import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoContract;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsAdapter;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsContract;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsContract;
 import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsContract;
@@ -73,8 +74,9 @@ public class FragmentModule {
     }
 
     @Provides
-    FavoritesDirectionsAdapter provideFavoritesDirectionsAdapter(RxEventBus eventBus) {
-        return new FavoritesDirectionsAdapter(eventBus);
+    FavoritesDirectionsAdapter provideFavoritesDirectionsAdapter(
+            FavoritesDirectionsContract.Presenter presenter) {
+        return new FavoritesDirectionsAdapter(presenter);
     }
 
     @Provides

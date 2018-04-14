@@ -18,17 +18,16 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<DirectionVO> mDirections;
-    private RxEventBus mEventBus;
+    private FavoritesDirectionsContract.Presenter mPresenter;
 
     @Inject
-    public FavoritesDirectionsAdapter(RxEventBus eventBus) {
-        this.mEventBus = eventBus;
-        this.mDirections = new ArrayList<>();
+    public FavoritesDirectionsAdapter(FavoritesDirectionsContract.Presenter presenter) {
+        mPresenter = presenter;
+        mDirections = new ArrayList<>();
     }
 
     @Override
@@ -45,17 +44,9 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
                 boolean isFavorite = mDirections.get(position).isFavorite();
 
                 DirectionVO direction = mDirections.get(position);
+                direction.setFavorite(!isFavorite);
 
-                ChangeFavoriteDirectionsEvent change = new ChangeFavoriteDirectionsEvent();
-                change.setPosition(position);
-                if(isFavorite) {
-                    change.setFavorite(false);
-                    direction.setFavorite(false);
-                } else {
-                    change.setFavorite(true);
-                    direction.setFavorite(true);
-                }
-                mEventBus.post(change);
+                mPresenter.clickedOnAdapterItem(position, !isFavorite);
 
                 mDirections.set(position, direction);
                 notifyItemChanged(position);
@@ -77,8 +68,27 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
     public void addItems(List<DirectionVO> directions) {
         mDirections.clear();
-        mDirections.addAll(directions);
+        mDirections = getDirections(directions);
         notifyDataSetChanged();
+    }
+
+    private List<DirectionVO> getDirections(List<DirectionVO> directions) {
+        List<DirectionVO> copy = new ArrayList<>();
+        List<DirectionVO> original;
+        original = directions;
+        for (DirectionVO direction : original) {
+            DirectionVO copyDirection = new DirectionVO();
+
+            copyDirection.setId(direction.getId());
+            copyDirection.setFlightId(direction.getFlightId());
+            copyDirection.setFavorite(direction.isFavorite());
+            copyDirection.setFlightNumber(direction.getFlightNumber());
+            copyDirection.setDirectionType(direction.getDirectionType());
+            copyDirection.setDirectionName(direction.getDirectionName());
+
+            copy.add(copyDirection);
+        }
+        return copy;
     }
 
     class FavoritesDirectionsViewHolder extends BaseViewHolder {

@@ -45,8 +45,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
     RecyclerView mRecyclerView;
 
     private Unbinder mUnbinder;
-    private List<DirectionVO> mDirections;
-    private long mStopId;
 
     public FavoritesDirectionsDialog() {
     }
@@ -54,8 +52,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDirections = getDirections();
-        mStopId = getArguments().getLong(STOP_ID);
     }
 
     public static FavoritesDirectionsDialog newInstance(List<DirectionVO> directions, long stopId) {
@@ -95,8 +91,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
         mUnbinder = ButterKnife.bind(this, view);
 
         mPresenter.attachView(this);
-        mPresenter.subscribeOnEvents();
-
         setCancelable(true);
 
         return view;
@@ -114,6 +108,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        List<DirectionVO> directions = getArguments().getParcelableArrayList(DIRECTIONS);
+        mPresenter.setData(directions, getArguments().getLong(STOP_ID));
         mPresenter.getFavoritesDirections();
     }
 
@@ -123,22 +119,13 @@ public class FavoritesDirectionsDialog extends DialogFragment
     }
 
     @Override
-    public void showDirections() {
-        mAdapter.addItems(mDirections);
+    public void showDirections(List<DirectionVO> directions) {
+        mAdapter.addItems(directions);
     }
 
     @Override
-    public void changeFavoriteDirections(int position, boolean isFavorite) {
-        DirectionVO direction = mDirections.get(position);
-        direction.setFavorite(isFavorite);
-        mDirections.set(position, direction);
-    }
-
-    @OnClick(R.id.button_favoritesdirections_add)
-    public void clickAddButton() {
-        List<Long> directionsId = getDirectionsId();
-        if(!directionsId.isEmpty()) {
-            mPresenter.addFavoriteDirections(mStopId, directionsId);
+    public void addedFavoriteDirections(boolean isAdded) {
+        if(isAdded) {
             ((StopInfoFragment)this.getTargetFragment()).setFavoriteIcon(true);
             ((BaseActivity)getContext()).showSnackBar(getString(R.string.stopinfo_addfavorite));
             getDialog().dismiss();
@@ -148,32 +135,9 @@ public class FavoritesDirectionsDialog extends DialogFragment
         }
     }
 
-    private List<Long> getDirectionsId() {
-        List<Long> directionsId = new ArrayList<>();
-        for(DirectionVO direction : mDirections) {
-            if(direction.isFavorite()) {
-                directionsId.add(direction.getId());
-            }
-        }
-        return directionsId;
+    @OnClick(R.id.button_favoritesdirections_add)
+    public void clickAddButton() {
+       mPresenter.clickedOnAddButton();
     }
 
-    private List<DirectionVO> getDirections() {
-        List<DirectionVO> copy = new ArrayList<>();
-        List<DirectionVO> original;
-        original = getArguments().getParcelableArrayList(DIRECTIONS);
-        for (DirectionVO direction : original) {
-            DirectionVO copyDirection = new DirectionVO();
-
-            copyDirection.setId(direction.getId());
-            copyDirection.setFlightId(direction.getFlightId());
-            copyDirection.setFavorite(direction.isFavorite());
-            copyDirection.setFlightNumber(direction.getFlightNumber());
-            copyDirection.setDirectionType(direction.getDirectionType());
-            copyDirection.setDirectionName(direction.getDirectionName());
-
-            copy.add(copyDirection);
-        }
-        return copy;
-    }
 }
