@@ -31,13 +31,13 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 
 public class DirectionInfoFragment extends BaseFragment
-        implements DirectionInfoMvpView, SetupToolbar{
+        implements DirectionInfoContract.View, SetupToolbar{
 
     public static final String TAG = "DirectionInfoFragment";
     public static final String FLIGHT = "flight";
 
     @Inject
-    DirectionInfoMvpPresenter<DirectionInfoMvpView> mPresenter;
+    DirectionInfoContract.Presenter mPresenter;
 
     @Inject
     DirectionInfoAdapter mAdapter;

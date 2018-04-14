@@ -18,8 +18,8 @@ import ru.tblsk.owlz.busschedule.ui.routes.urban.ChangeDirectionUrban;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class DirectionInfoPresenter<V extends DirectionInfoMvpView> extends BasePresenter<V>
-        implements DirectionInfoMvpPresenter<V>{
+public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.View>
+        implements DirectionInfoContract.Presenter{
 
     private static final int DIRECT = 0;
     private static final int REVERSE = 1;

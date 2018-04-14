@@ -15,8 +15,8 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class FavoriteStopsPresenter
-        extends BasePresenter<FavoriteStopsContract.View> implements FavoriteStopsContract.Presenter {
+public class FavoriteStopsPresenter extends BasePresenter<FavoriteStopsContract.View>
+        implements FavoriteStopsContract.Presenter {
 
     private StopMapper mStopMapper;
     private Disposable mDisposable;

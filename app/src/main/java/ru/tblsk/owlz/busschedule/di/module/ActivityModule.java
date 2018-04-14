@@ -11,8 +11,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
-import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoMvpView;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsContract;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsPresenter;
@@ -115,8 +114,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    DirectionInfoMvpPresenter<DirectionInfoMvpView> provideDirectionInfoPresenter(
-            DirectionInfoPresenter<DirectionInfoMvpView> presenter) {
+    DirectionInfoContract.Presenter provideDirectionInfoPresenter(
+            DirectionInfoPresenter presenter) {
         return presenter;
     }
 
