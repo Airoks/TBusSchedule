@@ -26,7 +26,7 @@ public interface DirectionInfoContract {
         void clearData();
         void setData(FlightVO flight);
         void setChangeButton();
-        void setClickListenerForAdapter();
+        void clickedOnAdapterItem(int position);
     }
 
 }

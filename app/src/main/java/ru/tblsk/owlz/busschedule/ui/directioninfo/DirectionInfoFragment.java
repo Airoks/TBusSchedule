@@ -95,7 +95,6 @@ public class DirectionInfoFragment extends BaseFragment
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
         mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
-        mPresenter.setClickListenerForAdapter();
         return view;
     }
 

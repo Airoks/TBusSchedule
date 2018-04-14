@@ -28,7 +28,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
     private RxEventBus mEventBus;
     private StopMapper mStopMapper;
-    private Disposable mDisposable;
     private FlightVO mFlight;
     private List<StopVO> mStops;
 
@@ -40,8 +39,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                                   StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
-        this.mEventBus = eventBus;
-        this.mStopMapper = stopMapper;
+        mEventBus = eventBus;
+        mStopMapper = stopMapper;
     }
 
     @Override
@@ -116,26 +115,9 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     }
 
     @Override
-    public void setClickListenerForAdapter() {
-        if(mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-
-        mDisposable = mEventBus.filteredObservable(Position.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
-                .subscribe(new Consumer<Position>() {
-                    @Override
-                    public void accept(Position position) throws Exception {
-                        StopVO stop = mStops.get(position.getPosition());
-                        getMvpView().openScheduleContainerFragment(stop, mFlight);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                });
+    public void clickedOnAdapterItem(int position) {
+        StopVO stop = mStops.get(position);
+        getMvpView().openScheduleContainerFragment(stop, mFlight);
     }
 
     private void updateStops() {
@@ -159,12 +141,4 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                     }
                 }));
     }
-
-    @Override
-    public void detachView() {
-        if(mDisposable != null) {
-            mDisposable.dispose();
-        }
-        super.detachView();
     }
-}

@@ -10,6 +10,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.ViewedStops;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
+import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsContract;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
@@ -52,8 +53,8 @@ public class FragmentModule {
     }
 
     @Provides
-    DirectionInfoAdapter provideDirectionInfoAdapter(RxEventBus eventBus) {
-        return new DirectionInfoAdapter(eventBus);
+    DirectionInfoAdapter provideDirectionInfoAdapter(DirectionInfoContract.Presenter presenter) {
+        return new DirectionInfoAdapter(presenter);
     }
 
     @Provides
