@@ -27,7 +27,7 @@ public interface StopInfoContract {
         void clickedOnButtonAddFavorites();
         void isFavoriteStop(Long stopId);
         void deleteFavoriteStop(Long stopId);
-        void setClickListenerForAdapter();
+        void clickedOnAdapterItem(long directionId, int directionType);
     }
 
 }

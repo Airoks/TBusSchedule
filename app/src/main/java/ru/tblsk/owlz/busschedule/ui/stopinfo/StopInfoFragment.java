@@ -101,7 +101,6 @@ public class StopInfoFragment extends BaseFragment
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
-        mPresenter.setClickListenerForAdapter();
         return view;
     }
 

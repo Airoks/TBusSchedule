@@ -17,17 +17,16 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<DirectionVO> mDirections;
-    private RxEventBus mEventBus;
+    private StopInfoContract.Presenter mPresenter;
 
     @Inject
-    public StopInfoAdapter(RxEventBus eventBus) {
-        this.mEventBus = eventBus;
-        this.mDirections = new ArrayList<>();
+    public StopInfoAdapter(StopInfoContract.Presenter presenter) {
+        mPresenter = presenter;
+        mDirections = new ArrayList<>();
     }
 
     @Override
@@ -42,10 +41,9 @@ public class StopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                StopInfoEvent event = new StopInfoEvent();
-                event.setDirectionId(mDirections.get(position).getId());
-                event.setDirectionType(mDirections.get(position).getDirectionType());
-                mEventBus.post(event);
+                long directionId = mDirections.get(position).getId();
+                int directionType = mDirections.get(position).getDirectionType();
+                mPresenter.clickedOnAdapterItem(directionId, directionType);
             }
         });
 

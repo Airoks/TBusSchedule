@@ -16,6 +16,7 @@ import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoAdapter;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoContract;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsContract;
@@ -67,8 +68,8 @@ public class FragmentModule {
     }
 
     @Provides
-    StopInfoAdapter provideStopInfoAdapter(RxEventBus eventBus) {
-        return new StopInfoAdapter(eventBus);
+    StopInfoAdapter provideStopInfoAdapter(StopInfoContract.Presenter presenter) {
+        return new StopInfoAdapter(presenter);
     }
 
     @Provides

@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -18,23 +17,17 @@ import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
         implements StopInfoContract.Presenter{
 
-    private RxEventBus mEventBus;
-    private Disposable mDisposable;
 
     @Inject
     public StopInfoPresenter(DataManager dataManager,
                              CompositeDisposable compositeDisposable,
-                             SchedulerProvider schedulerProvider,
-                             RxEventBus eventBus) {
+                             SchedulerProvider schedulerProvider) {
         super(dataManager, compositeDisposable, schedulerProvider);
-
-        this.mEventBus = eventBus;
     }
 
     @Override
@@ -98,32 +91,21 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
     }
 
     @Override
-    public void setClickListenerForAdapter() {
-        if(mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
-
-        mDisposable = mEventBus.filteredObservable(StopInfoEvent.class)
+    public void clickedOnAdapterItem(long directionId, final int directionType) {
+        getCompositeDisposable().add(getDataManager().getFlightByDirection(directionId)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().io())
-                .flatMapSingle(new Function<StopInfoEvent, SingleSource<FlightVO>>() {
+                .map(new Function<Flight, FlightVO>() {
                     @Override
-                    public SingleSource<FlightVO> apply(final StopInfoEvent stopInfoEvent) throws Exception {
-                        long directionId = stopInfoEvent.getDirectionId();
-                        return getDataManager().getFlightByDirection(directionId)
-                                .map(new Function<Flight, FlightVO>() {
-                                    @Override
-                                    public FlightVO apply(Flight flight) throws Exception {
-                                        FlightVO flightVO = new FlightVO();
-                                        flightVO.setId(flight.getId());
-                                        flightVO.setFlightNumber(flight.getFlightNumber());
-                                        flightVO.setFlightType(flight.getFlightType().id);
-                                        flightVO.setDirections(flight.getDirections());
-                                        flightVO.setPosition(0);
-                                        flightVO.setCurrentDirectionType(stopInfoEvent.getDirectionType());
-                                        return flightVO;
-                                    }
-                                });
+                    public FlightVO apply(Flight flight) throws Exception {
+                        FlightVO flightVO = new FlightVO();
+                        flightVO.setId(flight.getId());
+                        flightVO.setFlightNumber(flight.getFlightNumber());
+                        flightVO.setFlightType(flight.getFlightType().id);
+                        flightVO.setDirections(flight.getDirections());
+                        flightVO.setPosition(0);
+                        flightVO.setCurrentDirectionType(directionType);
+                        return flightVO;
                     }
                 })
                 .observeOn(getSchedulerProvider().ui())
@@ -135,17 +117,9 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                    }
-                });
-    }
 
-    @Override
-    public void detachView() {
-        if(mDisposable != null) {
-            mDisposable.dispose();
-        }
-        super.detachView();
+                    }
+                }));
     }
 
     private void getDirection(long stopId) {
