@@ -18,8 +18,8 @@ public interface FavoriteStopsContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getFavoriteStops();
-        void setClickListenerForAdapter();
         void clickedOnNavigation();
+        void clickedOnAdapterItem(int position);
     }
 
 }

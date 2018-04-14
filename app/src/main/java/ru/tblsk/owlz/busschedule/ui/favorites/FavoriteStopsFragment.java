@@ -86,7 +86,6 @@ public class FavoriteStopsFragment extends BaseFragment
                 .inject(this);
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
-        mPresenter.setClickListenerForAdapter();
         return view;
     }
 
@@ -126,7 +125,7 @@ public class FavoriteStopsFragment extends BaseFragment
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, StopInfoFragment.newInstance(stop, isFavoriteStop));
-        fragmentTransaction.addToBackStack(StopsFragment.TAG);
+        fragmentTransaction.addToBackStack(FavoriteStopsFragment.TAG);
         fragmentTransaction.commit();
     }
 

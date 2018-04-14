@@ -18,16 +18,15 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class FavoriteStopsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private List<StopVO> mStops;
-    private RxEventBus mEventBus;
+    private FavoriteStopsContract.Presenter mPresenter;
 
     @Inject
-    public FavoriteStopsAdapter(RxEventBus eventBus) {
-        mEventBus = eventBus;
+    public FavoriteStopsAdapter(FavoriteStopsContract.Presenter presenter) {
+        mPresenter = presenter;
         mStops = new ArrayList<>();
     }
 
@@ -42,7 +41,7 @@ public class FavoriteStopsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                mEventBus.post(mStops.get(position));
+                mPresenter.clickedOnAdapterItem(position);
             }
         });
         return holder;
