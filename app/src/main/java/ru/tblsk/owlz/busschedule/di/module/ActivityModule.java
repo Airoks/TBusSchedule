@@ -36,8 +36,7 @@ import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WorkdaySchedulePresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpView;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
-import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoMvpView;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoContract;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoPresenter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsMvpView;
@@ -119,8 +118,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    StopInfoMvpPresenter<StopInfoMvpView> provideStopInfoPresenter(
-            StopInfoPresenter<StopInfoMvpView> presenter) {
+    StopInfoContract.Presenter provideStopInfoPresenter(
+            StopInfoPresenter presenter) {
         return presenter;
     }
 

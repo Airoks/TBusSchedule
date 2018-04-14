@@ -21,8 +21,8 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class StopInfoPresenter<V extends StopInfoMvpView> extends BasePresenter<V>
-        implements StopInfoMvpPresenter<V>{
+public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
+        implements StopInfoContract.Presenter{
 
     private RxEventBus mEventBus;
     private Disposable mDisposable;

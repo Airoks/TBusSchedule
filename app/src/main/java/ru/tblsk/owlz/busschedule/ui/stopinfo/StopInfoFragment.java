@@ -36,7 +36,7 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class StopInfoFragment extends BaseFragment
-        implements StopInfoMvpView, SetupToolbar{
+        implements StopInfoContract.View, SetupToolbar{
 
     public static final String TAG = "StopInfoFragment";
     public static final String STOP = "stop";
@@ -44,7 +44,7 @@ public class StopInfoFragment extends BaseFragment
     public static final String IS_FAVORITE_STOP = "isFavoriteStop";
 
     @Inject
-    StopInfoMvpPresenter<StopInfoMvpView> mPresenter;
+    StopInfoContract.Presenter mPresenter;
 
     @Inject
     StopInfoAdapter mAdapter;
