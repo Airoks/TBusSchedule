@@ -23,7 +23,7 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
 
-public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
+public class ScheduleFragment extends BaseFragment implements ScheduleContract.View{
 
     public static final String STOP_ID = "stopId";
     public static final String DIRECTION_ID = "directionId";
@@ -43,7 +43,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
     @BindView(R.id.textview_schedule_empty)
     TextView mEmptyTextView;
 
-    ScheduleMvpPresenter<ScheduleMvpView> mPresenter;
+    ScheduleContract.Presenter mPresenter;
 
     public static ScheduleFragment newInstance(long stopId, long directionId, int scheduleType) {
         Bundle args = new Bundle();
@@ -56,8 +56,8 @@ public class ScheduleFragment extends BaseFragment implements ScheduleMvpView{
     }
 
     @Inject
-    public void setPresenter(@WorkdaySchedule ScheduleMvpPresenter<ScheduleMvpView> workdayPresenter,
-                              @WeekendSchedule ScheduleMvpPresenter<ScheduleMvpView> weekendPresenter) {
+    public void setPresenter(@WorkdaySchedule ScheduleContract.Presenter workdayPresenter,
+                              @WeekendSchedule ScheduleContract.Presenter weekendPresenter) {
         int type = getArguments().getInt(SCHEDULE_TYPE);
         if(type == WORKDAY) {
             mPresenter = workdayPresenter;

@@ -30,8 +30,7 @@ import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesMvpView;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesPresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerContract;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerPresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleMvpView;
+import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleContract;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WeekendSchedulePresenter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WorkdaySchedulePresenter;
 import ru.tblsk.owlz.busschedule.ui.splash.SplashMvpPresenter;
@@ -135,16 +134,16 @@ public class ActivityModule {
     @Provides
     @WorkdaySchedule
     @PerActivity
-    ScheduleMvpPresenter<ScheduleMvpView> provideWorkdaySchedulePresenter(
-            WorkdaySchedulePresenter<ScheduleMvpView> presenter) {
+    ScheduleContract.Presenter provideWorkdaySchedulePresenter(
+            WorkdaySchedulePresenter presenter) {
         return presenter;
     }
 
     @Provides
     @WeekendSchedule
     @PerActivity
-    ScheduleMvpPresenter<ScheduleMvpView> provideWeekendSchedulePresenter(
-            WeekendSchedulePresenter<ScheduleMvpView> presenter) {
+    ScheduleContract.Presenter provideWeekendSchedulePresenter(
+            WeekendSchedulePresenter presenter) {
         return presenter;
     }
 

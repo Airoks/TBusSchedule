@@ -13,8 +13,8 @@ import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class WeekendSchedulePresenter<V extends ScheduleMvpView>
-        extends BasePresenter<V> implements ScheduleMvpPresenter<V> {
+public class WeekendSchedulePresenter extends BasePresenter<ScheduleContract.View>
+        implements ScheduleContract.Presenter {
 
     private List<DepartureTimeVO> mScheduleWeekend;
     private DepartureTimeMapper mDepartureTimeMapper;
