@@ -13,12 +13,14 @@ public interface StopsContract {
         void showSearchHistoryStops(List<StopVO> stops);
         void showAllStopsFragment();
         void openStopInfoFragment(StopVO stop);
+        void openNavigationDrawer();
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getSearchHistoryStops();
         void deleteSearchHistoryStops();
         void clickedOnAllStopsButton();
+        void clickedOnNavigation();
         void subscribeOnEvents();
     }
 }

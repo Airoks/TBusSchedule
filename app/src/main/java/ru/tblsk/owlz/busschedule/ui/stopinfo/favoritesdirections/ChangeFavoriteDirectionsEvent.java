@@ -2,7 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections;
 
 
 
-public class ChangeFavoriteDirection {
+public class ChangeFavoriteDirectionsEvent {
 
     private boolean isFavorite;
     private int position;

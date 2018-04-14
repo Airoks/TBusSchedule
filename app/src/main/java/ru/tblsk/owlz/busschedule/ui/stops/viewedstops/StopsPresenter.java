@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
-import ru.tblsk.owlz.busschedule.ui.stops.SelectedStop;
+import ru.tblsk.owlz.busschedule.ui.stops.StopsEvent;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
@@ -89,15 +89,20 @@ public class StopsPresenter extends BasePresenter<StopsContract.View>
     }
 
     @Override
+    public void clickedOnNavigation() {
+        getMvpView().openNavigationDrawer();
+    }
+
+    @Override
     public void subscribeOnEvents() {
         if(getCompositeDisposable().size() == 0) {
-            getCompositeDisposable().add(mEventBus.filteredObservable(SelectedStop.InHistoryStops.class)
+            getCompositeDisposable().add(mEventBus.filteredObservable(StopsEvent.InViewedStops.class)
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<SelectedStop.InHistoryStops>() {
+                    .subscribe(new Consumer<StopsEvent.InViewedStops>() {
                         @Override
-                        public void accept(SelectedStop.InHistoryStops inHistoryStops) throws Exception {
-                            getMvpView().openStopInfoFragment(inHistoryStops.getStop());
+                        public void accept(StopsEvent.InViewedStops inViewedStops) throws Exception {
+                            getMvpView().openStopInfoFragment(inViewedStops.getStop());
                         }
                     }, new Consumer<Throwable>() {
                         @Override

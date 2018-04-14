@@ -11,17 +11,17 @@ public interface AllStopsContract {
 
     interface View extends MvpView {
         void showAllStops(List<StopVO> stops);
-        void showSavedAllStops();
         void openStopInfoFragment(StopVO stop);
         void openPreviousFragment();
+        void showEmptyScreen();
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getAllStops();
-        void getSavedAllStops();
         void insertSearchHistoryStops(long stopId);
         void clickedOnBackButton();
         void setClickListenerForAdapter();
+        void clearData();
     }
 
 }

@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.annotation.Type;
+import ru.tblsk.owlz.busschedule.di.annotation.ViewedStops;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -39,7 +39,7 @@ public class StopsFragment extends BaseFragment
     StopsContract.Presenter mPresenter;
 
     @Inject
-    @Type("stops")
+    @ViewedStops
     StopsAdapter mAdapter;
 
     @Inject
@@ -125,7 +125,7 @@ public class StopsFragment extends BaseFragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getBaseActivity()).openDrawer();
+                mPresenter.clickedOnNavigation();
             }
         });
     }
@@ -153,6 +153,11 @@ public class StopsFragment extends BaseFragment
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void openNavigationDrawer() {
+        ((MainActivity)getBaseActivity()).openDrawer();
+    }
+
     @OnClick(R.id.imagebutton_stop_delete)
     public void deleteSearchHistoryStops() {
         mPresenter.deleteSearchHistoryStops();
@@ -160,7 +165,6 @@ public class StopsFragment extends BaseFragment
 
     @OnClick(R.id.button_stop_allstop)
     public void allStops() {
-        //транзакия для запуска фрагмента олстопс
         mPresenter.clickedOnAllStopsButton();
     }
 }

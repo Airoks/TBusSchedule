@@ -51,10 +51,10 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
                 StopVO stop = mStops.get(position);
 
                 if(mTypeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
-                    SelectedStop.InAllStops selected = new SelectedStop.InAllStops(stop);
+                    StopsEvent.InAllStops selected = new StopsEvent.InAllStops(stop);
                     mEventBus.post(selected);
                 } else {
-                    SelectedStop.InHistoryStops selected = new SelectedStop.InHistoryStops(stop);
+                    StopsEvent.InViewedStops selected = new StopsEvent.InViewedStops(stop);
                     mEventBus.post(selected);
                 }
             }

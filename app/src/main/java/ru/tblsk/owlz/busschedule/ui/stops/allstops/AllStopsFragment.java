@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.annotation.Type;
+import ru.tblsk.owlz.busschedule.di.annotation.AllStops;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -42,7 +42,7 @@ public class AllStopsFragment extends BaseFragment
     AllStopsContract.Presenter mPresenter;
 
     @Inject
-    @Type("allstops")
+    @AllStops
     StopsAdapter mAdapter;
 
     @Inject
@@ -57,7 +57,6 @@ public class AllStopsFragment extends BaseFragment
     @BindView(R.id.fastscroll_allstop)
     FastScroller mFastScroller;
 
-    private List<StopVO> mStops;
     private boolean isFavoriteStop;
 
     public static AllStopsFragment newInstance() {
@@ -67,12 +66,9 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         isFavoriteStop = false;
-
-        if(savedInstanceState != null) {
-            mStops = savedInstanceState.getParcelableArrayList(STOPS);
-        }
     }
 
     @Override
@@ -83,19 +79,14 @@ public class AllStopsFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
+        mPresenter.clearData();
         mPresenter.unsubscribeFromEvents();
         super.onDestroy();
     }
 
     @Override
     public void showAllStops(List<StopVO> stops) {
-        mStops = stops;
         mAdapter.addItems(stops);
-    }
-
-    @Override
-    public void showSavedAllStops() {
-        mAdapter.addItems(mStops);
     }
 
     @Override
@@ -111,6 +102,11 @@ public class AllStopsFragment extends BaseFragment
     public void openPreviousFragment() {
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
+    }
+
+    @Override
+    public void showEmptyScreen() {
+
     }
 
     @Nullable
@@ -135,12 +131,6 @@ public class AllStopsFragment extends BaseFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(STOPS, (ArrayList<? extends Parcelable>) mStops);
-    }
-
-    @Override
     protected void setUp(View view) {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -149,11 +139,7 @@ public class AllStopsFragment extends BaseFragment
         mFastScroller.setRecyclerView(mRecyclerView);
         setupToolbar();
 
-        if(mStops == null) {
-            mPresenter.getAllStops();
-        } else {
-            mPresenter.getSavedAllStops();
-        }
+        mPresenter.getAllStops();
     }
 
     @Override

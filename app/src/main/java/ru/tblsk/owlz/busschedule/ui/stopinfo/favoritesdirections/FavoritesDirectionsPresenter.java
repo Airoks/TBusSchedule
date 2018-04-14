@@ -36,12 +36,12 @@ public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirecti
     @Override
     public void subscribeOnEvents() {
         if(getCompositeDisposable().size() == 0) {
-            getCompositeDisposable().add(mEventBus.filteredObservable(ChangeFavoriteDirection.class)
+            getCompositeDisposable().add(mEventBus.filteredObservable(ChangeFavoriteDirectionsEvent.class)
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<ChangeFavoriteDirection>() {
+                    .subscribe(new Consumer<ChangeFavoriteDirectionsEvent>() {
                         @Override
-                        public void accept(ChangeFavoriteDirection change) throws Exception {
+                        public void accept(ChangeFavoriteDirectionsEvent change) throws Exception {
                             getMvpView().changeFavoriteDirections(change.getPosition(),
                                     change.isFavorite());
                         }

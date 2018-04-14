@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
+import ru.tblsk.owlz.busschedule.di.annotation.AllStops;
 import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.Type;
 import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.ViewedStops;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
@@ -30,13 +30,13 @@ public class FragmentModule {
     }
 
     @Provides
-    @Type("stops")
+    @ViewedStops
     StopsAdapter provideStopsAdapter(RxEventBus eventBus) {
         return new StopsAdapter(eventBus, AppConstants.STOPS_ADAPTER);
     }
 
     @Provides
-    @Type("allstops")
+    @AllStops
     StopsAdapter provideAllStopsAdapter(RxEventBus eventBus) {
         return new StopsAdapter(eventBus, AppConstants.ALL_STOPS_ADAPTER);
     }

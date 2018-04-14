@@ -78,7 +78,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    StopsContract.Presenter provideStopsPresenter(StopsPresenter presenter) {
+    StopsContract.Presenter provideStopsPresenter(
+            StopsPresenter presenter) {
         return presenter;
     }
 

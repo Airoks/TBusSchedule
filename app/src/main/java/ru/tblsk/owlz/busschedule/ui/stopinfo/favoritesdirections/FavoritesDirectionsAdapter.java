@@ -46,7 +46,7 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
                 DirectionVO direction = mDirections.get(position);
 
-                ChangeFavoriteDirection change = new ChangeFavoriteDirection();
+                ChangeFavoriteDirectionsEvent change = new ChangeFavoriteDirectionsEvent();
                 change.setPosition(position);
                 if(isFavorite) {
                     change.setFavorite(false);
