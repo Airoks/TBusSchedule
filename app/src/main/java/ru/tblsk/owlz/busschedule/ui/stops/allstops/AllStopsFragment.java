@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.ui.stops.allstops;
 
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.futuremind.recyclerviewfastscroll.FastScroller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,15 +26,14 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 
 public class AllStopsFragment extends BaseFragment
         implements AllStopsContract.View, SetupToolbar{
 
     public static final String TAG = "AllStopsFragment";
-    public static final String STOPS = "stops";
 
     @Inject
     AllStopsContract.Presenter mPresenter;
@@ -119,7 +116,6 @@ public class AllStopsFragment extends BaseFragment
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
-        mPresenter.setClickListenerForAdapter();
         setUnbinder(ButterKnife.bind(this, view));
         return view;
     }

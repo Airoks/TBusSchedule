@@ -1,7 +1,5 @@
 package ru.tblsk.owlz.busschedule.ui.stops.viewedstops;
 
-import android.util.Log;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -14,9 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
-import ru.tblsk.owlz.busschedule.ui.stops.StopsEvent;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 
@@ -24,18 +20,16 @@ public class StopsPresenter extends BasePresenter<StopsContract.View>
         implements StopsContract.Presenter {
 
     private StopMapper mStopMapper;
-    private RxEventBus mEventBus;
+    private List<StopVO> mStops;
 
     @Inject
     public StopsPresenter(DataManager dataManager,
                           CompositeDisposable compositeDisposable,
                           SchedulerProvider schedulerProvider,
-                          StopMapper stopMapper,
-                          RxEventBus eventBus) {
+                          StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mStopMapper = stopMapper;
-        this.mEventBus = eventBus;
     }
 
     @Override
@@ -49,14 +43,13 @@ public class StopsPresenter extends BasePresenter<StopsContract.View>
                 .subscribe(new Consumer<List<StopVO>>() {
                     @Override
                     public void accept(List<StopVO> stops) throws Exception {
-                        //если что передадим пустой список
+                        mStops = stops;
                         getMvpView().showSearchHistoryStops(stops);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         String error = throwable.getMessage();
-                        Log.d("getSearchHistoryStops: ", error);
                         throwable.printStackTrace();
                     }
                 }));
@@ -77,7 +70,6 @@ public class StopsPresenter extends BasePresenter<StopsContract.View>
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         String error = throwable.getMessage();
-                        Log.d("deleteSHistoryStops:", error);
                         throwable.printStackTrace();
                     }
                 }));
@@ -94,22 +86,8 @@ public class StopsPresenter extends BasePresenter<StopsContract.View>
     }
 
     @Override
-    public void subscribeOnEvents() {
-        if(getCompositeDisposable().size() == 0) {
-            getCompositeDisposable().add(mEventBus.filteredObservable(StopsEvent.InViewedStops.class)
-                    .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<StopsEvent.InViewedStops>() {
-                        @Override
-                        public void accept(StopsEvent.InViewedStops inViewedStops) throws Exception {
-                            getMvpView().openStopInfoFragment(inViewedStops.getStop());
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
-        }
+    public void clickedOnAdapterItem(int position) {
+        getMvpView().openStopInfoFragment(mStops.get(position));
     }
+
 }

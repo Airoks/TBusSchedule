@@ -75,7 +75,6 @@ public class StopsFragment extends BaseFragment
         getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);
         mPresenter.attachView(this);
-        mPresenter.subscribeOnEvents();
         setUnbinder(ButterKnife.bind(this, view));
 
         return view;

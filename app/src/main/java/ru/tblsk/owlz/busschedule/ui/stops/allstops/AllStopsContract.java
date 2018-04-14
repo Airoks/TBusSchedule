@@ -20,7 +20,7 @@ public interface AllStopsContract {
         void getAllStops();
         void insertSearchHistoryStops(long stopId);
         void clickedOnBackButton();
-        void setClickListenerForAdapter();
+        void clickedOnAdapterItem(int position);
         void clearData();
     }
 

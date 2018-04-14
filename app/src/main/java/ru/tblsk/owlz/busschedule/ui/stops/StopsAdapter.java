@@ -19,21 +19,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsContract;
+import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsContract;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements SectionTitleProvider{
 
     private List<StopVO> mStops;
     private  int mTypeAdapter;
-    private RxEventBus mEventBus;
+    private AllStopsContract.Presenter mAllStopsPresenter;
+    private StopsContract.Presenter mStopsPresenter;
 
     @Inject
-    public StopsAdapter(RxEventBus eventBus, int typeAdapter) {
+    public StopsAdapter(int typeAdapter, MvpPresenter presenter) {
+        if(typeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
+            mAllStopsPresenter = (AllStopsContract.Presenter) presenter;
+        } else if(typeAdapter == AppConstants.VIEWED_STOPS_ADAPTER) {
+            mStopsPresenter = (StopsContract.Presenter) presenter;
+        }
         mTypeAdapter = typeAdapter;
-        mEventBus = eventBus;
         mStops = new ArrayList<>();
     }
 
@@ -48,14 +55,11 @@ public class StopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
             @Override
             public void onClick(View view) {
                 int position = stopViewHolder.getAdapterPosition();
-                StopVO stop = mStops.get(position);
 
                 if(mTypeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
-                    StopsEvent.InAllStops selected = new StopsEvent.InAllStops(stop);
-                    mEventBus.post(selected);
+                    mAllStopsPresenter.clickedOnAdapterItem(position);
                 } else {
-                    StopsEvent.InViewedStops selected = new StopsEvent.InViewedStops(stop);
-                    mEventBus.post(selected);
+                    mStopsPresenter.clickedOnAdapterItem(position);
                 }
             }
         });

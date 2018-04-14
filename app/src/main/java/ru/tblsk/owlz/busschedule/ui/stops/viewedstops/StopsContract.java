@@ -21,6 +21,6 @@ public interface StopsContract {
         void deleteSearchHistoryStops();
         void clickedOnAllStopsButton();
         void clickedOnNavigation();
-        void subscribeOnEvents();
+        void clickedOnAdapterItem(int position);
     }
 }
