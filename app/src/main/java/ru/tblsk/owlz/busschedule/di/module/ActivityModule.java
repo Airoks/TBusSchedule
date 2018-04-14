@@ -19,8 +19,7 @@ import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerMvpView;
+import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerContract;
 import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesMvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesMvpView;
@@ -66,8 +65,8 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    RoutesContainerMvpPresenter<RoutesContainerMvpView> provideRoutesContainerPresenter(
-            RoutesContainerPresenter<RoutesContainerMvpView> presenter) {
+    RoutesContainerContract.Presenter provideRoutesContainerPresenter(
+            RoutesContainerPresenter presenter) {
         return presenter;
     }
 

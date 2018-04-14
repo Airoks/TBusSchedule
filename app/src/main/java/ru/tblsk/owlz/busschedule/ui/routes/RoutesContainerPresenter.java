@@ -9,8 +9,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class RoutesContainerPresenter<V extends RoutesContainerMvpView>
-        extends BasePresenter<V> implements RoutesContainerMvpPresenter<V>{
+public class RoutesContainerPresenter extends BasePresenter<RoutesContainerContract.View>
+        implements RoutesContainerContract.Presenter{
 
     @Inject
     public RoutesContainerPresenter(DataManager dataManager,

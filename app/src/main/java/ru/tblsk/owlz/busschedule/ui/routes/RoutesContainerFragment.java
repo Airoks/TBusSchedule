@@ -23,12 +23,12 @@ import ru.tblsk.owlz.busschedule.ui.routes.suburban.SuburbanRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.urban.UrbanRoutesFragment;
 
 public class RoutesContainerFragment extends BaseFragment
-        implements SetupToolbar, RoutesContainerMvpView{
+        implements SetupToolbar, RoutesContainerContract.View{
 
     public static final String TAG = "RoutesContainerFragment";
 
     @Inject
-    RoutesContainerMvpPresenter<RoutesContainerMvpView> mPresenter;
+    RoutesContainerContract.Presenter mPresenter;
 
     @Inject
     AllScreenPagerAdapter mPagerAdapter;
