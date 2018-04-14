@@ -13,8 +13,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class FavoritesDirectionsPresenter<V extends FavoritesDirectionsMvpView>
-        extends BasePresenter<V> implements FavoritesDirectionsMvpPresenter<V> {
+public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirectionsContract.View>
+        implements FavoritesDirectionsContract.Presenter {
 
     private RxEventBus mEventBus;
 

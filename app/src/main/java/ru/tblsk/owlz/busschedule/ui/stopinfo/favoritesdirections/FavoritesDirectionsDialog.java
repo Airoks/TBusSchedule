@@ -27,7 +27,7 @@ import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 
 public class FavoritesDirectionsDialog extends DialogFragment
-        implements FavoritesDirectionsMvpView{
+        implements FavoritesDirectionsContract.View{
 
     public static final String DIRECTIONS = "directions";
     public static final String STOP_ID = "stopId";
@@ -39,7 +39,7 @@ public class FavoritesDirectionsDialog extends DialogFragment
     LinearLayoutManager mLayoutManager;
 
     @Inject
-    FavoritesDirectionsMvpPresenter<FavoritesDirectionsMvpView> mPresenter;
+    FavoritesDirectionsContract.Presenter mPresenter;
 
     @BindView(R.id.recyclerview_favoritesdirections)
     RecyclerView mRecyclerView;
