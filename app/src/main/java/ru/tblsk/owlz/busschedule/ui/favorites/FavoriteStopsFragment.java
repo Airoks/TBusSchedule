@@ -19,7 +19,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerActivityComponent;
+import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
+import ru.tblsk.owlz.busschedule.di.module.FavoriteBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
