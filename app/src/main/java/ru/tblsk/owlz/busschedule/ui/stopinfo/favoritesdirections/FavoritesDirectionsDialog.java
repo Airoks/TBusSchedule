@@ -20,7 +20,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerBusStopInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.BusStopInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
@@ -85,8 +89,18 @@ public class FavoritesDirectionsDialog extends DialogFragment
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.dialogfragment_favoritesdirections, container, false);
 
-        ((BaseActivity)getContext()).getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);
+        /*((BaseActivity)getContext()).getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);*/
+
+        BusStopInfoScreenComponent component = DaggerBusStopInfoScreenComponent.builder()
+                .busStopInfoScreenModule(new BusStopInfoScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule((BaseActivity)getActivity(), this))
+                .inject(this);
+
+
 
         mUnbinder = ButterKnife.bind(this, view);
 

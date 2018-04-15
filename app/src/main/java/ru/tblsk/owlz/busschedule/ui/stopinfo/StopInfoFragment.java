@@ -24,7 +24,13 @@ import javax.inject.Inject;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.component.BusRoutesScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerBusStopInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.BusRoutesScreenModule;
+import ru.tblsk.owlz.busschedule.di.module.BusStopInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -96,8 +102,20 @@ public class StopInfoFragment extends BaseFragment
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_stopinfo, container, false);
 
-        getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+                .inject(this);*/
+
+        BusStopInfoScreenComponent component = DaggerBusStopInfoScreenComponent.builder()
+                .busStopInfoScreenModule(new BusStopInfoScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
+
+
+
+
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);

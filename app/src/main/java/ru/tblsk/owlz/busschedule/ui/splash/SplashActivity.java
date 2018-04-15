@@ -5,15 +5,16 @@ import android.os.Bundle;
 
 import javax.inject.Inject;
 
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 
 
-public class SplashActivity extends BaseActivity implements SplashMvpView {
+public class SplashActivity extends BaseActivity implements SplashContract.View {
 
-    @Inject
-    SplashPresenter<SplashMvpView> mPresenter;
+   @Inject
+   SplashContract.Presenter mPresenter;
 
     @Override
     public void openMainActivity() {
@@ -26,7 +27,8 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        getActivityComponent().inject(this);
+        openMainActivity();
+        App.getApp(getBaseContext()).getApplicationComponent().inject(this);
         mPresenter.attachView(this);
     }
 

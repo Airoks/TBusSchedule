@@ -13,8 +13,8 @@ import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
-        implements SplashMvpPresenter<V>{
+public class SplashPresenter extends BasePresenter<SplashContract.View>
+        implements SplashContract.Presenter {
 
     @Inject
     public SplashPresenter(DataManager dataManager,
@@ -25,7 +25,7 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
     }
 
     @Override
-    public void attachView(V mvpView) {
+    public void attachView(SplashContract.View mvpView) {
         super.attachView(mvpView);
         if(getDataManager().getFirstRunVariable()) {
             getCompositeDisposable().add(getDataManager()
@@ -51,4 +51,6 @@ public class SplashPresenter<V extends SplashMvpView> extends BasePresenter<V>
             getMvpView().openMainActivity();
         }
     }
+
+
 }

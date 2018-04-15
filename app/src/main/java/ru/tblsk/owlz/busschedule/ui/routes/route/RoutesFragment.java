@@ -17,9 +17,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.component.BusRoutesScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerBusRoutesScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.BusRoutesScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
@@ -100,8 +104,19 @@ public class RoutesFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routes, container, false);
-        getBaseActivity().getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);
+        /*getBaseActivity().getActivityComponent()
+                .fragmentComponent(new FragmentModule(this)).inject(this);*/
+
+        BusRoutesScreenComponent component = DaggerBusRoutesScreenComponent.builder()
+                .busRoutesScreenModule(new BusRoutesScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+
+
+
         setUnbinder(ButterKnife.bind(this, view));
 
         mPresenter.attachView(this);

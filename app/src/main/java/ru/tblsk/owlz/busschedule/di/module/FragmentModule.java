@@ -1,10 +1,14 @@
 package ru.tblsk.owlz.busschedule.di.module;
 
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
 import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
@@ -13,6 +17,10 @@ import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsContract;
+import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleAdapter;
@@ -30,9 +38,17 @@ import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 public class FragmentModule {
 
     private Fragment mFragment;
+    private AppCompatActivity mActivity;
 
-    public FragmentModule(Fragment fragment) {
+    public FragmentModule(AppCompatActivity activity, Fragment fragment) {
         this.mFragment = fragment;
+        this.mActivity = activity;
+    }
+
+    @Provides
+    @ActivityContext
+    Context provideContext() {
+        return this.mActivity;
     }
 
     @Provides
@@ -88,5 +104,10 @@ public class FragmentModule {
     @Provides
     FavoriteStopsAdapter provideFavoriteStopsAdapter(FavoriteStopsContract.Presenter presenter) {
         return new FavoriteStopsAdapter(presenter);
+    }
+
+    @Provides
+    LinearLayoutManager provideLinearLayoutManager(@ActivityContext Context context) {
+        return new LinearLayoutManager(context);
     }
 }

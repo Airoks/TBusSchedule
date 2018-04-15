@@ -11,9 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.component.ActivityComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerActivityComponent;
-import ru.tblsk.owlz.busschedule.di.module.ActivityModule;
+
 
 
 public abstract class BaseActivity extends AppCompatActivity
@@ -21,10 +19,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong();
-    private static final LongSparseArray<ActivityComponent>
-            sComponent = new LongSparseArray<>();
+    //private static final LongSparseArray<ActivityComponent> sComponent = new LongSparseArray<>();
 
-    private ActivityComponent mActivityComponent;
+    //private ActivityComponent mActivityComponent;
     private  Long mActivityId;
 
     @Override
@@ -33,17 +30,16 @@ public abstract class BaseActivity extends AppCompatActivity
         mActivityId = savedInstanceState != null ?
                 savedInstanceState.getLong(KEY_ACTIVITY_ID) : NEXT_ID.getAndIncrement();
         //if config not change then returned null
-        ActivityComponent activityComponent =
-                sComponent.get(mActivityId);
+        //ActivityComponent activityComponent = sComponent.get(mActivityId);
 
-        if(activityComponent == null) {
+       /* if(activityComponent == null) {
             activityComponent = DaggerActivityComponent.builder()
                     .activityModule(new ActivityModule(this))
                     .applicationComponent(App.getApp(this).getApplicationComponent())
                     .build();
             sComponent.put(mActivityId, activityComponent);
         }
-        mActivityComponent = activityComponent;
+        mActivityComponent = activityComponent;*/
     }
 
     @Override
@@ -54,15 +50,15 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        if(!isChangingConfigurations()) {
+        /*if(!isChangingConfigurations()) {
             sComponent.remove(mActivityId);
-        }
+        }*/
         super.onDestroy();
     }
 
-    public ActivityComponent getActivityComponent() {
+    /*public ActivityComponent getActivityComponent() {
         return this.mActivityComponent;
-    }
+    }*/
 
     public void showSnackBar(String message) {
         //android.R.id.content - получаем корневое представление Activity

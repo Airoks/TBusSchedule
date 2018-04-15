@@ -18,6 +18,12 @@ import ru.tblsk.owlz.busschedule.data.preferences.PreferencesHelper;
 import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
 import ru.tblsk.owlz.busschedule.di.annotation.DatabaseInfo;
 import ru.tblsk.owlz.busschedule.di.annotation.PreferencesInfo;
+import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.DirectionMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.FlightMapper;
+import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
+import ru.tblsk.owlz.busschedule.ui.splash.SplashContract;
+import ru.tblsk.owlz.busschedule.ui.splash.SplashPresenter;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
@@ -81,5 +87,30 @@ public class ApplicationModule {
     @Provides
     SchedulerProvider provideScheduler() {
         return new AppSchedulerProvider();
+    }
+
+    @Provides
+    FlightMapper provideFlightMapper() {
+        return new FlightMapper();
+    }
+
+    @Provides
+    StopMapper provideStopMapper() {
+        return new StopMapper();
+    }
+
+    @Provides
+    DirectionMapper provideDirectionMapper() {
+        return new DirectionMapper();
+    }
+
+    @Provides
+    DepartureTimeMapper provideDepartureTimeMapper() {
+        return new DepartureTimeMapper();
+    }
+
+    @Provides
+    SplashContract.Presenter provideSplashPresenter(SplashPresenter presenter) {
+        return presenter;
     }
 }

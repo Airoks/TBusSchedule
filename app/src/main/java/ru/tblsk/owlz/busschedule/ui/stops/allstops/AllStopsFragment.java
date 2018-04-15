@@ -20,9 +20,15 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
+import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerAllBusStopsScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.ViewedBusStopsScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
+import ru.tblsk.owlz.busschedule.di.module.ViewedBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -113,8 +119,18 @@ public class AllStopsFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_allstop, container, false);
-        getBaseActivity().getActivityComponent().
-                fragmentComponent(new FragmentModule(this)).inject(this);
+        /*getBaseActivity().getActivityComponent().
+                fragmentComponent(new FragmentModule(this)).inject(this);*/
+
+        AllBusStopsScreenComponent component = DaggerAllBusStopsScreenComponent.builder()
+                .allBusStopsScreenModule(new AllBusStopsScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+
+
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
         return view;

@@ -16,9 +16,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendBusSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdayBusSchedule;
+import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerBusScheduleScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.BusScheduleScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
@@ -80,8 +84,18 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+                .inject(this);*/
+
+        BusScheduleScreenComponent component = DaggerBusScheduleScreenComponent.builder()
+                .busScheduleScreenModule(new BusScheduleScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
+
+
 
         mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));

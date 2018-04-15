@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.di.component;
 
 
 import dagger.Subcomponent;
-import ru.tblsk.owlz.busschedule.di.annotation.PerFragment;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsFragment;
@@ -15,17 +14,16 @@ import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirect
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
 
-@PerFragment
 @Subcomponent(modules = FragmentModule.class)
 public interface FragmentComponent {
-    void inject(StopsFragment stopsFragment);
-    void inject(AllStopsFragment allStopsFragment);
-    void inject(RoutesContainerFragment routesContainerFragment);
-    void inject(RoutesFragment routesFragment);
-    void inject(DirectionInfoFragment directionInfoFragment);
-    void inject(StopInfoFragment stopInfoFragment);
-    void inject(FavoritesDirectionsDialog favoritesDirectionsDialog);
-    void inject(ScheduleFragment scheduleFragment);
-    void inject(ScheduleContainerFragment scheduleContainerFragment);
-    void inject(FavoriteStopsFragment favoriteStopsFragment);
+    //void inject(StopsFragment stopsFragment);
+    //void inject(AllStopsFragment allStopsFragment);
+    //void inject(RoutesContainerFragment routesContainerFragment);
+    //void inject(RoutesFragment routesFragment);
+    //void inject(DirectionInfoFragment directionInfoFragment);
+    //void inject(StopInfoFragment stopInfoFragment);
+    //void inject(FavoritesDirectionsDialog favoritesDirectionsDialog);
+    //void inject(ScheduleFragment scheduleFragment);
+    //void inject(ScheduleContainerFragment scheduleContainerFragment);
+    //void inject(FavoriteStopsFragment favoriteStopsFragment);
 }

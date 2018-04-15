@@ -21,7 +21,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DaggerDirectionInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.DirectionInfoScreenComponent;
+import ru.tblsk.owlz.busschedule.di.module.BusScheduleScreenModule;
+import ru.tblsk.owlz.busschedule.di.module.DirectionInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -89,8 +95,18 @@ public class DirectionInfoFragment extends BaseFragment
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_directioninfo, container, false);
 
-        getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+                .inject(this);*/
+
+
+        DirectionInfoScreenComponent component = DaggerDirectionInfoScreenComponent.builder()
+                .directionInfoScreenModule(new DirectionInfoScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
+
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);

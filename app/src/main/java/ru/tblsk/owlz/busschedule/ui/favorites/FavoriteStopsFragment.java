@@ -21,9 +21,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerActivityComponent;
-import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
+
+import ru.tblsk.owlz.busschedule.di.component.DaggerFavoriteBusStopsScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.FavoriteBusStopsScreenComponent;
+
 import ru.tblsk.owlz.busschedule.di.module.FavoriteBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
@@ -31,7 +32,7 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
+
 
 public class FavoriteStopsFragment extends BaseFragment
         implements FavoriteStopsContract.View, SetupToolbar {
@@ -87,8 +88,18 @@ public class FavoriteStopsFragment extends BaseFragment
 
         View view = getView() != null ? getView() :
                 inflater.inflate(R.layout.fragment_favoritestops, container, false);
-        getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
+                .inject(this);*/
+
+        FavoriteBusStopsScreenComponent component = DaggerFavoriteBusStopsScreenComponent.builder()
+                .favoriteBusStopsScreenModule(new FavoriteBusStopsScreenModule())
+                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
+                .build();
+
+        component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
+
+
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
         return view;
