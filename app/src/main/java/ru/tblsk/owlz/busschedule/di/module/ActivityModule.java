@@ -9,10 +9,10 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.ActivityContext;
 import ru.tblsk.owlz.busschedule.di.annotation.PerActivity;
-import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.WeekendSchedule;
-import ru.tblsk.owlz.busschedule.di.annotation.WorkdaySchedule;
+import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.WeekendBusSchedule;
+import ru.tblsk.owlz.busschedule.di.annotation.WorkdayBusSchedule;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoPresenter;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsContract;
@@ -91,7 +91,7 @@ public class ActivityModule {
     }
 
     @Provides
-    @UrbanRoutes
+    @UrbanBusRoutes
     @PerActivity
     RouteContract.Presenter provideUrbanRoutesPresenter(
             UrbanRoutesPresenter presenter) {
@@ -99,7 +99,7 @@ public class ActivityModule {
     }
 
     @Provides
-    @SuburbanRoutes
+    @SuburbanBusRoutes
     @PerActivity
     RouteContract.Presenter provideSuburbanRoutesPresenter(
             SuburbanRoutesPresenter presenter) {
@@ -128,7 +128,7 @@ public class ActivityModule {
     }
 
     @Provides
-    @WorkdaySchedule
+    @WorkdayBusSchedule
     @PerActivity
     ScheduleContract.Presenter provideWorkdaySchedulePresenter(
             WorkdaySchedulePresenter presenter) {
@@ -136,7 +136,7 @@ public class ActivityModule {
     }
 
     @Provides
-    @WeekendSchedule
+    @WeekendBusSchedule
     @PerActivity
     ScheduleContract.Presenter provideWeekendSchedulePresenter(
             WeekendSchedulePresenter presenter) {

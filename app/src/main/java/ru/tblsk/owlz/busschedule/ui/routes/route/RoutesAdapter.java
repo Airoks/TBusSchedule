@@ -63,6 +63,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         int position = viewHolder.getAdapterPosition();
 
                         if(mFlights.get(position).getCurrentDirectionType() == DIRECT_ID) {

@@ -18,8 +18,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
@@ -54,8 +54,8 @@ public class RoutesFragment extends BaseFragment
     }
 
     @Inject
-    public void setPresenter(@UrbanRoutes RouteContract.Presenter urbanPresenter,
-                             @SuburbanRoutes RouteContract.Presenter suburbanPresenter) {
+    public void setPresenter(@UrbanBusRoutes RouteContract.Presenter urbanPresenter,
+                             @SuburbanBusRoutes RouteContract.Presenter suburbanPresenter) {
         int type = getArguments().getInt(FLIGHT_TYPE);
         if(type == URBAN) {
             mPresenter = urbanPresenter;
@@ -65,8 +65,8 @@ public class RoutesFragment extends BaseFragment
     }
 
     @Inject
-    public void setAdapter(@UrbanRoutes RoutesAdapter urbanAdapter,
-                           @SuburbanRoutes RoutesAdapter suburbanAdapter) {
+    public void setAdapter(@UrbanBusRoutes RoutesAdapter urbanAdapter,
+                           @SuburbanBusRoutes RoutesAdapter suburbanAdapter) {
         int type = getArguments().getInt(FLIGHT_TYPE);
         if(type == URBAN) {
             mAdapter = urbanAdapter;

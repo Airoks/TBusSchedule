@@ -21,7 +21,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.annotation.AllStops;
+import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -39,7 +39,7 @@ public class AllStopsFragment extends BaseFragment
     AllStopsContract.Presenter mPresenter;
 
     @Inject
-    @AllStops
+    @AllBusStops
     StopsAdapter mAdapter;
 
     @Inject

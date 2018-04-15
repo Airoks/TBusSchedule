@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.tblsk.owlz.busschedule.di.annotation.AllStops;
-import ru.tblsk.owlz.busschedule.di.annotation.SuburbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.UrbanRoutes;
-import ru.tblsk.owlz.busschedule.di.annotation.ViewedStops;
+import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
+import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.annotation.ViewedBusStops;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsAdapter;
@@ -36,13 +36,13 @@ public class FragmentModule {
     }
 
     @Provides
-    @ViewedStops
+    @ViewedBusStops
     StopsAdapter provideStopsAdapter(StopsContract.Presenter presenter) {
         return new StopsAdapter(AppConstants.VIEWED_STOPS_ADAPTER, presenter);
     }
 
     @Provides
-    @AllStops
+    @AllBusStops
     StopsAdapter provideAllStopsAdapter(AllStopsContract.Presenter presenter) {
         return new StopsAdapter(AppConstants.ALL_STOPS_ADAPTER, presenter);
     }
@@ -58,13 +58,13 @@ public class FragmentModule {
     }
 
     @Provides
-    @UrbanRoutes
+    @UrbanBusRoutes
     RoutesAdapter provideUrbanRoutesAdapter(RxEventBus eventBus) {
         return new RoutesAdapter(eventBus, AppConstants.URBAN);
     }
 
     @Provides
-    @SuburbanRoutes
+    @SuburbanBusRoutes
     RoutesAdapter provideSuburbanRoutesAdapter(RxEventBus eventBus) {
         return new RoutesAdapter(eventBus, AppConstants.SUBURBAN);
     }

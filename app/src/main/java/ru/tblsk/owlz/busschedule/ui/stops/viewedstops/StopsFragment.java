@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.annotation.ViewedStops;
+import ru.tblsk.owlz.busschedule.di.annotation.ViewedBusStops;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -39,7 +39,7 @@ public class StopsFragment extends BaseFragment
     StopsContract.Presenter mPresenter;
 
     @Inject
-    @ViewedStops
+    @ViewedBusStops
     StopsAdapter mAdapter;
 
     @Inject
