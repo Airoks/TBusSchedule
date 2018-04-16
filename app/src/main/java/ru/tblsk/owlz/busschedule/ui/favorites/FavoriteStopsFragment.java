@@ -32,12 +32,15 @@ import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 
 public class FavoriteStopsFragment extends BaseFragment
         implements FavoriteStopsContract.View, SetupToolbar {
 
     public static final String TAG = "FavoriteStopsFragment";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     FavoriteStopsContract.Presenter mPresenter;
@@ -58,6 +61,7 @@ public class FavoriteStopsFragment extends BaseFragment
     TextView mEmptyTextView;
 
     private boolean isFavoriteStop;
+    private long mFragmentId;
 
     public static FavoriteStopsFragment newInstance() {
         Bundle args = new Bundle();
@@ -75,8 +79,8 @@ public class FavoriteStopsFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
         isFavoriteStop = true;
     }
 
@@ -86,15 +90,15 @@ public class FavoriteStopsFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_favoritestops, container, false);
-        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
-                .inject(this);*/
+        View view = inflater.inflate(R.layout.fragment_favoritestops, container, false);
 
-        FavoriteBusStopsScreenComponent component = DaggerFavoriteBusStopsScreenComponent.builder()
-                .favoriteBusStopsScreenModule(new FavoriteBusStopsScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        FavoriteBusStopsScreenComponent component = componentManager
+                .getFavoriteBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewFavoriteBusStopsScreenComponent();
+            componentManager.putFavoriteBusStopsScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -109,6 +113,12 @@ public class FavoriteStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         setupToolbar();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -9,17 +9,21 @@ import com.squareup.leakcanary.LeakCanary;
 import ru.tblsk.owlz.busschedule.di.component.ApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.component.DaggerApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.module.ApplicationModule;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 
 public class App extends Application {
 
     private ApplicationComponent mApplicationComponent;
+    private ComponentManager mComponentManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
+
+        mComponentManager = new ComponentManager(mApplicationComponent);
 
         Stetho.initializeWithDefaults(this);
 
@@ -38,5 +42,8 @@ public class App extends Application {
         return  this.mApplicationComponent;
     }
 
+    public ComponentManager getComponentManager() {
+        return this.mComponentManager;
+    }
 
 }

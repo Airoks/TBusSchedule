@@ -34,12 +34,15 @@ import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.stops.allstops.AllStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 
 public class StopsFragment extends BaseFragment
         implements StopsContract.View, SetupToolbar {
 
     public static final String TAG = "StopsFragment";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     StopsContract.Presenter mPresenter;
@@ -58,12 +61,13 @@ public class StopsFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private boolean isFavoriteStop;
-
+    private long mFragmentId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
 
         isFavoriteStop = false;
     }
@@ -81,10 +85,13 @@ public class StopsFragment extends BaseFragment
         /*getBaseActivity().getActivityComponent().
                 fragmentComponent(new FragmentModule(this)).inject(this);*/
 
-        ViewedBusStopsScreenComponent component = DaggerViewedBusStopsScreenComponent.builder()
-                .viewedBusStopsScreenModule(new ViewedBusStopsScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        ViewedBusStopsScreenComponent component = componentManager
+                .getViewedBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewViewedBusStopsScreenComponent();
+            componentManager.putViewedBusStopsScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -100,6 +107,12 @@ public class StopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.stops);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public final class CommonUtils {
 
-    private static final AtomicLong NEXT_ID = new AtomicLong();
+    public static final AtomicLong NEXT_ID = new AtomicLong();
 
     public static String loadJSONFromAsset(Context context, String jsonFileName)
             throws IOException {

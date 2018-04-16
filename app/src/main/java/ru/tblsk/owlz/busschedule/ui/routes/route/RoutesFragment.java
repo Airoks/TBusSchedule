@@ -29,11 +29,13 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class RoutesFragment extends BaseFragment
         implements RouteContract.View {
 
     public static final String TAG = "RoutesFragment";
+    public static final String FRAGMENT_ID = "fragmentId";
     public static final String FLIGHT_TYPE = "flightType";
     public static final int URBAN = 0;
     public static final int SUBURBAN = 1;
@@ -47,10 +49,12 @@ public class RoutesFragment extends BaseFragment
     RecyclerView mRecyclerView;
 
     private RouteContract.Presenter mPresenter;
-    RoutesAdapter mAdapter;
+    private RoutesAdapter mAdapter;
+    private long mFragmentId;
 
-    public static RoutesFragment newInstance(int flightType) {
+    public static RoutesFragment newInstance(long fragmentId, int flightType) {
         Bundle args = new Bundle();
+        args.putLong(FRAGMENT_ID, fragmentId);
         args.putInt(FLIGHT_TYPE, flightType);
         RoutesFragment fragment = new RoutesFragment();
         fragment.setArguments(args);
@@ -82,7 +86,7 @@ public class RoutesFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        mFragmentId = getArguments().getLong(FRAGMENT_ID);
     }
 
     @Override
@@ -104,14 +108,9 @@ public class RoutesFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routes, container, false);
-        /*getBaseActivity().getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);*/
 
-        BusRoutesScreenComponent component = DaggerBusRoutesScreenComponent.builder()
-                .busRoutesScreenModule(new BusRoutesScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
-
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        BusRoutesScreenComponent component = componentManager.getBusRoutesScreenComponent(mFragmentId);
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
 

@@ -19,6 +19,7 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.BusRoutesScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.DaggerBusRoutesScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.ViewedBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.BusRoutesScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
@@ -26,11 +27,14 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesFragment;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class RoutesContainerFragment extends BaseFragment
         implements SetupToolbar, RoutesContainerContract.View{
 
     public static final String TAG = "RoutesContainerFragment";
+    public static final String FRAGMENT_ID = "fragmentId";
     public static final int URBAN = 0;
     public static final int SUBURBAN = 1;
 
@@ -49,8 +53,18 @@ public class RoutesContainerFragment extends BaseFragment
     @BindView(R.id.tablayout_routescontainer)
     TabLayout mTabLayout;
 
+    private long mFragmentId;
+
     public static RoutesContainerFragment newInstance() {
         return new RoutesContainerFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
     }
 
     @Nullable
@@ -60,13 +74,14 @@ public class RoutesContainerFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routescontainer, container, false);
         setUnbinder(ButterKnife.bind(this, view));
-        /*getBaseActivity().getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);*/
 
-        BusRoutesScreenComponent component = DaggerBusRoutesScreenComponent.builder()
-                .busRoutesScreenModule(new BusRoutesScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        BusRoutesScreenComponent component = componentManager
+                .getBusRoutesScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewBusRoutesScreenComponent();
+            componentManager.putBusRoutesScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -80,11 +95,6 @@ public class RoutesContainerFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.routs);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -118,9 +128,9 @@ public class RoutesContainerFragment extends BaseFragment
 
     }
     public void setupViewPager(ViewPager viewPager) {
-        mPagerAdapter.addFragments(RoutesFragment.newInstance(URBAN),
+        mPagerAdapter.addFragments(RoutesFragment.newInstance(mFragmentId, URBAN),
                 getResources().getString(R.string.urban_routes));
-        mPagerAdapter.addFragments(RoutesFragment.newInstance(SUBURBAN),
+        mPagerAdapter.addFragments(RoutesFragment.newInstance(mFragmentId, SUBURBAN),
                 getResources().getString(R.string.suburban_routes));
         viewPager.setAdapter(mPagerAdapter);
     }
