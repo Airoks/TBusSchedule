@@ -7,7 +7,7 @@ import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.routes.route.RoutesFragment;
 
 @Subcomponent(modules = FragmentModule.class)
-public interface BusRoutesFr {
+public interface BusRoutesFragmentComponent {
     void inject(RoutesContainerFragment routesContainerFragment);
     void inject(RoutesFragment routesFragment);
 }

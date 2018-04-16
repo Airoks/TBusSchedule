@@ -9,5 +9,5 @@ import ru.tblsk.owlz.busschedule.di.module.ViewedBusStopsScreenModule;
 @ViewedBusStopsScreen
 @Component(dependencies = ApplicationComponent.class, modules = ViewedBusStopsScreenModule.class)
 public interface ViewedBusStopsScreenComponent {
-    ViewedBusStopsFr add(FragmentModule module);
+    ViewedBusStopsFragmentComponent add(FragmentModule module);
 }

@@ -27,7 +27,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        openMainActivity();
         App.getApp(getBaseContext()).getApplicationComponent().inject(this);
         mPresenter.attachView(this);
     }

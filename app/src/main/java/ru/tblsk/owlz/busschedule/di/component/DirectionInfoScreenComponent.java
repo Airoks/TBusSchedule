@@ -9,5 +9,5 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 @DirectionInfoScreen
 @Component(dependencies = ApplicationComponent.class, modules = DirectionInfoScreenModule.class)
 public interface DirectionInfoScreenComponent {
-    DirectionInfoFr add(FragmentModule module);
+    DirectionInfoFragmentComponent add(FragmentModule module);
 }

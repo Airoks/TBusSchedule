@@ -7,7 +7,7 @@ import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
 
 @Subcomponent(modules = FragmentModule.class)
-public interface BusStopInfoFr {
+public interface BusStopInfoFragmentComponent {
     void inject(StopInfoFragment stopInfoFragment);
     void inject(FavoritesDirectionsDialog favoritesDirectionsDialog);
 }
