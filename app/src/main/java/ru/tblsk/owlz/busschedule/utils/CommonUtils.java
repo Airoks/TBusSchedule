@@ -6,9 +6,12 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class CommonUtils {
+
+    private static final AtomicLong NEXT_ID = new AtomicLong();
+
     public static String loadJSONFromAsset(Context context, String jsonFileName)
             throws IOException {
         AssetManager assetManager = context.getAssets();
