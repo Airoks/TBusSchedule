@@ -58,8 +58,4 @@ public class WorkdaySchedulePresenter extends BasePresenter<ScheduleContract.Vie
         }
     }
 
-    @Override
-    public void clearData() {
-        mScheduleWorkday = null;
-    }
 }

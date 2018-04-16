@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
+import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.DaggerDirectionInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.DirectionInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.module.BusScheduleScreenModule;
@@ -35,12 +37,15 @@ import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class DirectionInfoFragment extends BaseFragment
         implements DirectionInfoContract.View, SetupToolbar{
 
     public static final String TAG = "DirectionInfoFragment";
     public static final String FLIGHT = "flight";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     DirectionInfoContract.Presenter mPresenter;
@@ -60,6 +65,9 @@ public class DirectionInfoFragment extends BaseFragment
     @BindView(R.id.recyclerview_directioninfo_stops)
     RecyclerView mRecyclerView;
 
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
+
     public static DirectionInfoFragment newInstance(@NonNull FlightVO flight) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(FLIGHT, flight);
@@ -71,7 +79,8 @@ public class DirectionInfoFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
     }
 
     @Override
@@ -92,17 +101,15 @@ public class DirectionInfoFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_directioninfo, container, false);
+        View view = inflater.inflate(R.layout.fragment_directioninfo, container, false);
 
-        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
-                .inject(this);*/
-
-
-        DirectionInfoScreenComponent component = DaggerDirectionInfoScreenComponent.builder()
-                .directionInfoScreenModule(new DirectionInfoScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        DirectionInfoScreenComponent component = mComponentManager
+                .getDirectionInfoScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewDirectionInfoScreenComponent();
+            mComponentManager.putDirectionInfoScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -112,6 +119,32 @@ public class DirectionInfoFragment extends BaseFragment
         mPresenter.attachView(this);
         mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().setFocusable(true);
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mComponentManager.removeDirectionInfoScreenComponent(mFragmentId);
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -139,6 +172,7 @@ public class DirectionInfoFragment extends BaseFragment
 
     @Override
     public void openPreviousFragment() {
+        mComponentManager.removeDirectionInfoScreenComponent(mFragmentId);
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }

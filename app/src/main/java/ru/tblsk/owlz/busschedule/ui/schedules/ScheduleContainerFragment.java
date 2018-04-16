@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.DaggerBusScheduleScreenComponent;
@@ -31,6 +33,8 @@ import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.routes.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleFragment;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class ScheduleContainerFragment extends BaseFragment
         implements ScheduleContainerContract.View, SetupToolbar{
@@ -39,6 +43,7 @@ public class ScheduleContainerFragment extends BaseFragment
     public static final String FLIGHT = "flight";
     public static final int WORKDAY = 0;
     public static final int WEEKEND = 1;
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     AllScreenPagerAdapter mPagerAdapter;
@@ -66,6 +71,8 @@ public class ScheduleContainerFragment extends BaseFragment
 
     private FlightVO mFlight;
     private StopVO mStop;
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
 
     public static ScheduleContainerFragment newInstance(StopVO stop, FlightVO flight) {
         Bundle args = new Bundle();
@@ -80,6 +87,9 @@ public class ScheduleContainerFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
+
         mStop = getArguments().getParcelable(STOP);
         mFlight = getArguments().getParcelable(FLIGHT);
     }
@@ -89,21 +99,18 @@ public class ScheduleContainerFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_schedulecontainer, container, false);
-        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
-                .inject(this);*/
+        View view = inflater.inflate(R.layout.fragment_schedulecontainer, container, false);
 
-        BusScheduleScreenComponent component = DaggerBusScheduleScreenComponent.builder()
-                .busScheduleScreenModule(new BusScheduleScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusScheduleScreenComponent component = mComponentManager
+                .getBusScheduleScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewBusScheduleScreenComponent();
+            mComponentManager.putBusScheduleScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
-
-
-
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
@@ -114,6 +121,27 @@ public class ScheduleContainerFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         setToolbarTitle();
+
+        if(getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().setFocusable(true);
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mComponentManager.removeBusScheduleScreenComponent(mFragmentId);
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -154,9 +182,9 @@ public class ScheduleContainerFragment extends BaseFragment
         long directionId = mFlight.getCurrentDirection().getId();
 
         mPagerAdapter.addFragments(ScheduleFragment.newInstance(stopId,
-                directionId, WORKDAY), getString(R.string.schedule_workday));
+                directionId, WORKDAY, mFragmentId), getString(R.string.schedule_workday));
         mPagerAdapter.addFragments(ScheduleFragment.newInstance(stopId,
-                directionId, WEEKEND), getString(R.string.schedule_weekend));
+                directionId, WEEKEND, mFragmentId), getString(R.string.schedule_weekend));
         viewPager.setAdapter(mPagerAdapter);
     }
 
@@ -167,6 +195,7 @@ public class ScheduleContainerFragment extends BaseFragment
 
     @Override
     public void openPreviousFragment() {
+        mComponentManager.removeBusScheduleScreenComponent(mFragmentId);
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }

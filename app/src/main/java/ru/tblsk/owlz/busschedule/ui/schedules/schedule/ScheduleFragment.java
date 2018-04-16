@@ -21,11 +21,10 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendBusSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdayBusSchedule;
 import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerBusScheduleScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.BusScheduleScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class ScheduleFragment extends BaseFragment implements ScheduleContract.View{
 
@@ -34,6 +33,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     public static final String SCHEDULE_TYPE = "scheduleType";
     public static final int WORKDAY = 0;
     public static final int WEEKEND = 1;
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     LinearLayoutManager mLayoutManager;
@@ -48,12 +48,16 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     TextView mEmptyTextView;
 
     ScheduleContract.Presenter mPresenter;
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
 
-    public static ScheduleFragment newInstance(long stopId, long directionId, int scheduleType) {
+    public static ScheduleFragment newInstance(long stopId, long directionId,
+                                               int scheduleType, long fragmentId) {
         Bundle args = new Bundle();
         args.putLong(STOP_ID, stopId);
         args.putLong(DIRECTION_ID, directionId);
         args.putInt(SCHEDULE_TYPE, scheduleType);
+        args.putLong(FRAGMENT_ID, fragmentId);
         ScheduleFragment fragment = new ScheduleFragment();
         fragment.setArguments(args);
         return fragment;
@@ -73,7 +77,8 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+
+        mFragmentId = getArguments().getLong(FRAGMENT_ID);
     }
 
     @Nullable
@@ -81,16 +86,11 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
-                .inject(this);*/
-
-        BusScheduleScreenComponent component = DaggerBusScheduleScreenComponent.builder()
-                .busScheduleScreenModule(new BusScheduleScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusScheduleScreenComponent component = mComponentManager.
+                getBusScheduleScreenComponent(mFragmentId);
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -108,12 +108,6 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
         mPresenter.detachView();
         mPresenter.unsubscribeFromEvents();
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.clearData();
-        super.onDestroy();
     }
 
     @Override

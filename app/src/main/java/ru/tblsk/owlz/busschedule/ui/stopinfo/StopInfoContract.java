@@ -12,9 +12,8 @@ public interface StopInfoContract {
 
     interface View extends MvpView {
         void showDirectionsByStop(List<DirectionVO> directions);
-        void showSavedDirectionsByStop();
         void openPreviousFragment();
-        void openFavoritesDirectionsDialog();
+        void openFavoritesDirectionsDialog(List<DirectionVO> directions);
         void openScheduleContainerFragment(FlightVO flight);
         void setFavoriteIcon(boolean isFavorite);
         void showSnackBarDeleted();
@@ -22,7 +21,6 @@ public interface StopInfoContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getDirectionsByStop(Long stopId, boolean isFavoriteStop);
-        void getSavedDirectionsByStop();
         void clickedOnBackButton();
         void clickedOnButtonAddFavorites();
         void isFavoriteStop(Long stopId);

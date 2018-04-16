@@ -16,7 +16,6 @@ public interface ScheduleContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getSchedule(long stopId, long directionId, int scheduleType);
-        void clearData();
     }
 
 }

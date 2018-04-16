@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,22 +25,21 @@ import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
 import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerAllBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.ViewedBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
-import ru.tblsk.owlz.busschedule.di.module.ViewedBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.stops.StopsAdapter;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class AllStopsFragment extends BaseFragment
         implements AllStopsContract.View, SetupToolbar{
 
     public static final String TAG = "AllStopsFragment";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     AllStopsContract.Presenter mPresenter;
@@ -61,6 +61,8 @@ public class AllStopsFragment extends BaseFragment
     FastScroller mFastScroller;
 
     private boolean isFavoriteStop;
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
 
     public static AllStopsFragment newInstance() {
         return new AllStopsFragment();
@@ -69,7 +71,8 @@ public class AllStopsFragment extends BaseFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
 
         isFavoriteStop = false;
     }
@@ -103,6 +106,7 @@ public class AllStopsFragment extends BaseFragment
 
     @Override
     public void openPreviousFragment() {
+        mComponentManager.removeAllBusStopsScreenComponent(mFragmentId);
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }
@@ -117,15 +121,15 @@ public class AllStopsFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_allstop, container, false);
-        /*getBaseActivity().getActivityComponent().
-                fragmentComponent(new FragmentModule(this)).inject(this);*/
+        View view = inflater.inflate(R.layout.fragment_allstop, container, false);
 
-        AllBusStopsScreenComponent component = DaggerAllBusStopsScreenComponent.builder()
-                .allBusStopsScreenModule(new AllBusStopsScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        AllBusStopsScreenComponent component = mComponentManager
+                .getAllBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewAllBusStopsScreenComponent();
+            mComponentManager.putAllBusStopsScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
@@ -140,6 +144,27 @@ public class AllStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.all_stops);
+
+        if(getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().setFocusable(true);
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mComponentManager.removeAllBusStopsScreenComponent(mFragmentId);
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

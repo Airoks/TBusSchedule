@@ -29,12 +29,14 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class FavoritesDirectionsDialog extends DialogFragment
         implements FavoritesDirectionsContract.View{
 
     public static final String DIRECTIONS = "directions";
     public static final String STOP_ID = "stopId";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     FavoritesDirectionsAdapter mAdapter;
@@ -49,6 +51,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
     RecyclerView mRecyclerView;
 
     private Unbinder mUnbinder;
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
 
     public FavoritesDirectionsDialog() {
     }
@@ -56,12 +60,16 @@ public class FavoritesDirectionsDialog extends DialogFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFragmentId = getArguments().getLong(FRAGMENT_ID);
+
     }
 
-    public static FavoritesDirectionsDialog newInstance(List<DirectionVO> directions, long stopId) {
+    public static FavoritesDirectionsDialog newInstance(List<DirectionVO> directions,
+                                                        long stopId, long fragmentId) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) directions);
         args.putLong(STOP_ID, stopId);
+        args.putLong(FRAGMENT_ID, fragmentId);
         FavoritesDirectionsDialog fragment = new FavoritesDirectionsDialog();
         fragment.setArguments(args);
         return fragment;
@@ -86,24 +94,16 @@ public class FavoritesDirectionsDialog extends DialogFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.dialogfragment_favoritesdirections, container, false);
+        View view = inflater.inflate(R.layout.dialogfragment_favoritesdirections,
+                container, false);
 
-        /*((BaseActivity)getContext()).getActivityComponent()
-                .fragmentComponent(new FragmentModule(this)).inject(this);*/
-
-        BusStopInfoScreenComponent component = DaggerBusStopInfoScreenComponent.builder()
-                .busStopInfoScreenModule(new BusStopInfoScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusStopInfoScreenComponent component = mComponentManager.getBusStopInfoScreenComponent(mFragmentId);
 
         component.add(new FragmentModule((BaseActivity)getActivity(), this))
                 .inject(this);
 
-
-
         mUnbinder = ButterKnife.bind(this, view);
-
         mPresenter.attachView(this);
         setCancelable(true);
 

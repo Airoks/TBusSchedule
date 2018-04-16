@@ -57,9 +57,4 @@ public class WeekendSchedulePresenter extends BasePresenter<ScheduleContract.Vie
                     }));
         }
     }
-
-    @Override
-    public void clearData() {
-        mScheduleWeekend = null;
-    }
 }

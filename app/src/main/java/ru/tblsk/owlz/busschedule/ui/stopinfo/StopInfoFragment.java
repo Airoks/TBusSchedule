@@ -3,7 +3,6 @@ package ru.tblsk.owlz.busschedule.ui.stopinfo;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -11,12 +10,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,28 +25,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.component.BusRoutesScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerBusStopInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.BusRoutesScreenModule;
-import ru.tblsk.owlz.busschedule.di.module.BusStopInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.stopinfo.favoritesdirections.FavoritesDirectionsDialog;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.CommonUtils;
+import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class StopInfoFragment extends BaseFragment
         implements StopInfoContract.View, SetupToolbar{
 
     public static final String TAG = "StopInfoFragment";
     public static final String STOP = "stop";
-    public static final String DIRECTIONS = "directions";
     public static final String IS_FAVORITE_STOP = "isFavoriteStop";
+    public static final String FRAGMENT_ID = "fragmentId";
 
     @Inject
     StopInfoContract.Presenter mPresenter;
@@ -70,9 +67,10 @@ public class StopInfoFragment extends BaseFragment
     @BindDrawable(R.drawable.stopinfo_starblack_24dp)
     Drawable mTimati;
 
-    private List<DirectionVO> mDirections;
     private StopVO mStop;
     private boolean mIsFavorite;
+    private long mFragmentId;
+    private ComponentManager mComponentManager;
 
     public static  StopInfoFragment newInstance(StopVO stop, boolean isFavoriteStop) {
         Bundle args = new Bundle();
@@ -87,9 +85,8 @@ public class StopInfoFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
-            mDirections = savedInstanceState.getParcelableArrayList(DIRECTIONS);
-        }
+        mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
+                CommonUtils.NEXT_ID.getAndIncrement();
         mStop = getArguments().getParcelable(STOP);
     }
 
@@ -99,23 +96,18 @@ public class StopInfoFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = getView() != null ? getView() :
-                inflater.inflate(R.layout.fragment_stopinfo, container, false);
+        View view = inflater.inflate(R.layout.fragment_stopinfo, container, false);
 
-        /*getBaseActivity().getActivityComponent().fragmentComponent(new FragmentModule(this))
-                .inject(this);*/
-
-        BusStopInfoScreenComponent component = DaggerBusStopInfoScreenComponent.builder()
-                .busStopInfoScreenModule(new BusStopInfoScreenModule())
-                .applicationComponent(App.getApp(getContext()).getApplicationComponent())
-                .build();
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusStopInfoScreenComponent component = mComponentManager
+                .getBusStopInfoScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewBusStopInfoScreenComponent();
+            mComponentManager.putBusStopInfoScreenComponent(mFragmentId, component);
+        }
 
         component.add(new FragmentModule(getBaseActivity(), this))
                 .inject(this);
-
-
-
-
 
         setUnbinder(ButterKnife.bind(this, view));
         mPresenter.attachView(this);
@@ -123,14 +115,29 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(DIRECTIONS, (ArrayList<? extends Parcelable>) mDirections);
+    public void onResume() {
+        super.onResume();
+
+        if(getView() != null) {
+            getView().setFocusableInTouchMode(true);
+            getView().setFocusable(true);
+            getView().setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mComponentManager.removeBusStopInfoScreenComponent(mFragmentId);
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -155,11 +162,7 @@ public class StopInfoFragment extends BaseFragment
         mRecyclerView.setAdapter(mAdapter);
 
         boolean isFavoriteStop = getArguments().getBoolean(IS_FAVORITE_STOP);
-        if(mDirections == null) {
-            mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
-        } else {
-            mPresenter.getSavedDirectionsByStop();
-        }
+        mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
@@ -196,29 +199,25 @@ public class StopInfoFragment extends BaseFragment
 
     @Override
     public void showDirectionsByStop(List<DirectionVO> directions) {
-        mDirections = directions;
-        mAdapter.addItems(mDirections);
-    }
-
-    @Override
-    public void showSavedDirectionsByStop() {
-        mAdapter.addItems(mDirections);
+        mAdapter.addItems(directions);
     }
 
     @Override
     public void openPreviousFragment() {
+        mComponentManager.removeBusStopInfoScreenComponent(mFragmentId);
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         fragmentManager.popBackStack();
     }
 
     @Override
-    public void openFavoritesDirectionsDialog() {
+    public void openFavoritesDirectionsDialog(List<DirectionVO> directions) {
         if(mIsFavorite) {
             mPresenter.deleteFavoriteStop(mStop.getId());
             setFavoriteIcon(false);
         } else {
             FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-            FavoritesDirectionsDialog dialog = FavoritesDirectionsDialog.newInstance(mDirections, mStop.getId());
+            FavoritesDirectionsDialog dialog =
+                    FavoritesDirectionsDialog.newInstance(directions, mStop.getId(), mFragmentId);
             dialog.setTargetFragment(this, 0);
             dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             dialog.show(fragmentManager, "FavoritesDirectionsDialog");

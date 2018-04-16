@@ -22,6 +22,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
         implements StopInfoContract.Presenter{
 
+    private List<DirectionVO> mDirections;
 
     @Inject
     public StopInfoPresenter(DataManager dataManager,
@@ -35,13 +36,12 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
         if(isFavoriteStop) {
             getFavoriteDirection(stopId);
         } else {
-            getDirection(stopId);
+            if(mDirections == null) {
+                getDirection(stopId);
+            } else {
+                getMvpView().showDirectionsByStop(mDirections);
+            }
         }
-    }
-
-    @Override
-    public void getSavedDirectionsByStop() {
-        getMvpView().showSavedDirectionsByStop();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
 
     @Override
     public void clickedOnButtonAddFavorites() {
-        getMvpView().openFavoritesDirectionsDialog();
+        getMvpView().openFavoritesDirectionsDialog(mDirections);
     }
 
     @Override
@@ -145,6 +145,7 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
                                             directionVO.setFavorite(true);
                                             directionsVO.add(directionVO);
                                         }
+                                        mDirections = directionsVO;
                                         return directionsVO;
                                     }
                                 });
@@ -187,6 +188,7 @@ public class StopInfoPresenter extends BasePresenter<StopInfoContract.View>
                                             directionVO.setFavorite(true);
                                             directionsVO.add(directionVO);
                                         }
+                                        mDirections = directionsVO;
                                         return directionsVO;
                                     }
                                 });
