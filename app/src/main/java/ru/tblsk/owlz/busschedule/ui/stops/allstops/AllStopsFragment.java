@@ -85,7 +85,6 @@ public class AllStopsFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mPresenter.clearData();
         mPresenter.unsubscribeFromEvents();
         super.onDestroy();
     }

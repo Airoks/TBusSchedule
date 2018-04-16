@@ -23,7 +23,6 @@ public interface DirectionInfoContract {
         void getStopsOnDirection();
         void clickedOnChangeDirectionButton();
         void clickedOnBackButton();
-        void clearData();
         void setData(FlightVO flight);
         void setChangeButton();
         void clickedOnAdapterItem(int position);

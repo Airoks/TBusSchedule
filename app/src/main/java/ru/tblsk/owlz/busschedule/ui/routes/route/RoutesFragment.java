@@ -98,7 +98,6 @@ public class RoutesFragment extends BaseFragment
     @Override
     public void onDestroy() {
         mPresenter.unsubscribeFromEvents();
-        mPresenter.clearData();
         super.onDestroy();
     }
 

@@ -69,12 +69,6 @@ public class AllStopsPresenter extends BasePresenter<AllStopsContract.View>
         insertSearchHistoryStops(mStops.get(position).getId());
     }
 
-    @Override
-    public void clearData() {
-        mStops.clear();
-        mStops = null;
-    }
-
     private void getStops() {
         getCompositeDisposable().add(getDataManager()
                 .getAllStops()

@@ -17,7 +17,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class UrbanRoutesPresenter extends BasePresenter<RouteContract.View>
         implements RouteContract.Presenter {
 
-    public static final int URBAN = 0;
+    private static final int URBAN = 0;
 
     private RxEventBus mEventBus;
     private FlightMapper mFlightMapper;
@@ -97,12 +97,6 @@ public class UrbanRoutesPresenter extends BasePresenter<RouteContract.View>
                         }
                     }));
         }
-    }
-
-    @Override
-    public void clearData() {
-        mFlights.clear();
-        mFlights = null;
     }
 
     private void updateFlights() {

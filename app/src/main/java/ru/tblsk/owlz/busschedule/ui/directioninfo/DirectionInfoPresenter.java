@@ -96,12 +96,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     }
 
     @Override
-    public void clearData() {
-        mFlight = null;
-        mStops = null;
-    }
-
-    @Override
     public void setData(FlightVO flight) {
         if(mFlight == null) {
             mFlight = flight;

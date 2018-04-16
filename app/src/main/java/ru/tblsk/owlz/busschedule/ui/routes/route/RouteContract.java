@@ -18,7 +18,6 @@ public interface RouteContract {
     interface Presenter extends MvpPresenter<View> {
         void getFlights();
         void subscribeOnEvents();
-        void clearData();
     }
 
 }

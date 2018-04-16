@@ -21,7 +21,6 @@ public interface AllStopsContract {
         void insertSearchHistoryStops(long stopId);
         void clickedOnBackButton();
         void clickedOnAdapterItem(int position);
-        void clearData();
     }
 
 }
