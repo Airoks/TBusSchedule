@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,20 +123,22 @@ public class ScheduleContainerFragment extends BaseFragment
         super.onResume();
         setToolbarTitle();
 
-        if(getView() != null) {
-            getView().setFocusableInTouchMode(true);
-            getView().setFocusable(true);
-            getView().setOnKeyListener(new View.OnKeyListener() {
+        View view = getView();
+        if(view != null) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+            view.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                     if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                        mComponentManager.removeBusScheduleScreenComponent(mFragmentId);
+                        mPresenter.clickedOnBackButton();
                         return  true;
                     }
                     return false;
                 }
             });
         }
+
     }
 
     @Override

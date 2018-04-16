@@ -118,14 +118,15 @@ public class StopInfoFragment extends BaseFragment
     public void onResume() {
         super.onResume();
 
-        if(getView() != null) {
-            getView().setFocusableInTouchMode(true);
-            getView().setFocusable(true);
-            getView().setOnKeyListener(new View.OnKeyListener() {
+        View view = getView();
+        if(view != null) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+            view.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                     if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                        mComponentManager.removeBusStopInfoScreenComponent(mFragmentId);
+                        mPresenter.clickedOnBackButton();
                         return  true;
                     }
                     return false;
