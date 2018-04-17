@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
@@ -24,7 +26,11 @@ import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.OnBackPressedListener;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.BusRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.BusScheduleFragment;
+import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoFragment;
+import ru.tblsk.owlz.busschedule.ui.busstopsscreens.allbusstopsscreen.AllBusStopsFragment;
+import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
@@ -35,6 +41,7 @@ import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 public class BusScheduleContainerFragment extends BaseFragment
         implements BusScheduleContainerContract.View, SetupToolbar, OnBackPressedListener{
 
+    public static final String TAG = "BusScheduleContainerFragment";
     public static final String STOP = "stop";
     public static final String FLIGHT = "flight";
     public static final int WORKDAY = 0;
@@ -185,6 +192,26 @@ public class BusScheduleContainerFragment extends BaseFragment
     }
 
     @Override
+    public void openStopInfoFragment() {
+        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, BusStopInfoFragment.newInstance(mStop, false));
+        fragmentTransaction.addToBackStack(BusScheduleContainerFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void openDirectionInfoFragment() {
+        FragmentManager fragmentManager = getBaseActivity()
+                .getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container,
+                DirectionInfoFragment.newInstance(mFlight));
+        transaction.addToBackStack(BusScheduleContainerFragment.TAG);
+        transaction.commit();
+    }
+
+    @Override
     public void setBackPressedListener() {
         View view = getView();
         if(view != null) {
@@ -201,5 +228,23 @@ public class BusScheduleContainerFragment extends BaseFragment
                 }
             });
         }
+    }
+
+    @OnClick(R.id.relativelayout_schedulecontainer_direction)
+    public void clickListenerOfDirection() {
+        String currentTagAtTopOfBackStack = getTopTagOfBackStack();
+        mPresenter.clickedOnDirection(currentTagAtTopOfBackStack);
+    }
+
+    @OnClick(R.id.relativelayout_schedulecontainer_busstop)
+    public void clickListenerOfBusStop() {
+        String currentTagAtTopOfBackStack = getTopTagOfBackStack();
+        mPresenter.clickedOnBusStop(currentTagAtTopOfBackStack);
+    }
+
+    private String getTopTagOfBackStack() {
+        int index = getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backStackEntry = getFragmentManager().getBackStackEntryAt(index);
+        return backStackEntry.getName();
     }
 }

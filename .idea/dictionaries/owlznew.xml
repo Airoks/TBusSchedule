@@ -6,6 +6,8 @@
       <w>allstops</w>
       <w>appbarlayout</w>
       <w>bottomline</w>
+      <w>busstop</w>
+      <w>busstopinfo</w>
       <w>changehorizblack</w>
       <w>deletefavorite</w>
       <w>directioninfo</w>
@@ -19,6 +21,7 @@
       <w>navigationview</w>
       <w>notselected</w>
       <w>recyclerview</w>
+      <w>relativelayout</w>
       <w>routecontainer</w>
       <w>routename</w>
       <w>routenumber</w>

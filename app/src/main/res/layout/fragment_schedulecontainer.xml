@@ -28,6 +28,7 @@
             android:background="@color/white">
 
             <RelativeLayout
+                android:id="@+id/relativelayout_schedulecontainer_direction"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:clickable="true"
@@ -59,6 +60,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/relativelayout_schedulecontainer_busstop"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:clickable="true"
