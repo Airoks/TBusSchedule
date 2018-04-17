@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute;
+package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes;
 
 
 import java.util.List;
@@ -14,8 +14,8 @@ import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
-public class UrbanBusRoutesPresenter extends BasePresenter<BusRouteContract.View>
-        implements BusRouteContract.Presenter {
+public class UrbanBusRoutesPresenter extends BasePresenter<BusRoutesContract.View>
+        implements BusRoutesContract.Presenter {
 
     private static final int URBAN = 0;
 
@@ -63,40 +63,17 @@ public class UrbanBusRoutesPresenter extends BasePresenter<BusRouteContract.View
 
                         }
                     }));
-
-            //clicked on change direction button
-            getCompositeDisposable().add(mEventBus.filteredObservable(UrbanDirectionEvent.InAdapter.class)
-                    .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<UrbanDirectionEvent.InAdapter>() {
-                        @Override
-                        public void accept(UrbanDirectionEvent.InAdapter inAdapter) throws Exception {
-                            changeDirection(inAdapter.getPosition(), inAdapter.getDirectionType());
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
-
-            //clicked on item recycler view
-            getCompositeDisposable().add(mEventBus.filteredObservable(UrbanDirectionEvent.class)
-                    .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<UrbanDirectionEvent>() {
-                        @Override
-                        public void accept(UrbanDirectionEvent directionSuburban) throws Exception {
-                            int position = directionSuburban.getFlightPosition();
-                            getMvpView().openDirectionInfoFragment(mFlights.get(position));
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-
-                        }
-                    }));
         }
+    }
+
+    @Override
+    public void clickedOnAdapterItem(int position) {
+        getMvpView().openDirectionInfoFragment(mFlights.get(position));
+    }
+
+    @Override
+    public void clickedOnDirectionChangeButton(int position, int directionType) {
+        changeDirection(position, directionType);
     }
 
     private void updateFlights() {

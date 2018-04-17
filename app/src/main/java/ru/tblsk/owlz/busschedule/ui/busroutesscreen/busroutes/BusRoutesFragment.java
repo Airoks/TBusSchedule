@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute;
+package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes;
 
 
 import android.os.Bundle;
@@ -30,7 +30,7 @@ import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class BusRoutesFragment extends BaseFragment
-        implements BusRouteContract.View {
+        implements BusRoutesContract.View {
 
     public static final String TAG = "BusRoutesFragment";
     public static final String FRAGMENT_ID = "fragmentId";
@@ -46,7 +46,7 @@ public class BusRoutesFragment extends BaseFragment
     @BindView(R.id.recyclerview_routes)
     RecyclerView mRecyclerView;
 
-    private BusRouteContract.Presenter mPresenter;
+    private BusRoutesContract.Presenter mPresenter;
     private BusRoutesAdapter mAdapter;
     private long mFragmentId;
 
@@ -60,8 +60,8 @@ public class BusRoutesFragment extends BaseFragment
     }
 
     @Inject
-    public void setPresenter(@UrbanBusRoutes BusRouteContract.Presenter urbanPresenter,
-                             @SuburbanBusRoutes BusRouteContract.Presenter suburbanPresenter) {
+    public void setPresenter(@UrbanBusRoutes BusRoutesContract.Presenter urbanPresenter,
+                             @SuburbanBusRoutes BusRoutesContract.Presenter suburbanPresenter) {
         int type = getArguments().getInt(FLIGHT_TYPE);
         if(type == URBAN) {
             mPresenter = urbanPresenter;

@@ -8,9 +8,9 @@ import ru.tblsk.owlz.busschedule.di.screens.busroutes.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerContract;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerPresenter;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.BusRouteContract;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.SuburbanBusRoutesPresenter;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.UrbanBusRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesContract;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.SuburbanBusRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.UrbanBusRoutesPresenter;
 
 @Module
 public class BusRoutesScreenModule {
@@ -25,7 +25,7 @@ public class BusRoutesScreenModule {
     @Provides
     @UrbanBusRoutes
     @BusRoutesScreen
-    BusRouteContract.Presenter provideUrbanRoutesPresenter(
+    BusRoutesContract.Presenter provideUrbanRoutesPresenter(
             UrbanBusRoutesPresenter presenter) {
         return presenter;
     }
@@ -33,7 +33,7 @@ public class BusRoutesScreenModule {
     @Provides
     @SuburbanBusRoutes
     @BusRoutesScreen
-    BusRouteContract.Presenter provideSuburbanRoutesPresenter(
+    BusRoutesContract.Presenter provideSuburbanRoutesPresenter(
             SuburbanBusRoutesPresenter presenter) {
         return presenter;
     }

@@ -20,7 +20,7 @@ import ru.tblsk.owlz.busschedule.di.screens.busroutes.component.BusRoutesScreenC
 import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.BusRoutesFragment;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;

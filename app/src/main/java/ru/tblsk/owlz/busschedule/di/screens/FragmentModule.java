@@ -10,7 +10,8 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.BusRoutesAdapter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesAdapter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesContract;
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.BusStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.allbusstopsscreen.AllBusStopsContract;
@@ -46,18 +47,18 @@ public class FragmentModule {
 
     @Provides
     @ViewedBusStops
-    BusStopsAdapter provideStopsAdapter(ViewedBusStopsContract.Presenter presenter) {
+    BusStopsAdapter provideBusStopsAdapter(ViewedBusStopsContract.Presenter presenter) {
         return new BusStopsAdapter(AppConstants.VIEWED_STOPS_ADAPTER, presenter);
     }
 
     @Provides
     @AllBusStops
-    BusStopsAdapter provideAllStopsAdapter(AllBusStopsContract.Presenter presenter) {
+    BusStopsAdapter provideAllBusStopsAdapter(AllBusStopsContract.Presenter presenter) {
         return new BusStopsAdapter(AppConstants.ALL_STOPS_ADAPTER, presenter);
     }
 
     @Provides
-    AllScreenPagerAdapter provideRoutesPagerAdapter() {
+    AllScreenPagerAdapter provideBusRoutesPagerAdapter() {
         return new AllScreenPagerAdapter(mFragment.getChildFragmentManager());
     }
 
@@ -68,18 +69,20 @@ public class FragmentModule {
 
     @Provides
     @UrbanBusRoutes
-    BusRoutesAdapter provideUrbanRoutesAdapter(RxEventBus eventBus) {
-        return new BusRoutesAdapter(eventBus, AppConstants.URBAN);
+    BusRoutesAdapter provideUrbanBusRoutesAdapter(@UrbanBusRoutes
+                                                          BusRoutesContract.Presenter presenter) {
+        return new BusRoutesAdapter(presenter);
     }
 
     @Provides
     @SuburbanBusRoutes
-    BusRoutesAdapter provideSuburbanRoutesAdapter(RxEventBus eventBus) {
-        return new BusRoutesAdapter(eventBus, AppConstants.SUBURBAN);
+    BusRoutesAdapter provideSuburbanBusRoutesAdapter(@SuburbanBusRoutes
+                                                             BusRoutesContract.Presenter presenter) {
+        return new BusRoutesAdapter(presenter);
     }
 
     @Provides
-    BusStopInfoAdapter provideStopInfoAdapter(BusStopInfoContract.Presenter presenter) {
+    BusStopInfoAdapter provideBusStopInfoAdapter(BusStopInfoContract.Presenter presenter) {
         return new BusStopInfoAdapter(presenter);
     }
 
@@ -90,12 +93,12 @@ public class FragmentModule {
     }
 
     @Provides
-    BusScheduleAdapter provideScheduleAdapter() {
+    BusScheduleAdapter provideBusScheduleAdapter() {
         return new BusScheduleAdapter();
     }
 
     @Provides
-    FavoriteBusStopsAdapter provideFavoriteStopsAdapter(FavoriteBusStopsContract.Presenter presenter) {
+    FavoriteBusStopsAdapter provideFavoriteBusStopsAdapter(FavoriteBusStopsContract.Presenter presenter) {
         return new FavoriteBusStopsAdapter(presenter);
     }
 

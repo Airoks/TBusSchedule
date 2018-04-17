@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute;
+package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes;
 
 
 

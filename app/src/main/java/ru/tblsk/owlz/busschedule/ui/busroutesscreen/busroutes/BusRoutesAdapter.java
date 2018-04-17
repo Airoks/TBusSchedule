@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute;
+package ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
-import ru.tblsk.owlz.busschedule.data.db.model.FlightType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -28,14 +26,12 @@ public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int REVERSE_ID = DirectionType.REVERSE.id;
 
     private List<FlightVO> mFlights;
-    private RxEventBus mEventBus;
-    private int mFlightType;
+    private BusRoutesContract.Presenter mPresenter;
 
     @Inject
-    public BusRoutesAdapter(RxEventBus eventBus, int flightType) {
-        this.mEventBus = eventBus;
-        this.mFlightType = flightType;
+    public BusRoutesAdapter(BusRoutesContract.Presenter presenter) {
         mFlights = new ArrayList<>();
+        mPresenter = presenter;
     }
 
     @Override
@@ -50,11 +46,7 @@ public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             public void onClick(View view) {
                 int position = viewHolder.getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
-                    if(mFlightType == FlightType.URBAN.id) {
-                        mEventBus.post(new UrbanDirectionEvent(position));
-                    } else {
-                        mEventBus.post(new SuburbanDirectionEvent(position));
-                    }
+                    mPresenter.clickedOnAdapterItem(position);
                 }
             }
         });
@@ -79,15 +71,7 @@ public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         notifyItemChanged(position);
 
                         int directionTypeName = mFlights.get(position).getCurrentDirectionType();
-                        if(mFlightType == FlightType.URBAN.id) {
-                            UrbanDirectionEvent.InAdapter change =
-                                    new UrbanDirectionEvent.InAdapter(position, directionTypeName);
-                            mEventBus.post(change);
-                        } else {
-                            SuburbanDirectionEvent.InAdapter change =
-                                    new SuburbanDirectionEvent.InAdapter(position, directionTypeName);
-                            mEventBus.post(change);
-                        }
+                        mPresenter.clickedOnDirectionChangeButton(position, directionTypeName);
                     }
                 });
 
