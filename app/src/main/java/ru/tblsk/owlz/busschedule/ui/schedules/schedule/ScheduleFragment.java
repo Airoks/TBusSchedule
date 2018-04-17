@@ -75,6 +75,15 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     }
 
     @Override
+    protected void setComponent() {
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusScheduleScreenComponent component = mComponentManager.
+                getBusScheduleScreenComponent(mFragmentId);
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -87,19 +96,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-
-        mComponentManager = App.getApp(getContext()).getComponentManager();
-        BusScheduleScreenComponent component = mComponentManager.
-                getBusScheduleScreenComponent(mFragmentId);
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
-
-        mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
-
         return view;
     }
 
@@ -111,7 +108,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
     }
 
     @Override
-    protected void setUp(View view) {
+    protected void setUp() {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -120,6 +117,7 @@ public class ScheduleFragment extends BaseFragment implements ScheduleContract.V
         long stopId = getArguments().getLong(STOP_ID);
         long directionId = getArguments().getLong(DIRECTION_ID);
         int scheduleType = getArguments().getInt(SCHEDULE_TYPE);
+        mPresenter.attachView(this);
         mPresenter.getSchedule(stopId, directionId, scheduleType);
     }
 

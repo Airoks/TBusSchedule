@@ -82,6 +82,19 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
+    protected void setComponent() {
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusStopInfoScreenComponent component = mComponentManager
+                .getBusStopInfoScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewBusStopInfoScreenComponent();
+            mComponentManager.putBusStopInfoScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -97,20 +110,7 @@ public class StopInfoFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_stopinfo, container, false);
-
-        mComponentManager = App.getApp(getContext()).getComponentManager();
-        BusStopInfoScreenComponent component = mComponentManager
-                .getBusStopInfoScreenComponent(mFragmentId);
-        if(component == null) {
-            component = mComponentManager.getNewBusStopInfoScreenComponent();
-            mComponentManager.putBusStopInfoScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
         setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
         return view;
     }
 
@@ -136,15 +136,15 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(FRAGMENT_ID, mFragmentId);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class StopInfoFragment extends BaseFragment
     }
 
     @Override
-    protected void setUp(View view) {
+    protected void setUp() {
         setupToolbar();
 
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -162,20 +162,19 @@ public class StopInfoFragment extends BaseFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        boolean isFavoriteStop = getArguments().getBoolean(IS_FAVORITE_STOP);
-        mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
-
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
+
+        boolean isFavoriteStop = getArguments().getBoolean(IS_FAVORITE_STOP);
+        mPresenter.attachView(this);
+        mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
     }
 
     @Override
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.setTitle(mStop.getStopName());
-
         mToolbar.inflateMenu(R.menu.menu_stopinfo);
-
         mPresenter.isFavoriteStop(mStop.getId());
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -16,12 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.BusRoutesScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerBusRoutesScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.ViewedBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.AllBusStopsScreenModule;
-import ru.tblsk.owlz.busschedule.di.module.BusRoutesScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -60,6 +55,19 @@ public class RoutesContainerFragment extends BaseFragment
     }
 
     @Override
+    protected void setComponent() {
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        BusRoutesScreenComponent component = componentManager
+                .getBusRoutesScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewBusRoutesScreenComponent();
+            componentManager.putBusRoutesScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -74,20 +82,6 @@ public class RoutesContainerFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routescontainer, container, false);
         setUnbinder(ButterKnife.bind(this, view));
-
-        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
-        BusRoutesScreenComponent component = componentManager
-                .getBusRoutesScreenComponent(mFragmentId);
-        if(component == null) {
-            component = componentManager.getNewBusRoutesScreenComponent();
-            componentManager.putBusRoutesScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
-        mPresenter.attachView(this);
         return view;
     }
 
@@ -98,24 +92,26 @@ public class RoutesContainerFragment extends BaseFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(FRAGMENT_ID, mFragmentId);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
     }
 
     @Override
-    protected void setUp(View view) {
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void setUp() {
         setupToolbar();
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
 
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
+
+        mPresenter.attachView(this);
     }
 
     @Override

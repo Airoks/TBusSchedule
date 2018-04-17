@@ -21,11 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-
-import ru.tblsk.owlz.busschedule.di.component.DaggerFavoriteBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.FavoriteBusStopsScreenComponent;
-
-import ru.tblsk.owlz.busschedule.di.module.FavoriteBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -71,9 +67,16 @@ public class FavoriteStopsFragment extends BaseFragment
     }
 
     @Override
-    public void onDestroyView() {
-        mPresenter.detachView();
-        super.onDestroyView();
+    protected void setComponent() {
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        FavoriteBusStopsScreenComponent component = componentManager
+                .getFavoriteBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewFavoriteBusStopsScreenComponent();
+            componentManager.putFavoriteBusStopsScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
     }
 
     @Override
@@ -91,21 +94,7 @@ public class FavoriteStopsFragment extends BaseFragment
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favoritestops, container, false);
-
-        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
-        FavoriteBusStopsScreenComponent component = componentManager
-                .getFavoriteBusStopsScreenComponent(mFragmentId);
-        if(component == null) {
-            component = componentManager.getNewFavoriteBusStopsScreenComponent();
-            componentManager.putFavoriteBusStopsScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
         setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
         return view;
     }
 
@@ -113,6 +102,12 @@ public class FavoriteStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         setupToolbar();
+    }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.detachView();
+        super.onDestroyView();
     }
 
     @Override
@@ -128,7 +123,7 @@ public class FavoriteStopsFragment extends BaseFragment
     }
 
     @Override
-    protected void setUp(View view) {
+    protected void setUp() {
 
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -138,6 +133,7 @@ public class FavoriteStopsFragment extends BaseFragment
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
         ((MainActivity)getBaseActivity()).unlockDrawer();
 
+        mPresenter.attachView(this);
         mPresenter.getFavoriteStops();
     }
 

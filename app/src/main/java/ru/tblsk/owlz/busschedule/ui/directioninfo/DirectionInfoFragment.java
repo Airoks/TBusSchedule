@@ -24,12 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
-import ru.tblsk.owlz.busschedule.di.component.BusScheduleScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerDirectionInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.DirectionInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.BusScheduleScreenModule;
-import ru.tblsk.owlz.busschedule.di.module.DirectionInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
@@ -77,22 +72,23 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
+    protected void setComponent() {
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        DirectionInfoScreenComponent component = mComponentManager
+                .getDirectionInfoScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewDirectionInfoScreenComponent();
+            mComponentManager.putDirectionInfoScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
                 CommonUtils.NEXT_ID.getAndIncrement();
-    }
-
-    @Override
-    public void onDestroyView() {
-        mPresenter.detachView();
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.unsubscribeFromEvents();
-        super.onDestroy();
     }
 
     @Nullable
@@ -101,22 +97,7 @@ public class DirectionInfoFragment extends BaseFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_directioninfo, container, false);
-
-        mComponentManager = App.getApp(getContext()).getComponentManager();
-        DirectionInfoScreenComponent component = mComponentManager
-                .getDirectionInfoScreenComponent(mFragmentId);
-        if(component == null) {
-            component = mComponentManager.getNewDirectionInfoScreenComponent();
-            mComponentManager.putDirectionInfoScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
         setUnbinder(ButterKnife.bind(this, view));
-        mPresenter.attachView(this);
-        mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
         return view;
     }
 
@@ -142,13 +123,25 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
+    public void onDestroyView() {
+        mPresenter.detachView();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong(FRAGMENT_ID, mFragmentId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void setUp(View view) {
+    public void onDestroy() {
+        mPresenter.unsubscribeFromEvents();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void setUp() {
         setupToolbar();
 
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -156,10 +149,10 @@ public class DirectionInfoFragment extends BaseFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        mPresenter.attachView(this);
+        mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
         mPresenter.getStopsOnDirection();
         mPresenter.setChangeButton();
-
-
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 import butterknife.Unbinder;
 
@@ -27,9 +26,10 @@ public abstract class BaseFragment extends Fragment implements MvpView {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setUp(view);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setComponent();
+        setUp();
     }
 
     @Override
@@ -57,5 +57,7 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         }
     }
 
-    protected abstract void setUp(View view);
+    protected abstract void setUp();
+
+    protected abstract void setComponent();
 }

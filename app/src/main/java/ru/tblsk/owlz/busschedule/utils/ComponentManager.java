@@ -168,18 +168,6 @@ public class ComponentManager {
         return mDirectionInfoScreenComponents.get(fragmentId);
     }
 
-    public void removeFavoriteBusStopsScreenComponent(long fragmentId) {
-        mFavoriteBusStopsScreenComponents.remove(fragmentId);
-    }
-
-    public void removeViewedBusStopsScreenComponent(long fragmentId) {
-        mViewedBusStopsScreenComponents.remove(fragmentId);
-    }
-
-    public void removeBusRoutesScreenComponent(long fragmentId) {
-        mBusRoutesScreenComponents.remove(fragmentId);
-    }
-
     public void removeAllBusStopsScreenComponent(long fragmentId) {
         Log.d("ComponentManager", "removeAllBusStopsScreenComponent");
         mAllBusStopsScreenComponents.remove(fragmentId);

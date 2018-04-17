@@ -69,6 +69,19 @@ public class AllStopsFragment extends BaseFragment
     }
 
     @Override
+    protected void setComponent() {
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        AllBusStopsScreenComponent component = mComponentManager
+                .getAllBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = mComponentManager.getNewAllBusStopsScreenComponent();
+            mComponentManager.putAllBusStopsScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragmentId = savedInstanceState != null ? savedInstanceState.getLong(FRAGMENT_ID) :
@@ -77,10 +90,48 @@ public class AllStopsFragment extends BaseFragment
         isFavoriteStop = false;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_allstop, container, false);
+        setUnbinder(ButterKnife.bind(this, view));
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mToolbar.setTitle(R.string.all_stops);
+
+        View view = getView();
+        if(view != null) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+            view.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mPresenter.clickedOnBackButton();
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -115,67 +166,17 @@ public class AllStopsFragment extends BaseFragment
 
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_allstop, container, false);
+    protected void setUp() {
+        setupToolbar();
 
-        mComponentManager = App.getApp(getContext()).getComponentManager();
-        AllBusStopsScreenComponent component = mComponentManager
-                .getAllBusStopsScreenComponent(mFragmentId);
-        if(component == null) {
-            component = mComponentManager.getNewAllBusStopsScreenComponent();
-            mComponentManager.putAllBusStopsScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
-        mPresenter.attachView(this);
-        setUnbinder(ButterKnife.bind(this, view));
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mToolbar.setTitle(R.string.all_stops);
-
-        View view = getView();
-        if(view != null) {
-            view.setFocusableInTouchMode(true);
-            view.requestFocus();
-            view.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                        mPresenter.clickedOnBackButton();
-                        return  true;
-                    }
-                    return false;
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(FRAGMENT_ID, mFragmentId);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void setUp(View view) {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mFastScroller.setRecyclerView(mRecyclerView);
-        setupToolbar();
 
+        mPresenter.attachView(this);
         mPresenter.getAllStops();
     }
 

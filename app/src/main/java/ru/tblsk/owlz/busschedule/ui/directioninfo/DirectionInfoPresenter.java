@@ -6,15 +6,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
-import ru.tblsk.owlz.busschedule.ui.routes.route.UrbanDirectionEvent;
 import ru.tblsk.owlz.busschedule.ui.routes.route.SuburbanDirectionEvent;
+import ru.tblsk.owlz.busschedule.ui.routes.route.UrbanDirectionEvent;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 

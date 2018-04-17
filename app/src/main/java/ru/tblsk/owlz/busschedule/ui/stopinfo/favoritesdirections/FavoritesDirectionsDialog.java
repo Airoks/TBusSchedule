@@ -23,12 +23,10 @@ import butterknife.Unbinder;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.component.BusStopInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerBusStopInfoScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.BusStopInfoScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
-import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.ui.stopinfo.StopInfoFragment;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class FavoritesDirectionsDialog extends DialogFragment
@@ -57,13 +55,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
     public FavoritesDirectionsDialog() {
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mFragmentId = getArguments().getLong(FRAGMENT_ID);
-
-    }
-
     public static FavoritesDirectionsDialog newInstance(List<DirectionVO> directions,
                                                         long stopId, long fragmentId) {
         Bundle args = new Bundle();
@@ -73,6 +64,34 @@ public class FavoritesDirectionsDialog extends DialogFragment
         FavoritesDirectionsDialog fragment = new FavoritesDirectionsDialog();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setComponent() {
+        mComponentManager = App.getApp(getContext()).getComponentManager();
+        BusStopInfoScreenComponent component = mComponentManager.getBusStopInfoScreenComponent(mFragmentId);
+        component.add(new FragmentModule((BaseActivity)getActivity(), this))
+                .inject(this);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFragmentId = getArguments().getLong(FRAGMENT_ID);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.dialogfragment_favoritesdirections,
+                container, false);
+        setComponent();
+        mUnbinder = ButterKnife.bind(this, view);
+        mPresenter.attachView(this);
+        setCancelable(true);
+        return view;
     }
 
     @Override
@@ -86,28 +105,6 @@ public class FavoritesDirectionsDialog extends DialogFragment
     public void onDestroy() {
         mPresenter.unsubscribeFromEvents();
         super.onDestroy();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.dialogfragment_favoritesdirections,
-                container, false);
-
-        mComponentManager = App.getApp(getContext()).getComponentManager();
-        BusStopInfoScreenComponent component = mComponentManager.getBusStopInfoScreenComponent(mFragmentId);
-
-        component.add(new FragmentModule((BaseActivity)getActivity(), this))
-                .inject(this);
-
-        mUnbinder = ButterKnife.bind(this, view);
-        mPresenter.attachView(this);
-        setCancelable(true);
-
-        return view;
     }
 
     @Override

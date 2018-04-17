@@ -21,12 +21,8 @@ import butterknife.OnClick;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.annotation.ViewedBusStops;
-import ru.tblsk.owlz.busschedule.di.component.DaggerViewedBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.component.FavoriteBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.component.ViewedBusStopsScreenComponent;
-import ru.tblsk.owlz.busschedule.di.module.FavoriteBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
-import ru.tblsk.owlz.busschedule.di.module.ViewedBusStopsScreenModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
@@ -63,6 +59,23 @@ public class StopsFragment extends BaseFragment
     private boolean isFavoriteStop;
     private long mFragmentId;
 
+    public static StopsFragment newInstance() {
+        return new StopsFragment();
+    }
+
+    @Override
+    protected void setComponent() {
+        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
+        ViewedBusStopsScreenComponent component = componentManager
+                .getViewedBusStopsScreenComponent(mFragmentId);
+        if(component == null) {
+            component = componentManager.getNewViewedBusStopsScreenComponent();
+            componentManager.putViewedBusStopsScreenComponent(mFragmentId, component);
+        }
+        component.add(new FragmentModule(getBaseActivity(), this))
+                .inject(this);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,34 +85,13 @@ public class StopsFragment extends BaseFragment
         isFavoriteStop = false;
     }
 
-    public static StopsFragment newInstance() {
-        return new StopsFragment();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stop, container, false);
-        /*getBaseActivity().getActivityComponent().
-                fragmentComponent(new FragmentModule(this)).inject(this);*/
-
-        ComponentManager componentManager = App.getApp(getContext()).getComponentManager();
-        ViewedBusStopsScreenComponent component = componentManager
-                .getViewedBusStopsScreenComponent(mFragmentId);
-        if(component == null) {
-            component = componentManager.getNewViewedBusStopsScreenComponent();
-            componentManager.putViewedBusStopsScreenComponent(mFragmentId, component);
-        }
-
-        component.add(new FragmentModule(getBaseActivity(), this))
-                .inject(this);
-
-
-        mPresenter.attachView(this);
         setUnbinder(ButterKnife.bind(this, view));
-
         return view;
     }
 
@@ -110,15 +102,15 @@ public class StopsFragment extends BaseFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(FRAGMENT_ID, mFragmentId);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(FRAGMENT_ID, mFragmentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -128,18 +120,20 @@ public class StopsFragment extends BaseFragment
     }
 
     @Override
-    protected void setUp(View view) {
+    protected void setUp() {
+        setupToolbar();
+
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);//резкая прокрутка
         mRecyclerView.setFocusable(false);//без начальной фокусациии на rv
-        setupToolbar();
 
         ((MainActivity)getBaseActivity()).unlockDrawer();
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
 
+        mPresenter.attachView(this);
         mPresenter.getSearchHistoryStops();
     }
 
