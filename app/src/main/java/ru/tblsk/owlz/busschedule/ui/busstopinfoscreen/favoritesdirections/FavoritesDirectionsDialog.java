@@ -25,7 +25,7 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.component.BusStopInfoScreenComponent;
 import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoFragment;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 

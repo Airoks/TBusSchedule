@@ -26,7 +26,7 @@ import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class BusRoutesFragment extends BaseFragment

@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 
 public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 

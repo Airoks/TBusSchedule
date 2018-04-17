@@ -11,7 +11,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DirectionVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirectionsContract.View>

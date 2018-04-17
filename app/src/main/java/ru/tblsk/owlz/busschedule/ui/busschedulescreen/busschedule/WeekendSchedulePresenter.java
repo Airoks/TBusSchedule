@@ -9,8 +9,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
-import ru.tblsk.owlz.busschedule.ui.mappers.DepartureTimeMapper;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class WeekendSchedulePresenter extends BasePresenter<BusScheduleContract.View>

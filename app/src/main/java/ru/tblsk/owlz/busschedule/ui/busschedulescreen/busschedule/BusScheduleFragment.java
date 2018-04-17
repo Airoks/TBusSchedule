@@ -23,7 +23,7 @@ import ru.tblsk.owlz.busschedule.di.screens.busschedule.WorkdayBusSchedule;
 import ru.tblsk.owlz.busschedule.di.screens.busschedule.component.BusScheduleScreenComponent;
 import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class BusScheduleFragment extends BaseFragment implements BusScheduleContract.View{

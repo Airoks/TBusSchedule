@@ -21,7 +21,7 @@ import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.allbusstopsscreen.AllBusStopsContract;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen.ViewedBusStopsContract;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 

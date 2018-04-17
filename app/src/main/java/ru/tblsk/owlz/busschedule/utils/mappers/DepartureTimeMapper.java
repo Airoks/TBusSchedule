@@ -1,7 +1,5 @@
-package ru.tblsk.owlz.busschedule.ui.mappers;
+package ru.tblsk.owlz.busschedule.utils.mappers;
 
-
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +7,7 @@ import java.util.List;
 
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.DepartureTimeVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 
 public class DepartureTimeMapper implements Function<List<DepartureTime>, List<DepartureTimeVO>>{
     @Override

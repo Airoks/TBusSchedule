@@ -1,4 +1,4 @@
-package ru.tblsk.owlz.busschedule.ui.mappers.viewobject;
+package ru.tblsk.owlz.busschedule.utils.mappers.viewobject;
 
 
 import android.os.Parcel;

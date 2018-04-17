@@ -31,8 +31,8 @@ import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.BusScheduleFra
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.FlightVO;
-import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
