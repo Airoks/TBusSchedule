@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
-import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
-import ru.tblsk.owlz.busschedule.di.annotation.DatabaseInfo;
+import ru.tblsk.owlz.busschedule.di.application.ApplicationContext;
+import ru.tblsk.owlz.busschedule.di.application.DatabaseInfo;
 
 @Singleton
 public class DbOpenHelper extends DaoMaster.OpenHelper{

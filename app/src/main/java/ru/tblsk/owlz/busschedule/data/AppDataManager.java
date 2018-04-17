@@ -31,7 +31,7 @@ import ru.tblsk.owlz.busschedule.data.db.model.Schedule;
 import ru.tblsk.owlz.busschedule.data.db.model.Stop;
 import ru.tblsk.owlz.busschedule.data.db.model.StopsOnRouts;
 import ru.tblsk.owlz.busschedule.data.preferences.PreferencesHelper;
-import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
+import ru.tblsk.owlz.busschedule.di.application.ApplicationContext;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 

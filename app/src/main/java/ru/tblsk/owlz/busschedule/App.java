@@ -6,9 +6,9 @@ import android.content.Context;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
-import ru.tblsk.owlz.busschedule.di.component.ApplicationComponent;
-import ru.tblsk.owlz.busschedule.di.component.DaggerApplicationComponent;
-import ru.tblsk.owlz.busschedule.di.module.ApplicationModule;
+import ru.tblsk.owlz.busschedule.di.application.component.ApplicationComponent;
+import ru.tblsk.owlz.busschedule.di.application.component.DaggerApplicationComponent;
+import ru.tblsk.owlz.busschedule.di.application.module.ApplicationModule;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 

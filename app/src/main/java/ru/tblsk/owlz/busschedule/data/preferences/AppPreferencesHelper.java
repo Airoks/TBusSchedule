@@ -10,8 +10,8 @@ import com.google.gson.GsonBuilder;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.tblsk.owlz.busschedule.di.annotation.ApplicationContext;
-import ru.tblsk.owlz.busschedule.di.annotation.PreferencesInfo;
+import ru.tblsk.owlz.busschedule.di.application.ApplicationContext;
+import ru.tblsk.owlz.busschedule.di.application.PreferencesInfo;
 
 @Singleton
 public class AppPreferencesHelper implements PreferencesHelper {
