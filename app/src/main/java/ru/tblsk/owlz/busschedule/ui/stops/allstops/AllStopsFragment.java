@@ -27,6 +27,7 @@ import ru.tblsk.owlz.busschedule.di.annotation.AllBusStops;
 import ru.tblsk.owlz.busschedule.di.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
+import ru.tblsk.owlz.busschedule.ui.base.OnBackPressedListener;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.mappers.viewobject.StopVO;
@@ -36,7 +37,7 @@ import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 
 public class AllStopsFragment extends BaseFragment
-        implements AllStopsContract.View, SetupToolbar{
+        implements AllStopsContract.View, SetupToolbar, OnBackPressedListener{
 
     public static final String TAG = "AllStopsFragment";
     public static final String FRAGMENT_ID = "fragmentId";
@@ -104,22 +105,7 @@ public class AllStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.all_stops);
-
-        View view = getView();
-        if(view != null) {
-            view.setFocusableInTouchMode(true);
-            view.requestFocus();
-            view.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                        mPresenter.clickedOnBackButton();
-                        return  true;
-                    }
-                    return false;
-                }
-            });
-        }
+        setBackPressedListener();
     }
 
     @Override
@@ -196,5 +182,24 @@ public class AllStopsFragment extends BaseFragment
                 mPresenter.clickedOnBackButton();
             }
         });
+    }
+
+    @Override
+    public void setBackPressedListener() {
+        View view = getView();
+        if(view != null) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+            view.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    if(keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                        mPresenter.clickedOnBackButton();
+                        return  true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 }
