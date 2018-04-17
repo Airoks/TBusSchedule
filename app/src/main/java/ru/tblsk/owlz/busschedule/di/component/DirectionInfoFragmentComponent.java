@@ -3,7 +3,7 @@ package ru.tblsk.owlz.busschedule.di.component;
 
 import dagger.Subcomponent;
 import ru.tblsk.owlz.busschedule.di.module.FragmentModule;
-import ru.tblsk.owlz.busschedule.ui.directioninfo.DirectionInfoFragment;
+import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
 
 @Subcomponent(modules = FragmentModule.class)
 public interface DirectionInfoFragmentComponent {

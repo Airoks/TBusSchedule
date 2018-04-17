@@ -6,35 +6,35 @@ import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.BusRoutesScreen;
 import ru.tblsk.owlz.busschedule.di.annotation.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.annotation.UrbanBusRoutes;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerContract;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.route.RouteContract;
-import ru.tblsk.owlz.busschedule.ui.routes.route.SuburbanRoutesPresenter;
-import ru.tblsk.owlz.busschedule.ui.routes.route.UrbanRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerContract;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerPresenter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.BusRouteContract;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.SuburbanBusRoutesPresenter;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroute.UrbanBusRoutesPresenter;
 
 @Module
 public class BusRoutesScreenModule {
 
     @Provides
     @BusRoutesScreen
-    RoutesContainerContract.Presenter provideRoutesContainerPresenter(
-            RoutesContainerPresenter presenter) {
+    BusRoutesContainerContract.Presenter provideRoutesContainerPresenter(
+            BusRoutesContainerPresenter presenter) {
         return presenter;
     }
 
     @Provides
     @UrbanBusRoutes
     @BusRoutesScreen
-    RouteContract.Presenter provideUrbanRoutesPresenter(
-            UrbanRoutesPresenter presenter) {
+    BusRouteContract.Presenter provideUrbanRoutesPresenter(
+            UrbanBusRoutesPresenter presenter) {
         return presenter;
     }
 
     @Provides
     @SuburbanBusRoutes
     @BusRoutesScreen
-    RouteContract.Presenter provideSuburbanRoutesPresenter(
-            SuburbanRoutesPresenter presenter) {
+    BusRouteContract.Presenter provideSuburbanRoutesPresenter(
+            SuburbanBusRoutesPresenter presenter) {
         return presenter;
     }
 

@@ -16,9 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
-import ru.tblsk.owlz.busschedule.ui.favorites.FavoriteStopsFragment;
-import ru.tblsk.owlz.busschedule.ui.routes.RoutesContainerFragment;
-import ru.tblsk.owlz.busschedule.ui.stops.viewedstops.StopsFragment;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerFragment;
+import ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen.ViewedBusStopsFragment;
+import ru.tblsk.owlz.busschedule.ui.favoritebusstopsscreen.FavoriteBusStopsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -107,17 +107,17 @@ public class MainActivity extends BaseActivity {
                             switch (item.getItemId()) {
                                 case R.id.navigation_main:
                                     fragmentTransaction.replace(R.id.container,
-                                            FavoriteStopsFragment.newInstance());
+                                            FavoriteBusStopsFragment.newInstance());
                                     fragmentTransaction.commit();
                                     return true;
                                 case R.id.navigation_stops:
                                     fragmentTransaction.replace(R.id.container,
-                                            StopsFragment.newInstance());
+                                            ViewedBusStopsFragment.newInstance());
                                     fragmentTransaction.commit();
                                     return true;
                                 case R.id.navigation_routs:
                                     fragmentTransaction.replace(R.id.container,
-                                            RoutesContainerFragment.newInstance());
+                                            BusRoutesContainerFragment.newInstance());
                                     fragmentTransaction.commit();
                                     return true;
                             }

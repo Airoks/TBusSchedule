@@ -6,26 +6,26 @@ import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.annotation.BusScheduleScreen;
 import ru.tblsk.owlz.busschedule.di.annotation.WeekendBusSchedule;
 import ru.tblsk.owlz.busschedule.di.annotation.WorkdayBusSchedule;
-import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerContract;
-import ru.tblsk.owlz.busschedule.ui.schedules.ScheduleContainerPresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.ScheduleContract;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WeekendSchedulePresenter;
-import ru.tblsk.owlz.busschedule.ui.schedules.schedule.WorkdaySchedulePresenter;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.BusScheduleContainerContract;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.BusScheduleContainerPresenter;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.BusScheduleContract;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.WeekendSchedulePresenter;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.WorkdaySchedulePresenter;
 
 @Module
 public class BusScheduleScreenModule {
 
     @Provides
     @BusScheduleScreen
-    ScheduleContainerContract.Presenter provideScheduleContainerPresenter(
-            ScheduleContainerPresenter presenter) {
+    BusScheduleContainerContract.Presenter provideScheduleContainerPresenter(
+            BusScheduleContainerPresenter presenter) {
         return presenter;
     }
 
     @Provides
     @WorkdayBusSchedule
     @BusScheduleScreen
-    ScheduleContract.Presenter provideWorkdaySchedulePresenter(
+    BusScheduleContract.Presenter provideWorkdaySchedulePresenter(
             WorkdaySchedulePresenter presenter) {
         return presenter;
     }
@@ -33,7 +33,7 @@ public class BusScheduleScreenModule {
     @Provides
     @WeekendBusSchedule
     @BusScheduleScreen
-    ScheduleContract.Presenter provideWeekendSchedulePresenter(
+    BusScheduleContract.Presenter provideWeekendSchedulePresenter(
             WeekendSchedulePresenter presenter) {
         return presenter;
     }
