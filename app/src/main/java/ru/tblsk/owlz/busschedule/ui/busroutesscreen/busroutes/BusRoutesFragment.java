@@ -19,15 +19,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
+import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.component.BusRoutesScreenComponent;
-import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 
 public class BusRoutesFragment extends BaseFragment
         implements BusRoutesContract.View {
@@ -108,13 +108,8 @@ public class BusRoutesFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
+        mPresenter.unsubscribe();
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.unsubscribeFromEvents();
-        super.onDestroy();
     }
 
     @Override
@@ -128,7 +123,6 @@ public class BusRoutesFragment extends BaseFragment
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
 
         mPresenter.attachView(this);
-        mPresenter.subscribeOnEvents();
         mPresenter.getFlights();
     }
 

@@ -103,7 +103,7 @@ public class FavoritesDirectionsDialog extends DialogFragment
 
     @Override
     public void onDestroy() {
-        mPresenter.unsubscribeFromEvents();
+        mPresenter.unsubscribe();
         super.onDestroy();
     }
 

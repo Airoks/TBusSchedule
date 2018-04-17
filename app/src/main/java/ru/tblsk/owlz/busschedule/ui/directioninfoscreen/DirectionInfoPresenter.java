@@ -12,9 +12,6 @@ import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.SuburbanDirectionEvent;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.UrbanDirectionEvent;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.View>
@@ -22,10 +19,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
     private static final int DIRECT = 0;
     private static final int REVERSE = 1;
-    private static final int URBAN = 0;
-    private static final int SUBURBAN = 1;
 
-    private RxEventBus mEventBus;
     private StopMapper mStopMapper;
     private FlightVO mFlight;
     private List<StopVO> mStops;
@@ -34,11 +28,9 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     public DirectionInfoPresenter(DataManager dataManager,
                                   CompositeDisposable compositeDisposable,
                                   SchedulerProvider schedulerProvider,
-                                  RxEventBus eventBus,
                                   StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
-        mEventBus = eventBus;
         mStopMapper = stopMapper;
     }
 
@@ -55,36 +47,10 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
     @Override
     public void clickedOnChangeDirectionButton() {
-        int position = mFlight.getPosition();
-        if(mFlight.getFlightType() == URBAN) {
-            if(mFlight.getCurrentDirectionType() == DIRECT) {
-                mFlight.setCurrentDirectionType(REVERSE);
-
-                SuburbanDirectionEvent.InFragment inFragment =
-                        new SuburbanDirectionEvent.InFragment(position, REVERSE);
-                mEventBus.post(inFragment);
-            } else {
-                mFlight.setCurrentDirectionType(DIRECT);
-
-                SuburbanDirectionEvent.InFragment inFragment =
-                        new SuburbanDirectionEvent.InFragment(position, DIRECT);
-                mEventBus.post(inFragment);
-            }
-        }
-        if(mFlight.getFlightType() == SUBURBAN) {
-            if(mFlight.getCurrentDirectionType() == DIRECT) {
-                mFlight.setCurrentDirectionType(REVERSE);
-
-                UrbanDirectionEvent.InFragment inFragment =
-                        new UrbanDirectionEvent.InFragment(position, REVERSE);
-                mEventBus.post(inFragment);
-            } else {
-                mFlight.setCurrentDirectionType(DIRECT);
-
-                UrbanDirectionEvent.InFragment inFragment =
-                        new UrbanDirectionEvent.InFragment(position, DIRECT);
-                mEventBus.post(inFragment);
-            }
+        if(mFlight.getCurrentDirectionType() == DIRECT) {
+            mFlight.setCurrentDirectionType(REVERSE);
+        } else {
+            mFlight.setCurrentDirectionType(DIRECT);
         }
         updateStops();
     }

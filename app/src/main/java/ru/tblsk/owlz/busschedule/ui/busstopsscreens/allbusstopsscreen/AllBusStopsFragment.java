@@ -122,7 +122,7 @@ public class AllBusStopsFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mPresenter.unsubscribeFromEvents();
+        mPresenter.unsubscribe();
         super.onDestroy();
     }
 

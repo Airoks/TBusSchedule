@@ -115,7 +115,7 @@ public class ViewedBusStopsFragment extends BaseFragment
 
     @Override
     public void onDestroy() {
-        mPresenter.unsubscribeFromEvents();
+        mPresenter.unsubscribe();
         super.onDestroy();
     }
 

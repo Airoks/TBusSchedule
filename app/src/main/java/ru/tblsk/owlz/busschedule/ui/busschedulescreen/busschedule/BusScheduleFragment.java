@@ -103,7 +103,7 @@ public class BusScheduleFragment extends BaseFragment implements BusScheduleCont
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
-        mPresenter.unsubscribeFromEvents();
+        mPresenter.unsubscribe();
         super.onDestroyView();
     }
 

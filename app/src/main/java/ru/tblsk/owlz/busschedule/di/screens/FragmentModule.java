@@ -10,23 +10,22 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
+import ru.tblsk.owlz.busschedule.ui.busroutesscreen.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesContract;
+import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.BusScheduleAdapter;
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoAdapter;
+import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoContract;
+import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.favoritesdirections.FavoritesDirectionsAdapter;
+import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.favoritesdirections.FavoritesDirectionsContract;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.BusStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.allbusstopsscreen.AllBusStopsContract;
+import ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen.ViewedBusStopsContract;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoAdapter;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoContract;
 import ru.tblsk.owlz.busschedule.ui.favoritebusstopsscreen.FavoriteBusStopsAdapter;
 import ru.tblsk.owlz.busschedule.ui.favoritebusstopsscreen.FavoriteBusStopsContract;
-import ru.tblsk.owlz.busschedule.ui.busroutesscreen.AllScreenPagerAdapter;
-import ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule.BusScheduleAdapter;
-import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoContract;
-import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.favoritesdirections.FavoritesDirectionsAdapter;
-import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.favoritesdirections.FavoritesDirectionsContract;
-import ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen.ViewedBusStopsContract;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
-import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 
 @Module
 public class FragmentModule {

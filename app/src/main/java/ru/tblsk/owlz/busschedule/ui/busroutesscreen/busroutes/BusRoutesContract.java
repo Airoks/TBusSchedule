@@ -17,7 +17,6 @@ public interface BusRoutesContract {
 
     interface Presenter extends MvpPresenter<View> {
         void getFlights();
-        void subscribeOnEvents();
         void clickedOnAdapterItem(int position);
         void clickedOnDirectionChangeButton(int position, int directionType);
     }

@@ -44,7 +44,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     }
 
     @Override
-    public void unsubscribeFromEvents() {
+    public void unsubscribe() {
         mCompositeDisposable.clear();
     }
 
