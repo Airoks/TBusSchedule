@@ -83,7 +83,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         long directionId = mFlight.getCurrentDirection().getId();
         getCompositeDisposable().add(getDataManager().getStopsOnDirection(directionId)
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .map(mStopMapper)
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<StopVO>>() {

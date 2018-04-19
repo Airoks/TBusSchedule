@@ -94,7 +94,6 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     public void clickedOnAdapterItem(long directionId, final int directionType) {
         getCompositeDisposable().add(getDataManager().getFlightByDirection(directionId)
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .map(new Function<Flight, FlightVO>() {
                     @Override
                     public FlightVO apply(Flight flight) throws Exception {
@@ -126,7 +125,6 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
         getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
                     @Override
                     public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {
@@ -169,7 +167,6 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     private void getFavoriteDirection(long stopId) {
         getCompositeDisposable().add(getDataManager().getFavoriteDirection(stopId)
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
                     @Override
                     public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {

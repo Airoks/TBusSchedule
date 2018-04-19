@@ -36,7 +36,6 @@ public class WorkdaySchedulePresenter extends BasePresenter<BusScheduleContract.
         } else {
             getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)
                     .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().io())
                     .map(mDepartureTimeMapper)
                     .observeOn(getSchedulerProvider().ui())
                     .subscribe(new Consumer<List<DepartureTimeVO>>() {

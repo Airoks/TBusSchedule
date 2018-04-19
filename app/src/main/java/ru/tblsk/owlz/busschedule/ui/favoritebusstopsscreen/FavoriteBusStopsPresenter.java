@@ -33,7 +33,6 @@ public class FavoriteBusStopsPresenter extends BasePresenter<FavoriteBusStopsCon
     public void getFavoriteStops() {
         getCompositeDisposable().add(getDataManager().getFavoriteStop()
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .map(mStopMapper)
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<StopVO>>() {

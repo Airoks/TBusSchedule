@@ -29,7 +29,7 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
         if(getDataManager().getFirstRunVariable()) {
             getCompositeDisposable().add(getDataManager()
                     .seedAllTables()
-                    .subscribeOn(getSchedulerProvider().io())
+                    .subscribeOn(getSchedulerProvider().computation())
                     .observeOn(getSchedulerProvider().ui())
                     .subscribe(new Action() {
                         @Override

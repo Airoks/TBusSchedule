@@ -93,7 +93,6 @@ public class AllBusStopsPresenter extends BasePresenter<AllBusStopsContract.View
         getCompositeDisposable().add(getDataManager()
                 .getAllStops()
                 .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
                 .map(mStopMapper)
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<StopVO>>() {
