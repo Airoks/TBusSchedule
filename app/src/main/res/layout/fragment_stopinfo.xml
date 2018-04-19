@@ -15,6 +15,24 @@
             android:layout_height="56dp"
             app:title="@string/stop"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp">
+
+            <TextView
+                android:id="@+id/textview_stopinfo_stopname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="36dp"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="72dp"
+                android:layout_marginEnd="36dp" />
+
+        </LinearLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -61,6 +62,9 @@ public class BusStopInfoFragment extends BaseFragment
 
     @BindView(R.id.recyclerview_stopinfo)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.textview_stopinfo_stopname)
+    TextView mStopName;
 
     @BindDrawable(R.drawable.stopinfo_starborderblack_24dp)
     Drawable mWhiteStar;
@@ -159,7 +163,7 @@ public class BusStopInfoFragment extends BaseFragment
     @Override
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
-        //mToolbar.setTitle(mStop.getStopName());
+        mStopName.setText(mStop.getStopName());
         mToolbar.inflateMenu(R.menu.menu_stopinfo);
         mPresenter.isFavoriteStop(mStop.getId());
 
