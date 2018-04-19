@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.utils.mappers.viewobject;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DepartureTimeVO {
@@ -8,6 +9,7 @@ public class DepartureTimeVO {
     private List<Integer> minute;
 
     public DepartureTimeVO() {
+        minute = new ArrayList<>();
     }
 
     public int getHours() {
@@ -23,6 +25,6 @@ public class DepartureTimeVO {
     }
 
     public void setMinute(List<Integer> minute) {
-        this.minute = minute;
+        this.minute.addAll(minute);
     }
 }
