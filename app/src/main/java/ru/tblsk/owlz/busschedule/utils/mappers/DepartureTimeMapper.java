@@ -43,13 +43,6 @@ public class DepartureTimeMapper implements Function<List<DepartureTime>, List<D
             time.setMinute(minuteList);
             result.add(time);
 
-            /*for(DepartureTimeVO timeVO : result) {
-                Log.d("HOURS: ", Integer.toString(timeVO.getHours()));
-                for(Integer minute : timeVO.getMinute()) {
-                    Log.d("Minute: ", Integer.toString(minute));
-                }
-            }*/
-
             return result;
         }
     }
