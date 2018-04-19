@@ -15,6 +15,7 @@
     <string name="drawer_share">Поделиться</string>
 
     <string name="stops">Остановки</string>
+    <string name="stop">Остановка</string>
     <string name="routs">Маршруты</string>
     <string name="main">Главная</string>
     <string name="favorite">Избранное</string>
@@ -48,4 +49,6 @@
     <string name="schedule_empty_weekend">Данный рейс не совершает перевозок в выходные дни</string>
 
     <string name="favoritestops_empty">Вы пока не добавили ни одной остановки в избранное</string>
+
+    <string name="allstops_search">Поиск остановки</string>
 </resources>

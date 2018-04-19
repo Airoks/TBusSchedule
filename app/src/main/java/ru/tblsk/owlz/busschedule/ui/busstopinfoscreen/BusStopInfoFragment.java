@@ -159,7 +159,7 @@ public class BusStopInfoFragment extends BaseFragment
     @Override
     public void setupToolbar() {
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
-        mToolbar.setTitle(mStop.getStopName());
+        //mToolbar.setTitle(mStop.getStopName());
         mToolbar.inflateMenu(R.menu.menu_stopinfo);
         mPresenter.isFavoriteStop(mStop.getId());
 

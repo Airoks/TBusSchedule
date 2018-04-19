@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,17 +26,17 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.di.screens.AllBusStops;
-import ru.tblsk.owlz.busschedule.di.screens.allbusstops.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.screens.FragmentModule;
+import ru.tblsk.owlz.busschedule.di.screens.allbusstops.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.base.OnBackPressedListener;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.BusStopInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
-import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.BusStopsAdapter;
+import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.utils.CommonUtils;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 
 public class AllBusStopsFragment extends BaseFragment
         implements AllBusStopsContract.View, SetupToolbar, OnBackPressedListener{
@@ -64,6 +66,7 @@ public class AllBusStopsFragment extends BaseFragment
     private boolean isFavoriteStop;
     private long mFragmentId;
     private ComponentManager mComponentManager;
+    private SearchView mSearchView;
 
     public static AllBusStopsFragment newInstance() {
         return new AllBusStopsFragment();
@@ -105,6 +108,7 @@ public class AllBusStopsFragment extends BaseFragment
     public void onResume() {
         super.onResume();
         mToolbar.setTitle(R.string.all_stops);
+        mPresenter.searchQueryIsEmpty();
         setBackPressedListener();
     }
 
@@ -133,6 +137,8 @@ public class AllBusStopsFragment extends BaseFragment
 
     @Override
     public void openStopInfoFragment(StopVO stop) {
+        mSearchView.setQuery("", false);
+        mSearchView.clearFocus();
         FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, BusStopInfoFragment.newInstance(stop, isFavoriteStop));
@@ -142,14 +148,28 @@ public class AllBusStopsFragment extends BaseFragment
 
     @Override
     public void openPreviousFragment() {
-        mComponentManager.removeAllBusStopsScreenComponent(mFragmentId);
-        FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
-        fragmentManager.popBackStack();
+        if(mSearchView.hasFocus()) {
+            mSearchView.clearFocus();
+        } else {
+            mComponentManager.removeAllBusStopsScreenComponent(mFragmentId);
+            FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack();
+        }
     }
 
     @Override
     public void showEmptyScreen() {
 
+    }
+
+    @Override
+    public void showSearchResults(String text) {
+        mAdapter.searchBusStops(text);
+    }
+
+    @Override
+    public void closeSearchView() {
+        mSearchView.onActionViewCollapsed();
     }
 
     @Override
@@ -164,14 +184,15 @@ public class AllBusStopsFragment extends BaseFragment
 
         mPresenter.attachView(this);
         mPresenter.getAllStops();
+
     }
 
     @Override
     public void setupToolbar() {
-        getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.setTitle(R.string.all_stops);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
+        mToolbar.inflateMenu(R.menu.menu_allstops);
 
         ((MainActivity)getBaseActivity()).lockDrawer();
         ((MainActivity)getBaseActivity()).hideBottomNavigationView();
@@ -182,6 +203,26 @@ public class AllBusStopsFragment extends BaseFragment
                 mPresenter.clickedOnBackButton();
             }
         });
+
+
+        MenuItem item = mToolbar.getMenu().getItem(0);
+        mSearchView = (SearchView) item.getActionView();
+
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mPresenter.searchBusStops(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mPresenter.searchBusStops(newText);
+                return true;
+            }
+        });
+
     }
 
     @Override

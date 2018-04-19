@@ -2,6 +2,7 @@ package ru.tblsk.owlz.busschedule.ui.busstopsscreens;
 
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -29,6 +31,7 @@ public class BusStopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements SectionTitleProvider{
 
     private List<StopVO> mStops;
+    private List<StopVO> mCopyStops;
     private  int mTypeAdapter;
     private AllBusStopsContract.Presenter mAllStopsPresenter;
     private ViewedBusStopsContract.Presenter mStopsPresenter;
@@ -42,6 +45,7 @@ public class BusStopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         }
         mTypeAdapter = typeAdapter;
         mStops = new ArrayList<>();
+        mCopyStops = new ArrayList<>();
     }
 
     @Override
@@ -55,11 +59,12 @@ public class BusStopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
             @Override
             public void onClick(View view) {
                 int position = stopViewHolder.getAdapterPosition();
+                StopVO stop = mStops.get(position);
 
                 if(mTypeAdapter == AppConstants.ALL_STOPS_ADAPTER) {
-                    mAllStopsPresenter.clickedOnAdapterItem(position);
+                    mAllStopsPresenter.clickedOnAdapterItem(stop.getId());
                 } else {
-                    mStopsPresenter.clickedOnAdapterItem(position);
+                    mStopsPresenter.clickedOnAdapterItem(stop.getId());
                 }
             }
         });
@@ -79,7 +84,9 @@ public class BusStopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
     public void addItems(List<StopVO> stops) {
         mStops.clear();
+        mCopyStops.clear();
         mStops.addAll(stops);
+        mCopyStops.addAll(stops);
         notifyDataSetChanged();
     }
 
@@ -91,6 +98,22 @@ public class BusStopsAdapter extends RecyclerView.Adapter<BaseViewHolder>
             return "#";
         }
         return stopName.substring(0, 1);
+    }
+
+    public void searchBusStops(String text) {
+        mStops.clear();
+        Locale etoRussia = new Locale("ru", "RU");
+        if(text.isEmpty()) {
+            mStops.addAll(mCopyStops);
+        } else {
+            text = text.toLowerCase(etoRussia);
+            for(StopVO stop : mCopyStops) {
+                if(stop.getStopName().toLowerCase(etoRussia).contains(text)) {
+                    mStops.add(stop);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     class StopViewHolder extends BaseViewHolder

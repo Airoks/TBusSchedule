@@ -14,13 +14,17 @@ public interface AllBusStopsContract {
         void openStopInfoFragment(StopVO stop);
         void openPreviousFragment();
         void showEmptyScreen();
+        void showSearchResults(String text);
+        void closeSearchView();
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getAllStops();
         void insertSearchHistoryStops(long stopId);
         void clickedOnBackButton();
-        void clickedOnAdapterItem(int position);
+        void clickedOnAdapterItem(long stopId);
+        void searchBusStops(String text);
+        void searchQueryIsEmpty();
     }
 
 }

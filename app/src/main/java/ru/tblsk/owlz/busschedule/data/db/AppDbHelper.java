@@ -211,7 +211,6 @@ public class AppDbHelper implements DbHelper {
                 StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
                                 StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
-                //what value return getSchedulers() if scheduler is not ??????
                 schedules = stopOnRout.getSchedules();
 
                 for(Schedule schedule : schedules) {

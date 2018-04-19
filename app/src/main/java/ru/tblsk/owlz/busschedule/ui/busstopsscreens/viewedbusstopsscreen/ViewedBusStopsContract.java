@@ -21,6 +21,6 @@ public interface ViewedBusStopsContract {
         void deleteSearchHistoryStops();
         void clickedOnAllStopsButton();
         void clickedOnNavigation();
-        void clickedOnAdapterItem(int position);
+        void clickedOnAdapterItem(long stopId);
     }
 }

@@ -86,8 +86,18 @@ public class ViewedBusStopsPresenter extends BasePresenter<ViewedBusStopsContrac
     }
 
     @Override
-    public void clickedOnAdapterItem(int position) {
-        getMvpView().openStopInfoFragment(mStops.get(position));
+    public void clickedOnAdapterItem(long stopId) {
+        StopVO stop = searchBusStopById(stopId);
+        getMvpView().openStopInfoFragment(stop);
+    }
+
+    private StopVO searchBusStopById(long id) {
+        for(StopVO stop : mStops) {
+            if(stop.getId() == id) {
+                return stop;
+            }
+        }
+        return null;
     }
 
 }

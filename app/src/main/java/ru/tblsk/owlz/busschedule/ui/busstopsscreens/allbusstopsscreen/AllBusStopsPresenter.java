@@ -19,6 +19,7 @@ public class AllBusStopsPresenter extends BasePresenter<AllBusStopsContract.View
 
     private StopMapper mStopMapper;
     private List<StopVO> mStops;
+    private String mSearchQuery;
 
     @Inject
     public AllBusStopsPresenter(DataManager dataManager,
@@ -27,13 +28,17 @@ public class AllBusStopsPresenter extends BasePresenter<AllBusStopsContract.View
                                 StopMapper stopMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
-        this.mStopMapper = stopMapper;
+        mStopMapper = stopMapper;
+        mSearchQuery = "";
     }
 
     @Override
     public void getAllStops() {
         if(mStops != null && !mStops.isEmpty()) {
             getMvpView().showAllStops(mStops);
+            if(!mSearchQuery.isEmpty()) {
+                getMvpView().showSearchResults(mSearchQuery);
+            }
         } else {
             getStops();
         }
@@ -64,9 +69,24 @@ public class AllBusStopsPresenter extends BasePresenter<AllBusStopsContract.View
     }
 
     @Override
-    public void clickedOnAdapterItem(int position) {
-        getMvpView().openStopInfoFragment(mStops.get(position));
-        insertSearchHistoryStops(mStops.get(position).getId());
+    public void clickedOnAdapterItem(long stopId) {
+        StopVO stop = searchBusStopById(stopId);
+        getMvpView().openStopInfoFragment(stop);
+        mSearchQuery = "";
+        insertSearchHistoryStops(stopId);
+    }
+
+    @Override
+    public void searchBusStops(String text) {
+        mSearchQuery = text;
+        getMvpView().showSearchResults(text);
+    }
+
+    @Override
+    public void searchQueryIsEmpty() {
+        if(mSearchQuery.isEmpty()) {
+            getMvpView().closeSearchView();
+        }
     }
 
     private void getStops() {
@@ -91,5 +111,14 @@ public class AllBusStopsPresenter extends BasePresenter<AllBusStopsContract.View
                     public void accept(Throwable throwable) throws Exception {
                     }
                 }));
+    }
+
+    private StopVO searchBusStopById(long id) {
+        for(StopVO stop : mStops) {
+            if(stop.getId() == id) {
+                return stop;
+            }
+        }
+        return null;
     }
 }

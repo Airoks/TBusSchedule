@@ -74,9 +74,7 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
     private List<DirectionVO> getDirections(List<DirectionVO> directions) {
         List<DirectionVO> copy = new ArrayList<>();
-        List<DirectionVO> original;
-        original = directions;
-        for (DirectionVO direction : original) {
+        for (DirectionVO direction : directions) {
             DirectionVO copyDirection = new DirectionVO();
 
             copyDirection.setId(direction.getId());

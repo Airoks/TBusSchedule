@@ -1,5 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.List;
 
@@ -139,7 +141,6 @@ public class ViewedBusStopsFragment extends BaseFragment
 
     @Override
     public void setupToolbar() {
-        getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.stops);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
