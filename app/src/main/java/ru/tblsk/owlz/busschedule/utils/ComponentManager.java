@@ -2,7 +2,6 @@ package ru.tblsk.owlz.busschedule.utils;
 
 
 import android.support.v4.util.LongSparseArray;
-import android.util.Log;
 
 import ru.tblsk.owlz.busschedule.di.screens.allbusstops.component.AllBusStopsScreenComponent;
 import ru.tblsk.owlz.busschedule.di.application.component.ApplicationComponent;
@@ -169,22 +168,18 @@ public class ComponentManager {
     }
 
     public void removeAllBusStopsScreenComponent(long fragmentId) {
-        Log.d("ComponentManager", "removeAllBusStopsScreenComponent");
         mAllBusStopsScreenComponents.remove(fragmentId);
     }
 
     public void removeBusStopInfoScreenComponent(long fragmentId) {
-        Log.d("ComponentManager", "removeBusStopInfoScreenComponent");
         mBusStopInfoScreenComponents.remove(fragmentId);
     }
 
     public void removeBusScheduleScreenComponent(long fragmentId) {
-        Log.d("ComponentManager", "removeBusScheduleScreenComponent");
         mBusScheduleScreenComponents.remove(fragmentId);
     }
 
     public void removeDirectionInfoScreenComponent(long fragmentId) {
-        Log.d("ComponentManager", "removeDirectionInfoScreenComponent");
         mDirectionInfoScreenComponents.remove(fragmentId);
     }
 }

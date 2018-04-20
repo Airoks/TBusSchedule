@@ -3,9 +3,6 @@ package ru.tblsk.owlz.busschedule;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.stetho.Stetho;
-import com.squareup.leakcanary.LeakCanary;
-
 import ru.tblsk.owlz.busschedule.di.application.component.ApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.application.component.DaggerApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.application.module.ApplicationModule;
@@ -24,14 +21,6 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         mComponentManager = new ComponentManager(mApplicationComponent);
-
-        Stetho.initializeWithDefaults(this);
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
-
     }
 
     public static App getApp(Context context) {

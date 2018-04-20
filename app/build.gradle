@@ -49,10 +49,4 @@ dependencies {
     //fast scroll
     implementation 'com.futuremind.recyclerfastscroll:fastscroll:0.2.5'
 
-    //facebook debug tools
-    implementation  'com.facebook.stetho:stetho:1.5.0'
-
-    //memory leak
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
