@@ -98,13 +98,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
     public void onDestroyView() {
         mUnbinder.unbind();
         mPresenter.detachView();
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
         mPresenter.unsubscribe();
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

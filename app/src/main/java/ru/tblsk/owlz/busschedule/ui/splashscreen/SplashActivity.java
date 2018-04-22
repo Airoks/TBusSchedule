@@ -35,6 +35,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+        mPresenter.unsubscribe();
     }
 
     @Override

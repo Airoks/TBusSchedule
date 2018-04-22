@@ -18,14 +18,13 @@ import ru.tblsk.owlz.busschedule.data.preferences.PreferencesHelper;
 import ru.tblsk.owlz.busschedule.di.application.ApplicationContext;
 import ru.tblsk.owlz.busschedule.di.application.DatabaseInfo;
 import ru.tblsk.owlz.busschedule.di.application.PreferencesInfo;
-import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
-import ru.tblsk.owlz.busschedule.utils.mappers.DirectionMapper;
-import ru.tblsk.owlz.busschedule.utils.mappers.FlightMapper;
-import ru.tblsk.owlz.busschedule.utils.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.ui.splashscreen.SplashContract;
 import ru.tblsk.owlz.busschedule.ui.splashscreen.SplashPresenter;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
+import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
+import ru.tblsk.owlz.busschedule.utils.mappers.FlightMapper;
+import ru.tblsk.owlz.busschedule.utils.mappers.StopMapper;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.AppSchedulerProvider;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
@@ -97,11 +96,6 @@ public class ApplicationModule {
     @Provides
     StopMapper provideStopMapper() {
         return new StopMapper();
-    }
-
-    @Provides
-    DirectionMapper provideDirectionMapper() {
-        return new DirectionMapper();
     }
 
     @Provides

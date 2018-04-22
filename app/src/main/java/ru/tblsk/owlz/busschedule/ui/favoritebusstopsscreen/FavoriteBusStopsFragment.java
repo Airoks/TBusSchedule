@@ -107,6 +107,7 @@ public class FavoriteBusStopsFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
+        mPresenter.unsubscribe();
         super.onDestroyView();
     }
 
@@ -114,12 +115,6 @@ public class FavoriteBusStopsFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong(FRAGMENT_ID, mFragmentId);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.unsubscribe();
-        super.onDestroy();
     }
 
     @Override
