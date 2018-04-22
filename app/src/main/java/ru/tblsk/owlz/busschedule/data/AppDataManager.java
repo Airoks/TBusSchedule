@@ -152,6 +152,7 @@ public class AppDataManager implements DataManager {
                         Collections.sort(departureTimes, new Comparator<DepartureTime>() {
                             @Override
                             public int compare(DepartureTime left, DepartureTime right) {
+                                //сортируем в порядке возрастания
                                 int result;
                                 if(left.getHours() > right.getHours()) {
                                     result = 1;

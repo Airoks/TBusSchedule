@@ -17,6 +17,8 @@ public interface BusStopInfoContract {
         void openScheduleContainerFragment(FlightVO flight);
         void setFavoriteIcon(boolean isFavorite);
         void showSnackBarDeleted();
+        void showSnackBarAdded(boolean isFavoriteStop);
+        void showSnackBarNotSelected();
     }
 
     interface Presenter extends MvpPresenter<View> {
@@ -26,6 +28,7 @@ public interface BusStopInfoContract {
         void isFavoriteStop(Long stopId);
         void deleteFavoriteStop(Long stopId);
         void clickedOnAdapterItem(long directionId, int directionType);
+        void setClickListenerOnAddButtonInDialog();
     }
 
 }

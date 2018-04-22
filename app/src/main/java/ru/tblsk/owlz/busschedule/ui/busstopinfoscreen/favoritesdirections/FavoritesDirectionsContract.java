@@ -11,7 +11,7 @@ public interface FavoritesDirectionsContract {
 
     interface View extends MvpView {
         void showDirections(List<DirectionVO> directions);
-        void addedFavoriteDirections(boolean isAdded);
+        void closeDialog();
     }
 
     interface Presenter extends MvpPresenter<View> {

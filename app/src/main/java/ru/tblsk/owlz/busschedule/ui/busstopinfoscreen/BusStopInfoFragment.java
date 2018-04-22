@@ -128,6 +128,7 @@ public class BusStopInfoFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         mPresenter.detachView();
+        mPresenter.unsubscribe();
         super.onDestroyView();
     }
 
@@ -135,12 +136,6 @@ public class BusStopInfoFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong(FRAGMENT_ID, mFragmentId);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        mPresenter.unsubscribe();
-        super.onDestroy();
     }
 
     @Override
@@ -157,6 +152,7 @@ public class BusStopInfoFragment extends BaseFragment
 
         boolean isFavoriteStop = getArguments().getBoolean(IS_FAVORITE_STOP);
         mPresenter.attachView(this);
+        mPresenter.setClickListenerOnAddButtonInDialog();
         mPresenter.getDirectionsByStop(mStop.getId(), isFavoriteStop);
     }
 
@@ -208,7 +204,6 @@ public class BusStopInfoFragment extends BaseFragment
             FragmentManager fragmentManager = getBaseActivity().getSupportFragmentManager();
             FavoritesDirectionsDialog dialog =
                     FavoritesDirectionsDialog.newInstance(directions, mStop.getId(), mFragmentId);
-            dialog.setTargetFragment(this, 0);
             dialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             dialog.show(fragmentManager, "FavoritesDirectionsDialog");
         }
@@ -239,6 +234,20 @@ public class BusStopInfoFragment extends BaseFragment
     @Override
     public void showSnackBarDeleted() {
         getBaseActivity().showSnackBar(getString(R.string.stopinfo_deletefavorite));
+    }
+
+    @Override
+    public void showSnackBarAdded(boolean isFavoriteStop) {
+        if(isFavoriteStop) {
+            getBaseActivity().showSnackBar(getString(R.string.stopinfo_changesaved));
+        } else {
+            getBaseActivity().showSnackBar(getString(R.string.stopinfo_addfavorite));
+        }
+    }
+
+    @Override
+    public void showSnackBarNotSelected() {
+        getBaseActivity().showSnackBar(getString(R.string.stopinfo_notselected));
     }
 
     @Override

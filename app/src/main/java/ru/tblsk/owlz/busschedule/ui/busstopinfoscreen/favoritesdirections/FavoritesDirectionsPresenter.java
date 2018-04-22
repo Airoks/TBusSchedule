@@ -11,6 +11,8 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.DirectionAdditionEvent;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
@@ -18,13 +20,18 @@ public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirecti
         implements FavoritesDirectionsContract.Presenter {
 
     private List<DirectionVO> mDirections;
+    private List<DirectionVO> mFavoriteDirections;
     private long mStopId;
+    private RxEventBus mEventBus;
 
     @Inject
     public FavoritesDirectionsPresenter(DataManager dataManager,
                                         CompositeDisposable compositeDisposable,
-                                        SchedulerProvider schedulerProvider) {
+                                        SchedulerProvider schedulerProvider,
+                                        RxEventBus eventBus) {
         super(dataManager, compositeDisposable, schedulerProvider);
+
+        mEventBus = eventBus;
     }
 
     @Override
@@ -35,17 +42,21 @@ public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirecti
     @Override
     public void setData(List<DirectionVO> directions, long stopId) {
         mStopId = stopId;
-        mDirections = getDirections(directions);
+        mDirections = getCopyOfDirections(directions);
     }
 
     @Override
     public void clickedOnAddButton() {
-        List<Long> directionsId = getDirectionsId();
+        List<Long> directionsId = getFavoriteDirectionsId();
         if(!directionsId.isEmpty()) {
             addFavoriteDirections(mStopId, directionsId);
-            getMvpView().addedFavoriteDirections(true);
+            DirectionAdditionEvent event = new DirectionAdditionEvent(true);
+            event.setFavorites(mFavoriteDirections);
+            mEventBus.post(event);
+            getMvpView().closeDialog();
         } else {
-            getMvpView().addedFavoriteDirections(false);
+            mEventBus.post(new DirectionAdditionEvent(false));
+            getMvpView().closeDialog();
         }
     }
 
@@ -74,17 +85,19 @@ public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirecti
                 }));
     }
 
-    private List<Long> getDirectionsId() {
+    private List<Long> getFavoriteDirectionsId() {
+        mFavoriteDirections = new ArrayList<>();
         List<Long> directionsId = new ArrayList<>();
         for(DirectionVO direction : mDirections) {
             if(direction.isFavorite()) {
                 directionsId.add(direction.getId());
+                mFavoriteDirections.add(direction);
             }
         }
         return directionsId;
     }
 
-    private List<DirectionVO> getDirections(List<DirectionVO> directions) {
+    private List<DirectionVO> getCopyOfDirections(List<DirectionVO> directions) {
         List<DirectionVO> copy = new ArrayList<>();
         List<DirectionVO> original;
         original = directions;

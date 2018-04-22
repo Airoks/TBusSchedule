@@ -135,15 +135,8 @@ public class FavoritesDirectionsDialog extends DialogFragment
     }
 
     @Override
-    public void addedFavoriteDirections(boolean isAdded) {
-        if(isAdded) {
-            ((BusStopInfoFragment)this.getTargetFragment()).setFavoriteIcon(true);
-            ((BaseActivity)getContext()).showSnackBar(getString(R.string.stopinfo_addfavorite));
-            getDialog().dismiss();
-        } else {
-            getDialog().dismiss();
-            ((BaseActivity)getContext()).showSnackBar(getString(R.string.stopinfo_notselected));
-        }
+    public void closeDialog() {
+        getDialog().dismiss();
     }
 
     @OnClick(R.id.button_favoritesdirections_add)

@@ -15,6 +15,7 @@ import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
@@ -23,24 +24,36 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
         implements BusStopInfoContract.Presenter{
 
     private List<DirectionVO> mDirections;
+    private List<DirectionVO> mFavoriteDirections;
+    private RxEventBus mEventBus;
+    private boolean mIsFavoriteStop;
 
     @Inject
     public BusStopInfoPresenter(DataManager dataManager,
                                 CompositeDisposable compositeDisposable,
-                                SchedulerProvider schedulerProvider) {
+                                SchedulerProvider schedulerProvider,
+                                RxEventBus eventBus) {
         super(dataManager, compositeDisposable, schedulerProvider);
+
+        mDirections = new ArrayList<>();
+        mFavoriteDirections = new ArrayList<>();
+        mEventBus = eventBus;
     }
 
     @Override
     public void getDirectionsByStop(Long stopId, boolean isFavoriteStop) {
+        mIsFavoriteStop = isFavoriteStop;
+        if(mDirections.isEmpty()) {
+            getDirection(stopId);
+        }
         if(isFavoriteStop) {
-            getFavoriteDirection(stopId);
-        } else {
-            if(mDirections == null) {
-                getDirection(stopId);
+            if(mFavoriteDirections.isEmpty()) {
+                getFavoriteDirection(stopId);
             } else {
-                getMvpView().showDirectionsByStop(mDirections);
+                getMvpView().showDirectionsByStop(mFavoriteDirections);
             }
+        } else {
+            getMvpView().showDirectionsByStop(mDirections);
         }
     }
 
@@ -121,6 +134,35 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 }));
     }
 
+    @Override
+    public void setClickListenerOnAddButtonInDialog() {
+        getCompositeDisposable().add(mEventBus.filteredObservable(DirectionAdditionEvent.class)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<DirectionAdditionEvent>() {
+                    @Override
+                    public void accept(DirectionAdditionEvent event) throws Exception {
+                        boolean isAdded = event.isAdded();
+                        getMvpView().setFavoriteIcon(isAdded);
+                        if(isAdded) {
+                            if(mIsFavoriteStop) {
+                                mFavoriteDirections.clear();
+                                mFavoriteDirections.addAll(event.getFavorites());
+                                getMvpView().showDirectionsByStop(mFavoriteDirections);
+                            }
+                            getMvpView().showSnackBarAdded(mIsFavoriteStop);
+                        } else {
+                            getMvpView().showSnackBarNotSelected();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                }));
+    }
+
     private void getDirection(long stopId) {
 
         getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
@@ -143,7 +185,6 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                                             directionVO.setFavorite(true);
                                             directionsVO.add(directionVO);
                                         }
-                                        mDirections = directionsVO;
                                         return directionsVO;
                                     }
                                 });
@@ -153,7 +194,11 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 .subscribe(new Consumer<List<DirectionVO>>() {
                     @Override
                     public void accept(List<DirectionVO> directionVOS) throws Exception {
-                        getMvpView().showDirectionsByStop(directionVOS);
+                        mDirections.clear();
+                        mDirections.addAll(directionVOS);
+                        if(!mIsFavoriteStop) {
+                            getMvpView().showDirectionsByStop(directionVOS);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -185,7 +230,6 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                                             directionVO.setFavorite(true);
                                             directionsVO.add(directionVO);
                                         }
-                                        mDirections = directionsVO;
                                         return directionsVO;
                                     }
                                 });
@@ -195,6 +239,8 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 .subscribe(new Consumer<List<DirectionVO>>() {
                     @Override
                     public void accept(List<DirectionVO> directionVOS) throws Exception {
+                        mFavoriteDirections.clear();
+                        mFavoriteDirections.addAll(directionVOS);
                         getMvpView().showDirectionsByStop(directionVOS);
                     }
                 }, new Consumer<Throwable>() {

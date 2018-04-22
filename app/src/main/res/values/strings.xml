@@ -40,6 +40,7 @@
 
     <string name="stopinfo_addfavorite">Добавлено в избранное</string>
     <string name="stopinfo_deletefavorite">Удалено из избранного</string>
+    <string name="stopinfo_changesaved">Изменения сохранены</string>
     <string name="stopinfo_notselected">Вы не выбрали ни одного направления</string>
 
     <string name="tab">\u0009</string>

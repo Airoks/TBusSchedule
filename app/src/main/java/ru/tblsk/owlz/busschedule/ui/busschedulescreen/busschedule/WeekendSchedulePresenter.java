@@ -1,6 +1,7 @@
 package ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,11 +28,12 @@ public class WeekendSchedulePresenter extends BasePresenter<BusScheduleContract.
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mDepartureTimeMapper = mapper;
+        mScheduleWeekend = new ArrayList<>();
     }
 
     @Override
     public void getSchedule(long stopId, long directionId, int scheduleType) {
-        if(mScheduleWeekend != null && !mScheduleWeekend.isEmpty()) {
+        if(!mScheduleWeekend.isEmpty()) {
             getMvpView().showSchedule(mScheduleWeekend);
         } else {
             getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)
@@ -41,7 +43,7 @@ public class WeekendSchedulePresenter extends BasePresenter<BusScheduleContract.
                     .subscribe(new Consumer<List<DepartureTimeVO>>() {
                         @Override
                         public void accept(List<DepartureTimeVO> departureTimes) throws Exception {
-                            mScheduleWeekend = departureTimes;
+                            mScheduleWeekend.addAll(departureTimes);
                             if(departureTimes.isEmpty()) {
                                 getMvpView().showEmptyScreen();
                             } else {
