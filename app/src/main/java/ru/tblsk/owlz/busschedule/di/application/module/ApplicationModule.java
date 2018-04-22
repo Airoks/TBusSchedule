@@ -18,6 +18,8 @@ import ru.tblsk.owlz.busschedule.data.preferences.PreferencesHelper;
 import ru.tblsk.owlz.busschedule.di.application.ApplicationContext;
 import ru.tblsk.owlz.busschedule.di.application.DatabaseInfo;
 import ru.tblsk.owlz.busschedule.di.application.PreferencesInfo;
+import ru.tblsk.owlz.busschedule.ui.main.MainContract;
+import ru.tblsk.owlz.busschedule.ui.main.MainPresenter;
 import ru.tblsk.owlz.busschedule.ui.splashscreen.SplashContract;
 import ru.tblsk.owlz.busschedule.ui.splashscreen.SplashPresenter;
 import ru.tblsk.owlz.busschedule.utils.AppConstants;
@@ -105,6 +107,11 @@ public class ApplicationModule {
 
     @Provides
     SplashContract.Presenter provideSplashPresenter(SplashPresenter presenter) {
+        return presenter;
+    }
+
+    @Provides
+    MainContract.Presenter provideMainPresenter(MainPresenter presenter) {
         return presenter;
     }
 }

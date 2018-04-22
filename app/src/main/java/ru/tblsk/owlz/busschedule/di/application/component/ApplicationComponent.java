@@ -7,6 +7,7 @@ import dagger.Component;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.di.application.module.ApplicationModule;
+import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.ui.splashscreen.SplashActivity;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
@@ -27,4 +28,5 @@ public interface ApplicationComponent {
     DepartureTimeMapper getDepartureTimeMapper();
 
     void inject(SplashActivity activity);
+    void inject(MainActivity activity);
 }

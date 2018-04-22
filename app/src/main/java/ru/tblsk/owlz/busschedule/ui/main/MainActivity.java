@@ -12,17 +12,23 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.tblsk.owlz.busschedule.App;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseActivity;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.BusRoutesContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.busstopsscreens.viewedbusstopsscreen.ViewedBusStopsFragment;
 import ru.tblsk.owlz.busschedule.ui.favoritebusstopsscreen.FavoriteBusStopsFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainContract.View {
 
     public static final String CURRENT_PAGE_ID = "currentPageId";
+
+    @Inject
+    MainContract.Presenter mPresenter;
 
     @BindView(R.id.bottomnavigationview_mainscreen)
     BottomNavigationView mBottomNavigationView;
@@ -43,9 +49,18 @@ public class MainActivity extends BaseActivity {
             currentPageId = savedInstanceState.getInt(CURRENT_PAGE_ID);
         }
 
+        App.getApp(getBaseContext()).getApplicationComponent().inject(this);
+        mPresenter.attachView(this);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setUp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachView();
+        super.onDestroy();
     }
 
     @Override
@@ -102,23 +117,15 @@ public class MainActivity extends BaseActivity {
                             return false;
                         } else {
                             currentPageId = item.getItemId();
-                            FragmentManager fragmentManager = getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             switch (item.getItemId()) {
                                 case R.id.navigation_main:
-                                    fragmentTransaction.replace(R.id.container,
-                                            FavoriteBusStopsFragment.newInstance());
-                                    fragmentTransaction.commit();
+                                    mPresenter.clickedOnFavoriteBusStopsInNavigationView();
                                     return true;
                                 case R.id.navigation_stops:
-                                    fragmentTransaction.replace(R.id.container,
-                                            ViewedBusStopsFragment.newInstance());
-                                    fragmentTransaction.commit();
+                                    mPresenter.clickedOnViewedBusStopsInNavigationView();
                                     return true;
                                 case R.id.navigation_routs:
-                                    fragmentTransaction.replace(R.id.container,
-                                            BusRoutesContainerFragment.newInstance());
-                                    fragmentTransaction.commit();
+                                    mPresenter.clickedOnBusRouteInNavigationView();
                                     return true;
                             }
                         }
@@ -145,5 +152,32 @@ public class MainActivity extends BaseActivity {
                         return false;
                     }
         });
+    }
+
+    @Override
+    public void openFavoriteBusStopsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,
+                FavoriteBusStopsFragment.newInstance());
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void openViewedBusStopsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,
+                ViewedBusStopsFragment.newInstance());
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void openBusRoutesContainerFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,
+                BusRoutesContainerFragment.newInstance());
+        fragmentTransaction.commit();
     }
 }
