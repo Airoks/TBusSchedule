@@ -155,7 +155,6 @@ public class BusScheduleContainerFragment extends BaseFragment
 
     @Override
     public void setupToolbar() {
-        getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_arrowbackblack_24dp);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

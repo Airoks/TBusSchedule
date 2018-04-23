@@ -119,9 +119,6 @@ public class BusRoutesFragment extends BaseFragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
-        ((MainActivity)getBaseActivity()).unlockDrawer();
-        ((MainActivity)getBaseActivity()).showBottomNavigationView();
-
         mPresenter.attachView(this);
         mPresenter.getFlights();
     }

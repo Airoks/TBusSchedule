@@ -119,7 +119,6 @@ public class FavoriteBusStopsFragment extends BaseFragment
 
     @Override
     protected void setUp() {
-
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -160,8 +159,6 @@ public class FavoriteBusStopsFragment extends BaseFragment
 
     @Override
     public void setupToolbar() {
-
-        getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.favorite);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));

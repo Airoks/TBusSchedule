@@ -109,6 +109,7 @@ public class BusRoutesContainerFragment extends BaseFragment
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        ((MainActivity)getBaseActivity()).unlockDrawer();
         ((MainActivity)getBaseActivity()).showBottomNavigationView();
 
         mPresenter.attachView(this);
@@ -116,8 +117,6 @@ public class BusRoutesContainerFragment extends BaseFragment
 
     @Override
     public void setupToolbar() {
-
-        getBaseActivity().setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.all_menublack_24dp);
         mToolbar.setTitle(R.string.routs);
         mToolbar.setTitleTextColor(getResources().getColor(R.color.black));
