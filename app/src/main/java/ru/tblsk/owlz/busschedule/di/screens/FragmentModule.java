@@ -68,15 +68,15 @@ public class FragmentModule {
 
     @Provides
     @UrbanBusRoutes
-    BusRoutesAdapter provideUrbanBusRoutesAdapter(@UrbanBusRoutes
-                                                          BusRoutesContract.Presenter presenter) {
+    BusRoutesAdapter provideUrbanBusRoutesAdapter(
+            @UrbanBusRoutes BusRoutesContract.Presenter presenter) {
         return new BusRoutesAdapter(presenter);
     }
 
     @Provides
     @SuburbanBusRoutes
-    BusRoutesAdapter provideSuburbanBusRoutesAdapter(@SuburbanBusRoutes
-                                                             BusRoutesContract.Presenter presenter) {
+    BusRoutesAdapter provideSuburbanBusRoutesAdapter(
+            @SuburbanBusRoutes BusRoutesContract.Presenter presenter) {
         return new BusRoutesAdapter(presenter);
     }
 

@@ -14,12 +14,14 @@ import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
+import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.BusStopInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
+@BusStopInfoScreen
 public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View>
         implements BusStopInfoContract.Presenter{
 

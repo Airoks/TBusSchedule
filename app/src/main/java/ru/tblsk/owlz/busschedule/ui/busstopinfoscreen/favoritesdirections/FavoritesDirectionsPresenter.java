@@ -10,12 +10,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.BusStopInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.ui.busstopinfoscreen.DirectionAdditionEvent;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
+@BusStopInfoScreen
 public class FavoritesDirectionsPresenter extends BasePresenter<FavoritesDirectionsContract.View>
         implements FavoritesDirectionsContract.Presenter {
 

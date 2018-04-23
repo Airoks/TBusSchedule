@@ -8,11 +8,13 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.di.screens.busroutes.BusRoutesScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.mappers.FlightMapper;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
+@BusRoutesScreen
 public class UrbanBusRoutesPresenter extends BasePresenter<BusRoutesContract.View>
         implements BusRoutesContract.Presenter {
 

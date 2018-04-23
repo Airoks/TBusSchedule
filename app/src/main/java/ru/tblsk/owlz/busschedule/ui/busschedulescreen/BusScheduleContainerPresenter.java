@@ -5,9 +5,11 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import ru.tblsk.owlz.busschedule.data.DataManager;
+import ru.tblsk.owlz.busschedule.di.screens.busschedule.BusScheduleScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
+@BusScheduleScreen
 public class BusScheduleContainerPresenter extends BasePresenter<BusScheduleContainerContract.View>
         implements BusScheduleContainerContract.Presenter{
 
