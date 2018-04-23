@@ -88,7 +88,7 @@ public class BusRoutesContainerFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        mToolbar.setTitle(R.string.routs);
+        setupToolbar();
     }
 
     @Override
@@ -105,7 +105,6 @@ public class BusRoutesContainerFragment extends BaseFragment
 
     @Override
     protected void setUp() {
-        setupToolbar();
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
 
@@ -123,7 +122,7 @@ public class BusRoutesContainerFragment extends BaseFragment
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getBaseActivity()).openDrawer();
+                mPresenter.clickedOnNavigation();
             }
         });
 
@@ -134,5 +133,10 @@ public class BusRoutesContainerFragment extends BaseFragment
         mPagerAdapter.addFragments(BusRoutesFragment.newInstance(mFragmentId, SUBURBAN),
                 getResources().getString(R.string.suburban_routes));
         viewPager.setAdapter(mPagerAdapter);
+    }
+
+    @Override
+    public void openNavigationDrawer() {
+        ((MainActivity)getBaseActivity()).openDrawer();
     }
 }

@@ -7,8 +7,10 @@ import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 public interface BusRoutesContainerContract {
 
     interface View extends MvpView {
+        void openNavigationDrawer();
     }
 
     interface Presenter extends MvpPresenter<View> {
+        void clickedOnNavigation();
     }
 }

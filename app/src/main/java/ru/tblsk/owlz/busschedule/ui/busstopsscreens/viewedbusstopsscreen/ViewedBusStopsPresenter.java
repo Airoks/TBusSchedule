@@ -49,7 +49,6 @@ public class ViewedBusStopsPresenter extends BasePresenter<ViewedBusStopsContrac
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        String error = throwable.getMessage();
                         throwable.printStackTrace();
                     }
                 }));
@@ -69,7 +68,6 @@ public class ViewedBusStopsPresenter extends BasePresenter<ViewedBusStopsContrac
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        String error = throwable.getMessage();
                         throwable.printStackTrace();
                     }
                 }));

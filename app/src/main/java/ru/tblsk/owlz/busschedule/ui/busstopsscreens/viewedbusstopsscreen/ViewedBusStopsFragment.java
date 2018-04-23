@@ -100,7 +100,7 @@ public class ViewedBusStopsFragment extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        mToolbar.setTitle(R.string.stops);
+        setupToolbar();
     }
 
     @Override
@@ -118,8 +118,6 @@ public class ViewedBusStopsFragment extends BaseFragment
 
     @Override
     protected void setUp() {
-        setupToolbar();
-
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);

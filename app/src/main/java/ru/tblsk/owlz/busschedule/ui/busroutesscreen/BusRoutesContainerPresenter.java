@@ -19,4 +19,9 @@ public class BusRoutesContainerPresenter extends BasePresenter<BusRoutesContaine
                                        SchedulerProvider schedulerProvider) {
         super(dataManager, compositeDisposable, schedulerProvider);
     }
+
+    @Override
+    public void clickedOnNavigation() {
+        getMvpView().openNavigationDrawer();
+    }
 }
