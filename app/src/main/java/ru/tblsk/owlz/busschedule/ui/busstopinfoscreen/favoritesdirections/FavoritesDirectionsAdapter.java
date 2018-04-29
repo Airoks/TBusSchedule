@@ -17,9 +17,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.base.CopyItems;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 
-public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHolder>{
+public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHolder>
+        implements CopyItems<DirectionVO>{
 
     private List<DirectionVO> mDirections;
     private FavoritesDirectionsContract.Presenter mPresenter;
@@ -68,13 +70,14 @@ public class FavoritesDirectionsAdapter extends RecyclerView.Adapter<BaseViewHol
 
     public void addItems(List<DirectionVO> directions) {
         mDirections.clear();
-        mDirections = getDirections(directions);
+        mDirections = getCopy(directions);
         notifyDataSetChanged();
     }
 
-    private List<DirectionVO> getDirections(List<DirectionVO> directions) {
+    @Override
+    public List<DirectionVO> getCopy(List<DirectionVO> items) {
         List<DirectionVO> copy = new ArrayList<>();
-        for (DirectionVO direction : directions) {
+        for (DirectionVO direction : items) {
             DirectionVO copyDirection = new DirectionVO();
 
             copyDirection.setId(direction.getId());
