@@ -20,10 +20,9 @@ public interface DirectionInfoContract {
     }
 
     interface Presenter extends MvpPresenter<View> {
-        void getStopsOnDirection();
+        void getStopsOnDirection(FlightVO flight);
         void clickedOnChangeDirectionButton();
         void clickedOnBackButton();
-        void setData(FlightVO flight);
         void setChangeButton();
         void clickedOnAdapterItem(int position);
     }

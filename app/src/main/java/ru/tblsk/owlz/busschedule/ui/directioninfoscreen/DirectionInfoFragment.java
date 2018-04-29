@@ -131,8 +131,7 @@ public class DirectionInfoFragment extends BaseFragment
         mRecyclerView.setAdapter(mAdapter);
 
         mPresenter.attachView(this);
-        mPresenter.setData((FlightVO) getArguments().getParcelable(FLIGHT));
-        mPresenter.getStopsOnDirection();
+        mPresenter.getStopsOnDirection((FlightVO) getArguments().getParcelable(FLIGHT));
         mPresenter.setChangeButton();
 
         ((MainActivity)getBaseActivity()).lockDrawer();

@@ -37,7 +37,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     }
 
     @Override
-    public void getStopsOnDirection() {
+    public void getStopsOnDirection(FlightVO flight) {
+        mFlight = flight;
         getMvpView().setToolbarTitle(mFlight.getFlightNumber());
         if(mStops != null) {
             getMvpView().showStopsOnDirection(mStops);
@@ -60,13 +61,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     @Override
     public void clickedOnBackButton() {
         getMvpView().openPreviousFragment();
-    }
-
-    @Override
-    public void setData(FlightVO flight) {
-        if(mFlight == null) {
-            mFlight = flight;
-        }
     }
 
     @Override
