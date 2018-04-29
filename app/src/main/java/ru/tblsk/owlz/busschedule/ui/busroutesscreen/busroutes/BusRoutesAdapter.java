@@ -18,9 +18,11 @@ import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.data.db.model.DirectionType;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.ui.base.CopyItems;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 
-public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder>
+        implements CopyItems<FlightVO>{
 
     private static final int DIRECT_ID = DirectionType.DIRECT.id;
     private static final int REVERSE_ID = DirectionType.REVERSE.id;
@@ -90,8 +92,24 @@ public class BusRoutesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void addItems(List<FlightVO> flights) {
         mFlights.clear();
-        mFlights.addAll(flights);
+        mFlights = getCopy(flights);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public List<FlightVO> getCopy(List<FlightVO> items) {
+        List<FlightVO> flights = new ArrayList<>();
+        for(FlightVO flight : items) {
+            FlightVO copyFlight = new FlightVO();
+            copyFlight.setId(flight.getId());
+            copyFlight.setCurrentDirectionType(flight.getCurrentDirectionType());
+            copyFlight.setFlightNumber(flight.getFlightNumber());
+            copyFlight.setFlightType(flight.getFlightType());
+            copyFlight.setPosition(flight.getPosition());
+            copyFlight.setDirections(flight.getDirections());
+            flights.add(copyFlight);
+        }
+        return flights;
     }
 
     class RoutesViewHolder extends BaseViewHolder {
