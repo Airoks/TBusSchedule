@@ -171,8 +171,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<List<Schedule>> getScheduleByDirection(long directionId,
-                                                             int scheduleType) {
+    public Observable<DepartureTime> getScheduleByDirection(long directionId,
+                                                            int scheduleType) {
         return dbHelper.getScheduleByDirection(directionId, scheduleType);
     }
 

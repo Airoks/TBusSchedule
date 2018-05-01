@@ -9,13 +9,21 @@ import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 
-public class DepartureTimeMapper implements Function<List<DepartureTime>, List<DepartureTimeVO>>{
+public class DepartureTimeMapper implements Function<DepartureTime, DepartureTimeVO>{
     @Override
-    public List<DepartureTimeVO> apply(List<DepartureTime> departureTimes) throws Exception {
-        List<DepartureTimeVO> result = new ArrayList<>();
-        List<Integer> minuteList = new ArrayList<>();
+    public DepartureTimeVO apply(DepartureTime departureTimes) throws Exception {
+        List<Integer> minutes = new ArrayList<>(departureTimes.getMinutes());
+        List<Integer> hours = new ArrayList<>(departureTimes.getHours());
 
-        if(departureTimes.isEmpty()) {
+        Collections.sort(hours);
+        Collections.sort(minutes);
+
+        DepartureTimeVO result = new DepartureTimeVO();
+        result.setHours(hours);
+        result.setMinute(minutes);
+        return result;
+
+        /*if(departureTimes.isEmpty()) {
             return Collections.emptyList();
         } else {
             minuteList.add(departureTimes.get(0).getMinute());
@@ -44,6 +52,6 @@ public class DepartureTimeMapper implements Function<List<DepartureTime>, List<D
             result.add(time);
 
             return result;
-        }
+        }*/
     }
 }

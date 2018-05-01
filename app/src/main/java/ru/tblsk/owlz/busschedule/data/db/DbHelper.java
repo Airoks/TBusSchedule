@@ -34,8 +34,8 @@ public interface DbHelper {
     Single<List<Direction>> getDirectionsByStop(long stopId);
     Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType);
 
-    Observable<List<Schedule>> getScheduleByDirection(long directionId,
-                                                      int scheduleType);
+    Observable<DepartureTime> getScheduleByDirection(long directionId,
+                                                     int scheduleType);
     Observable<List<DepartureTime>> getScheduleByStop(long stopId,
                                                       List<Long> directions, int scheduleType);
 

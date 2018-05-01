@@ -39,8 +39,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     private DepartureTimeMapper mTimeMapper;
     private FlightVO mFlight;
     private List<StopVO> mStops;
-    private List<List<Schedule>> mBusSchedule;
-    private boolean check;
+    private List<DepartureTimeVO> mSchedule;
 
     @Inject
     public DirectionInfoPresenter(DataManager dataManager,
@@ -52,7 +51,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
         mStopMapper = stopMapper;
         mTimeMapper = departureTimeMapper;
-        check = false;
     }
 
     @Override
@@ -136,14 +134,17 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     }
 
     private void getDepartureTime(long directionId, int scheduleType) {
-        mBusSchedule = new ArrayList<>();
+        mSchedule = new ArrayList<>();
+
+        getCompositeDisposable().clear();
         getCompositeDisposable().add(getDataManager().getScheduleByDirection(directionId, scheduleType)
                 .subscribeOn(getSchedulerProvider().io())
+                .map(mTimeMapper)
                 .observeOn(getSchedulerProvider().ui())
-                .subscribeWith(new DisposableObserver<List<Schedule>>() {
+                .subscribeWith(new DisposableObserver<DepartureTimeVO>() {
                     @Override
-                    public void onNext(List<Schedule> schedule) {
-                        mBusSchedule.add(schedule);
+                    public void onNext(DepartureTimeVO time) {
+                        mSchedule.add(time);
                     }
 
                     @Override
@@ -189,34 +190,34 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     }
 
     private void nextFlight(int position) {
-        /*List<DepartureTimeVO> times = mBusSchedule.get(position);
+        DepartureTimeVO times = mSchedule.get(position);
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        for(DepartureTimeVO time : times) {
-            if(currentHour == time.getHours()) {
-                for(int minute : time.getMinute()) {
+        for(int hour : times.getHours()) {
+            if(currentHour == hour) {
+                for(int minute : times.getMinute()) {
                     int currentMinute = calendar.get(Calendar.MINUTE);
                     if(currentMinute <= minute) {
                         StopVO stop = mStops.get(position);
-                        stop.setHour(time.getHours());
+                        stop.setHour(hour);
                         stop.setMinute(minute);
                         stop.setTimeBeforeDeparture(minute - currentMinute);
                         mStops.set(position, stop);
                         return;
                     }
                 }
-            } else if(currentHour < time.getHours()) {
+            } else if(currentHour < hour) {
                 int currentMinute = calendar.get(Calendar.MINUTE);
-                int minute = time.getMinute().get(0);
+                int minute = times.getMinute().get(0);
 
                 StopVO stop = mStops.get(position);
-                stop.setHour(time.getHours());
+                stop.setHour(hour);
                 stop.setMinute(minute);
                 stop.setTimeBeforeDeparture(minute - currentMinute);
                 mStops.set(position, stop);
                 return;
             }
-        }*/
+        }
     }
 
     }
