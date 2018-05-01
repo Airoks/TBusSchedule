@@ -7,6 +7,12 @@ import android.os.Parcelable;
 public class StopVO implements Parcelable{
     private Long id;
     private String stopName;
+    private int hour;
+    private int minute;
+    private int timeBeforeDeparture;
+
+    public StopVO() {
+    }
 
     protected StopVO(Parcel in) {
         if (in.readByte() == 0) {
@@ -15,6 +21,9 @@ public class StopVO implements Parcelable{
             id = in.readLong();
         }
         stopName = in.readString();
+        hour = in.readInt();
+        minute = in.readInt();
+        timeBeforeDeparture = in.readInt();
     }
 
     public static final Creator<StopVO> CREATOR = new Creator<StopVO>() {
@@ -28,9 +37,6 @@ public class StopVO implements Parcelable{
             return new StopVO[size];
         }
     };
-
-    public StopVO() {
-    }
 
     public Long getId() {
         return id;
@@ -48,6 +54,30 @@ public class StopVO implements Parcelable{
         this.stopName = stopName;
     }
 
+    public int getTimeBeforeDeparture() {
+        return timeBeforeDeparture;
+    }
+
+    public void setTimeBeforeDeparture(int timeBeforeDeparture) {
+        this.timeBeforeDeparture = timeBeforeDeparture;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -62,5 +92,8 @@ public class StopVO implements Parcelable{
             parcel.writeLong(id);
         }
         parcel.writeString(stopName);
+        parcel.writeInt(hour);
+        parcel.writeInt(minute);
+        parcel.writeInt(timeBeforeDeparture);
     }
 }

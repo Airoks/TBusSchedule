@@ -11,6 +11,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import ru.tblsk.owlz.busschedule.data.db.model.DaoMaster;
@@ -219,6 +222,78 @@ public class AppDbHelper implements DbHelper {
                     }
                 }
                 return departureTimes;
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Schedule>> getScheduleByDirection(final long directionId,
+                                                             final int scheduleType) {
+        return Observable.create(new ObservableOnSubscribe<List<Schedule>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<Schedule>> e) throws Exception {
+                Direction direction = mDaoSession.getDirectionDao().queryBuilder()
+                        .where(DirectionDao.Properties.Id.eq(directionId)).unique();
+                List<StopsOnRouts> stopsOnRouts = direction.getStopsOnRouts();
+
+                for(StopsOnRouts onRouts : stopsOnRouts) {
+                    List<Schedule> schedules = new ArrayList<>();
+                    List<DepartureTime> departureTimes = new ArrayList<>();
+
+                    schedules = onRouts.getSchedules();
+                    /*for(Schedule schedule : schedules) {
+                        if(schedule.getScheduleType().id == scheduleType) {
+                            departureTimes = schedule.getDepartureTimes();
+                        }
+                    }*/
+                    e.onNext(schedules);
+                }
+                e.onComplete();
+                /*for(long stopId : stops) {
+                    List<Schedule> schedules = new ArrayList<>();
+                    List<DepartureTime> departureTimes = new ArrayList<>();
+
+                    StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
+                    schedules = stopOnRout.getSchedules();
+
+                    for(Schedule schedule : schedules) {
+                        if(schedule.getScheduleType().id == scheduleType) {
+                            departureTimes = schedule.getDepartureTimes();
+                        }
+                    }
+                    e.onNext(departureTimes);
+                }
+                e.onComplete();*/
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<DepartureTime>> getScheduleByStop(final long stopId,
+                                                             final List<Long> directions,
+                                                             final int scheduleType) {
+        return Observable.create(new ObservableOnSubscribe<List<DepartureTime>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<DepartureTime>> e) throws Exception {
+                for(long directionId : directions) {
+                    List<Schedule> schedules = new ArrayList<>();
+                    List<DepartureTime> departureTimes = new ArrayList<>();
+
+                    StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
+                    schedules = stopOnRout.getSchedules();
+
+                    for(Schedule schedule : schedules) {
+                        if(schedule.getScheduleType().id == scheduleType) {
+                            departureTimes = schedule.getDepartureTimes();
+                        }
+                    }
+                    e.onNext(departureTimes);
+                }
+                e.onComplete();
             }
         });
     }

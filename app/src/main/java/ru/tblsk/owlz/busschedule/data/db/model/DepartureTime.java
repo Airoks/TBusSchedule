@@ -4,12 +4,15 @@ package ru.tblsk.owlz.busschedule.data.db.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
+
+import java.util.ArrayList;
 
 @Entity(active = true)
 public class DepartureTime {
@@ -27,13 +30,15 @@ public class DepartureTime {
     @SerializedName("hours")
     @Property(nameInDb = "hours")
     @NotNull
-    private int hours;
+    @Convert(converter = ListConverter.class, columnType = String.class)
+    private ArrayList<Integer> hours;
 
     @Expose
     @SerializedName("minute")
     @Property(nameInDb = "minute")
     @NotNull
-    private int minute;
+    @Convert(converter = ListConverter.class, columnType = String.class)
+    private ArrayList<Integer> minutes;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -43,12 +48,14 @@ public class DepartureTime {
     @Generated(hash = 1428755794)
     private transient DepartureTimeDao myDao;
 
-    @Generated(hash = 881755614)
-    public DepartureTime(Long id, @NotNull Long scheduleId, int hours, int minute) {
+    @Generated(hash = 734408906)
+    public DepartureTime(Long id, @NotNull Long scheduleId,
+            @NotNull ArrayList<Integer> hours,
+            @NotNull ArrayList<Integer> minutes) {
         this.id = id;
         this.scheduleId = scheduleId;
         this.hours = hours;
-        this.minute = minute;
+        this.minutes = minutes;
     }
 
     @Generated(hash = 2079640216)
@@ -71,20 +78,20 @@ public class DepartureTime {
         this.scheduleId = scheduleId;
     }
 
-    public int getHours() {
+    public ArrayList<Integer> getHours() {
         return this.hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(ArrayList<Integer> hours) {
         this.hours = hours;
     }
 
-    public int getMinute() {
-        return this.minute;
+    public ArrayList<Integer> getMinutes() {
+        return this.minutes;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setMinutes(ArrayList<Integer> minutes) {
+        this.minutes = minutes;
     }
 
     /**

@@ -64,6 +64,10 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     class DirectionInfoViewHolder extends BaseViewHolder {
+
+        @BindView(R.id.textview_directioninfo_departuretime)
+        TextView mDepartureTime;
+
         @BindView(R.id.textview_directioninfo_stopname)
         TextView mStopName;
 
@@ -81,6 +85,15 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void onBind(int position) {
             mStopName.setText(mStops.get(position).getStopName());
+            String time;
+
+            if(mStops.get(position).getMinute() < 10) {
+                time = mStops.get(position).getHour() + ":0" + mStops.get(position).getMinute();
+                mDepartureTime.setText(time);
+            } else {
+                time = mStops.get(position).getHour() + ":" + mStops.get(position).getMinute();
+                mDepartureTime.setText(time);
+            }
 
             mTopLine.setVisibility(View.VISIBLE);
             mBottomLine.setVisibility(View.VISIBLE);

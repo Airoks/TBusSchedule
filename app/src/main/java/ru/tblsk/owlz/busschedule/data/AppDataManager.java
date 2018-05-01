@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -144,8 +145,8 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType) {
-        return dbHelper.getSchedule(stopId, directionId, scheduleType)
-                .flatMap(new Function<List<DepartureTime>, SingleSource<? extends List<DepartureTime>>>() {
+        return dbHelper.getSchedule(stopId, directionId, scheduleType);
+                /*.flatMap(new Function<List<DepartureTime>, SingleSource<? extends List<DepartureTime>>>() {
                     @Override
                     public SingleSource<? extends List<DepartureTime>>
                     apply(List<DepartureTime> departureTimes) throws Exception {
@@ -166,7 +167,20 @@ public class AppDataManager implements DataManager {
                         });
                         return Single.just(departureTimes);
                     }
-                });
+                });*/
+    }
+
+    @Override
+    public Observable<List<Schedule>> getScheduleByDirection(long directionId,
+                                                             int scheduleType) {
+        return dbHelper.getScheduleByDirection(directionId, scheduleType);
+    }
+
+    @Override
+    public Observable<List<DepartureTime>> getScheduleByStop(long stopId,
+                                                             List<Long> directions,
+                                                             int scheduleType) {
+        return dbHelper.getScheduleByStop(stopId, directions, scheduleType);
     }
 
     @Override

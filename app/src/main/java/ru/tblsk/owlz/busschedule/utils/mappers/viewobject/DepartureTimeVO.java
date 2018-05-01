@@ -27,4 +27,5 @@ public class DepartureTimeVO {
     public void setMinute(List<Integer> minute) {
         this.minute.addAll(minute);
     }
+
 }

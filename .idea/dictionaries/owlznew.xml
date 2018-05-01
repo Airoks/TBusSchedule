@@ -11,6 +11,7 @@
       <w>changehorizblack</w>
       <w>changesaved</w>
       <w>deletefavorite</w>
+      <w>departuretime</w>
       <w>directioninfo</w>
       <w>directionname</w>
       <w>fastscroll</w>
@@ -19,6 +20,7 @@
       <w>flightnumber</w>
       <w>imagebutton</w>
       <w>imageview</w>
+      <w>littleoval</w>
       <w>navigationview</w>
       <w>notselected</w>
       <w>recyclerview</w>
@@ -36,6 +38,7 @@
       <w>tablayout</w>
       <w>textview</w>
       <w>timati</w>
+      <w>topline</w>
       <w>unbinder</w>
       <w>unsubscribe</w>
       <w>urbanroutes</w>
