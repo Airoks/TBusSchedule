@@ -3,6 +3,8 @@ package ru.tblsk.owlz.busschedule;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
+
 import ru.tblsk.owlz.busschedule.di.application.component.ApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.application.component.DaggerApplicationComponent;
 import ru.tblsk.owlz.busschedule.di.application.module.ApplicationModule;
@@ -17,6 +19,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Stetho.initializeWithDefaults(this);
+
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
 

@@ -3,7 +3,9 @@ package ru.tblsk.owlz.busschedule.utils.mappers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.functions.Function;
 import ru.tblsk.owlz.busschedule.data.db.model.DepartureTime;
@@ -12,46 +14,24 @@ import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 public class DepartureTimeMapper implements Function<DepartureTime, DepartureTimeVO>{
     @Override
     public DepartureTimeVO apply(DepartureTime departureTimes) throws Exception {
-        List<Integer> minutes = new ArrayList<>(departureTimes.getMinutes());
-        List<Integer> hours = new ArrayList<>(departureTimes.getHours());
-
-        Collections.sort(hours);
-        Collections.sort(minutes);
-
-        DepartureTimeVO result = new DepartureTimeVO();
-        result.setHours(hours);
-        result.setMinute(minutes);
-        return result;
-
-        /*if(departureTimes.isEmpty()) {
-            return Collections.emptyList();
+        if(departureTimes.getHours() == null) {
+            return new DepartureTimeVO();
         } else {
-            minuteList.add(departureTimes.get(0).getMinute());
-            for(int i = 1; i < departureTimes.size(); i ++) {
-                int previousHours = departureTimes.get(i-1).getHours();
-                int currentHours = departureTimes.get(i).getHours();
-                if(previousHours == currentHours) {
-                    minuteList.add(departureTimes.get(i).getMinute());
-                } else {
-                    Collections.sort(minuteList);
-                    DepartureTimeVO time = new DepartureTimeVO();
-                    time.setHours(previousHours);
-                    time.setMinute(minuteList);
-                    result.add(time);
+            Map<Integer, ArrayList<Integer>> time = new HashMap<>(departureTimes.getTime());
+            List<Integer> hours = new ArrayList<>(departureTimes.getHours());
 
-                    minuteList.clear();
-                    minuteList.add(departureTimes.get(i).getMinute());
-                }
+            Collections.sort(hours);
+
+            for(int hour : hours) {
+                Collections.sort(time.get(hour));
             }
 
-            Collections.sort(minuteList);
-            int size = departureTimes.size()-1;
-            DepartureTimeVO time = new DepartureTimeVO();
-            time.setHours(departureTimes.get(size).getHours());
-            time.setMinute(minuteList);
-            result.add(time);
 
+            DepartureTimeVO result = new DepartureTimeVO();
+            result.setHours(hours);
+            result.setTime(time);
             return result;
-        }*/
+        }
+
     }
 }

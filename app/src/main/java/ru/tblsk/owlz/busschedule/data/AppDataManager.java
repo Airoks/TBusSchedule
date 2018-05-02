@@ -144,30 +144,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType) {
+    public Single<DepartureTime> getSchedule(long stopId, long directionId, int scheduleType) {
         return dbHelper.getSchedule(stopId, directionId, scheduleType);
-                /*.flatMap(new Function<List<DepartureTime>, SingleSource<? extends List<DepartureTime>>>() {
-                    @Override
-                    public SingleSource<? extends List<DepartureTime>>
-                    apply(List<DepartureTime> departureTimes) throws Exception {
-                        Collections.sort(departureTimes, new Comparator<DepartureTime>() {
-                            @Override
-                            public int compare(DepartureTime left, DepartureTime right) {
-                                //сортируем в порядке возрастания
-                                int result;
-                                if(left.getHours() > right.getHours()) {
-                                    result = 1;
-                                } else if (left.getHours() <right.getHours()) {
-                                    result = -1;
-                                } else {
-                                    result = 0;
-                                }
-                                return result;
-                            }
-                        });
-                        return Single.just(departureTimes);
-                    }
-                });*/
     }
 
     @Override

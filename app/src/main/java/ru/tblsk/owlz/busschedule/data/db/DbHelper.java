@@ -32,7 +32,7 @@ public interface DbHelper {
     Single<List<Stop>> getAllStops();
     Single<List<Flight>> getFlightByType(int flightType);
     Single<List<Direction>> getDirectionsByStop(long stopId);
-    Single<List<DepartureTime>> getSchedule(long stopId, long directionId, int scheduleType);
+    Single<DepartureTime> getSchedule(long stopId, long directionId, int scheduleType);
 
     Observable<DepartureTime> getScheduleByDirection(long directionId,
                                                      int scheduleType);

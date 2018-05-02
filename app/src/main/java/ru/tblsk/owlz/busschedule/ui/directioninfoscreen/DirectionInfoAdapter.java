@@ -16,17 +16,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 
 public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private DirectionInfoContract.Presenter mPresenter;
     private List<StopVO> mStops;
+    private List<NextFlight> mNextFlight;
 
     @Inject
     public DirectionInfoAdapter(DirectionInfoContract.Presenter presenter) {
         mPresenter = presenter;
         mStops = new ArrayList<>();
+        mNextFlight = new ArrayList<>();
     }
 
     @Override
@@ -58,6 +61,12 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         notifyDataSetChanged();
     }
 
+    public void addTimeOfNextFlight(List<NextFlight> nextFlights) {
+        this.mNextFlight.clear();
+        this.mNextFlight.addAll(nextFlights);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mStops.size();
@@ -85,14 +94,18 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void onBind(int position) {
             mStopName.setText(mStops.get(position).getStopName());
-            String time;
 
-            if(mStops.get(position).getMinute() < 10) {
-                time = mStops.get(position).getHour() + ":0" + mStops.get(position).getMinute();
-                mDepartureTime.setText(time);
-            } else {
-                time = mStops.get(position).getHour() + ":" + mStops.get(position).getMinute();
-                mDepartureTime.setText(time);
+            if(!mNextFlight.isEmpty()) {
+                NextFlight next = mNextFlight.get(position);
+                String time;
+                if(next.isInitialized()) {
+                    int timeBefore = next.getTimeBeforeDeparture();
+                    int minute = timeBefore % 60;
+                    int hour = (timeBefore - minute) / 60;
+
+                    time = hour != 0 ? hour + "ч " + minute + "м" : minute + "м";
+                    mDepartureTime.setText(time);
+                }
             }
 
             mTopLine.setVisibility(View.VISIBLE);

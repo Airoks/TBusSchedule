@@ -13,6 +13,9 @@ import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity(active = true)
 public class DepartureTime {
@@ -31,14 +34,14 @@ public class DepartureTime {
     @Property(nameInDb = "hours")
     @NotNull
     @Convert(converter = ListConverter.class, columnType = String.class)
-    private ArrayList<Integer> hours;
+    private List<Integer> hours;
 
     @Expose
-    @SerializedName("minute")
-    @Property(nameInDb = "minute")
+    @SerializedName("time")
+    @Property(nameInDb = "time")
     @NotNull
-    @Convert(converter = ListConverter.class, columnType = String.class)
-    private ArrayList<Integer> minutes;
+    @Convert(converter = MapConverter.class, columnType = String.class)
+    private Map<Integer, ArrayList<Integer>> time;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -48,14 +51,14 @@ public class DepartureTime {
     @Generated(hash = 1428755794)
     private transient DepartureTimeDao myDao;
 
-    @Generated(hash = 734408906)
+    @Generated(hash = 39201435)
     public DepartureTime(Long id, @NotNull Long scheduleId,
-            @NotNull ArrayList<Integer> hours,
-            @NotNull ArrayList<Integer> minutes) {
+            @NotNull List<Integer> hours,
+            @NotNull Map<Integer, ArrayList<Integer>> time) {
         this.id = id;
         this.scheduleId = scheduleId;
         this.hours = hours;
-        this.minutes = minutes;
+        this.time = time;
     }
 
     @Generated(hash = 2079640216)
@@ -78,20 +81,20 @@ public class DepartureTime {
         this.scheduleId = scheduleId;
     }
 
-    public ArrayList<Integer> getHours() {
+    public List<Integer> getHours() {
         return this.hours;
     }
 
-    public void setHours(ArrayList<Integer> hours) {
+    public void setHours(List<Integer> hours) {
         this.hours = hours;
     }
 
-    public ArrayList<Integer> getMinutes() {
-        return this.minutes;
+    public Map<Integer, ArrayList<Integer>> getTime() {
+        return this.time;
     }
 
-    public void setMinutes(ArrayList<Integer> minutes) {
-        this.minutes = minutes;
+    public void setTime(Map<Integer, ArrayList<Integer>> time) {
+        this.time = time;
     }
 
     /**

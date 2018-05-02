@@ -44,6 +44,7 @@
     <string name="stopinfo_notselected">Вы не выбрали ни одного направления</string>
 
     <string name="tab">\u0009</string>
+    <string name="enter">\n</string>
     <string name="schedule_workday">Рабочие дни</string>
     <string name="schedule_weekend">Выходные дни</string>
     <string name="schedule_empty_workday">Данный рейс не совершает перевозок в рабочие дни</string>

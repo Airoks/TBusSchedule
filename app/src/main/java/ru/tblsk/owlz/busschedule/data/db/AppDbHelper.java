@@ -2,6 +2,8 @@ package ru.tblsk.owlz.busschedule.data.db;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -202,14 +204,14 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Single<List<DepartureTime>> getSchedule(final long stopId,
-                                                   final long directionId,
-                                                   final int scheduleType) {
-        return Single.fromCallable(new Callable<List<DepartureTime>>() {
+    public Single<DepartureTime> getSchedule(final long stopId,
+                                             final long directionId,
+                                             final int scheduleType) {
+        return Single.fromCallable(new Callable<DepartureTime>() {
             @Override
-            public List<DepartureTime> call() throws Exception {
+            public DepartureTime call() throws Exception {
                 List<Schedule> schedules = new ArrayList<>();
-                List<DepartureTime> departureTimes = new ArrayList<>();
+                DepartureTime departureTimes = new DepartureTime();
 
                 StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                         .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
@@ -217,8 +219,8 @@ public class AppDbHelper implements DbHelper {
                 schedules = stopOnRout.getSchedules();
 
                 for(Schedule schedule : schedules) {
-                    if(schedule.getScheduleType().id == scheduleType) {
-                        departureTimes = schedule.getDepartureTimes();
+                    if(schedule.getScheduleType().id == scheduleType && !schedules.isEmpty()) {
+                        departureTimes = schedule.getDepartureTimes().get(0);
                     }
                 }
                 return departureTimes;
@@ -235,6 +237,12 @@ public class AppDbHelper implements DbHelper {
                 Direction direction = mDaoSession.getDirectionDao().queryBuilder()
                         .where(DirectionDao.Properties.Id.eq(directionId)).unique();
                 List<StopsOnRouts> stopsOnRouts = direction.getStopsOnRouts();
+                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
+                    @Override
+                    public int compare(StopsOnRouts left, StopsOnRouts right) {
+                        return left.getStopPosition() - right.getStopPosition();
+                    }
+                });
 
                 for(StopsOnRouts onRouts : stopsOnRouts) {
                     List<Schedule> schedules = new ArrayList<>();
@@ -249,23 +257,6 @@ public class AppDbHelper implements DbHelper {
                     e.onNext(departureTimes);
                 }
                 e.onComplete();
-                /*for(long stopId : stops) {
-                    List<Schedule> schedules = new ArrayList<>();
-                    List<DepartureTime> departureTimes = new ArrayList<>();
-
-                    StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
-                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
-                    schedules = stopOnRout.getSchedules();
-
-                    for(Schedule schedule : schedules) {
-                        if(schedule.getScheduleType().id == scheduleType) {
-                            departureTimes = schedule.getDepartureTimes();
-                        }
-                    }
-                    e.onNext(departureTimes);
-                }
-                e.onComplete();*/
             }
         });
     }

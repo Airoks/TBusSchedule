@@ -1,9 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,7 +16,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class WorkdaySchedulePresenter extends BasePresenter<BusScheduleContract.View>
         implements BusScheduleContract.Presenter {
 
-    private List<DepartureTimeVO> mScheduleWorkday;
+    private DepartureTimeVO mScheduleWorkday;
     private DepartureTimeMapper mDepartureTimeMapper;
 
     @Inject
@@ -30,22 +27,21 @@ public class WorkdaySchedulePresenter extends BasePresenter<BusScheduleContract.
         super(dataManager, compositeDisposable, schedulerProvider);
 
         this.mDepartureTimeMapper = mapper;
-        mScheduleWorkday = new ArrayList<>();
     }
 
     @Override
     public void getSchedule(long stopId, long directionId, int scheduleType) {
-        if(!mScheduleWorkday.isEmpty()) {
+        if(mScheduleWorkday != null) {
             getMvpView().showSchedule(mScheduleWorkday);
         } else {
             getCompositeDisposable().add(getDataManager().getSchedule(stopId, directionId, scheduleType)
                     .subscribeOn(getSchedulerProvider().io())
                     .map(mDepartureTimeMapper)
                     .observeOn(getSchedulerProvider().ui())
-                    .subscribe(new Consumer<List<DepartureTimeVO>>() {
+                    .subscribe(new Consumer<DepartureTimeVO>() {
                         @Override
-                        public void accept(List<DepartureTimeVO> departureTimes) throws Exception {
-                            mScheduleWorkday.addAll(departureTimes);
+                        public void accept(DepartureTimeVO departureTimes) throws Exception {
+                            mScheduleWorkday = departureTimes;
                             if(departureTimes.isEmpty()) {
                                 getMvpView().showEmptyScreen();
                             } else {

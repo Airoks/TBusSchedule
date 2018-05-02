@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,10 +20,12 @@ import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 
 public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
-    private List<DepartureTimeVO> mDepartureTime;
+    private List<Integer> mKeyMap;
+    private Map<Integer, List<Integer>> mDepartureTime;
 
     public BusScheduleAdapter() {
-        this.mDepartureTime = new ArrayList<>();
+        this.mKeyMap = new ArrayList<>();
+        this.mDepartureTime = new HashMap<>();
     }
 
     @Override
@@ -43,9 +47,11 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         return mDepartureTime.size();
     }
 
-    public void addItems(List<DepartureTimeVO> departureTimes) {
+    public void addItems(DepartureTimeVO departureTimes) {
         mDepartureTime.clear();
-        mDepartureTime.addAll(departureTimes);
+        mKeyMap.clear();
+        mKeyMap.addAll(departureTimes.getHours());
+        mDepartureTime.putAll(departureTimes.getTime());
         notifyDataSetChanged();
     }
 
@@ -65,10 +71,10 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @Override
         public void onBind(int position) {
-            DepartureTimeVO time = mDepartureTime.get(position);
-            String hours = time.getHours() + "";
+            int key = mKeyMap.get(position);
+            String hours = key + "";
             StringBuilder minute = new StringBuilder();
-            for(Integer minuteList : time.getMinute()) {
+            for(Integer minuteList : mDepartureTime.get(key)) {
                 minute.append(minuteList).append("\t\t");
             }
             mHours.setText(hours);

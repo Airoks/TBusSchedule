@@ -2,23 +2,17 @@ package ru.tblsk.owlz.busschedule.utils.mappers.viewobject;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DepartureTimeVO {
     private List<Integer> hours;
-    private List<Integer> minute;
+    private Map<Integer, ArrayList<Integer>> time;
 
     public DepartureTimeVO() {
         hours = new ArrayList<>();
-        minute = new ArrayList<>();
-    }
-
-    public List<Integer> getMinute() {
-        return minute;
-    }
-
-    public void setMinute(List<Integer> minute) {
-        this.minute.addAll(minute);
+        time = new HashMap<>();
     }
 
     public List<Integer> getHours() {
@@ -27,5 +21,17 @@ public class DepartureTimeVO {
 
     public void setHours(List<Integer> hours) {
         this.hours.addAll(hours);
+    }
+
+    public Map<Integer, ArrayList<Integer>> getTime() {
+        return time;
+    }
+
+    public void setTime(Map<Integer, ArrayList<Integer>> time) {
+        this.time.putAll(time);
+    }
+
+    public boolean isEmpty() {
+        return hours.isEmpty();
     }
 }
