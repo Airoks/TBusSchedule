@@ -15,7 +15,6 @@ import io.reactivex.observers.DisposableObserver;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.di.screens.directioninfo.DirectionInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
-import ru.tblsk.owlz.busschedule.ui.base.TimeUntilNextFlights;
 import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.utils.mappers.StopMapper;
@@ -122,14 +121,14 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
         if(day == Calendar.SUNDAY || day == Calendar.SATURDAY) {
-            getDepartureTime(directionId, WEEKEND);
+            getScheduleByType(directionId, WEEKEND);
         } else {
-            getDepartureTime(directionId, WORKDAY);
+            getScheduleByType(directionId, WORKDAY);
         }
     }
 
     @Override
-    public void getDepartureTime(long directionId, int scheduleType) {
+    public void getScheduleByType(long directionId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
         getCompositeDisposable().clear();

@@ -1,6 +1,8 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -197,7 +199,7 @@ public class AppDbHelper implements DbHelper {
                 Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
                     @Override
                     public int compare(StopsOnRouts left, StopsOnRouts right) {
-                        return (int) (left.getStopId() - right.getStopId());
+                        return (int) (left.getId() - right.getId());
                     }
                 });
 
@@ -228,7 +230,8 @@ public class AppDbHelper implements DbHelper {
 
                 for(Schedule schedule : schedules) {
                     int type = schedule.getScheduleType().id;
-                    if(type == scheduleType && !schedule.getDepartureTimes().isEmpty()) {
+                    boolean check = !schedule.getDepartureTimes().isEmpty();
+                    if((type == scheduleType) && check) {
                         departureTimes = schedule.getDepartureTimes().get(0);
                     }
                 }
@@ -258,7 +261,9 @@ public class AppDbHelper implements DbHelper {
 
                     schedules = onRouts.getSchedules();
                     for(Schedule schedule : schedules) {
-                        if(schedule.getScheduleType().id == scheduleType) {
+                        int type = schedule.getScheduleType().id;
+                        boolean check = !schedule.getDepartureTimes().isEmpty();
+                        if((type == scheduleType) && check) {
                             departureTimes = schedule.getDepartureTimes().get(0);
                         }
                     }
@@ -281,7 +286,7 @@ public class AppDbHelper implements DbHelper {
                 Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
                     @Override
                     public int compare(StopsOnRouts left, StopsOnRouts right) {
-                        return (int) (left.getStopId() - right.getStopId());
+                        return (int) (left.getId() - right.getId());
                     }
                 });
 
@@ -291,7 +296,9 @@ public class AppDbHelper implements DbHelper {
 
                     schedules = onRouts.getSchedules();
                     for(Schedule schedule : schedules) {
-                        if(schedule.getScheduleType().id == scheduleType) {
+                        int type = schedule.getScheduleType().id;
+                        boolean check = !schedule.getDepartureTimes().isEmpty();
+                        if((type == scheduleType) && check) {
                             departureTimes = schedule.getDepartureTimes().get(0);
                         }
                     }
@@ -320,7 +327,7 @@ public class AppDbHelper implements DbHelper {
                 Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
                     @Override
                     public int compare(StopsOnRouts left, StopsOnRouts right) {
-                        return (int) (left.getStopId() - right.getStopId());
+                        return (int) (left.getId() - right.getId());
                     }
                 });
 
@@ -330,7 +337,9 @@ public class AppDbHelper implements DbHelper {
 
                     schedules = onRouts.getSchedules();
                     for(Schedule schedule : schedules) {
-                        if(schedule.getScheduleType().id == scheduleType) {
+                        int type = schedule.getScheduleType().id;
+                        boolean check = !schedule.getDepartureTimes().isEmpty();
+                        if((type == scheduleType) && check) {
                             departureTimes = schedule.getDepartureTimes().get(0);
                         }
                     }
@@ -489,30 +498,15 @@ public class AppDbHelper implements DbHelper {
                 Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
                     @Override
                     public int compare(StopsOnRouts left, StopsOnRouts right) {
-                        return (int) (left.getStopId() - right.getStopId());
+                        return (int) (left.getId() - right.getId());
                     }
                 });
 
                 for(StopsOnRouts onRouts : stopsOnRouts) {
-                    if(onRouts.getStopId().equals(stopId)) {
-                        long directionId = onRouts.getDirectionId();
-                        directions.add(mDaoSession.getDirectionDao().queryBuilder()
-                                .where(DirectionDao.Properties.Id.eq(directionId)).unique());
-                    }
+                    long directionId = onRouts.getDirectionId();
+                    directions.add(mDaoSession.getDirectionDao().queryBuilder()
+                            .where(DirectionDao.Properties.Id.eq(directionId)).unique());
                 }
-
-                /*for(FavoriteStops favorite : favorites) {
-
-                    StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                            .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getStopsOnRoutsId()),
-                                    StopsOnRoutsDao.Properties.StopId.eq(stopId)).unique();
-
-                    if(stopsOnRouts != null) {
-                        long directionId = stopsOnRouts.getDirectionId();
-                        directions.add(mDaoSession.getDirectionDao().queryBuilder()
-                                .where(DirectionDao.Properties.Id.eq(directionId)).unique());
-                    }
-                }*/
                 return directions;
             }
         });

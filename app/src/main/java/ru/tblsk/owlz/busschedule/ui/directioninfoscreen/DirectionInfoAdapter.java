@@ -60,12 +60,12 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         mStops.addAll(stops);
         notifyDataSetChanged();
     }
-
     public void addTimeOfNextFlight(List<NextFlight> nextFlights) {
         mNextFlight.clear();
         mNextFlight.addAll(nextFlights);
         notifyDataSetChanged();
     }
+
 
     @Override
     public int getItemCount() {

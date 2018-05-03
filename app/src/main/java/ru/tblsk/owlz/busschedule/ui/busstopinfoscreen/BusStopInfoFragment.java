@@ -33,6 +33,7 @@ import ru.tblsk.owlz.busschedule.ui.base.OnBackPressedListener;
 import ru.tblsk.owlz.busschedule.ui.base.SetupToolbar;
 import ru.tblsk.owlz.busschedule.ui.busschedulescreen.BusScheduleContainerFragment;
 import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
+import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
@@ -186,6 +187,11 @@ public class BusStopInfoFragment extends BaseFragment
     @Override
     public void showDirectionsByStop(List<DirectionVO> directions) {
         mAdapter.addItems(directions);
+    }
+
+    @Override
+    public void showTimeOfNextFlight(List<NextFlight> nextFlights) {
+        mAdapter.addTimeOfNextFlight(nextFlights);
     }
 
     @Override

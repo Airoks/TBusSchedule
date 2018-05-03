@@ -16,17 +16,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.tblsk.owlz.busschedule.R;
 import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
+import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 
 public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<DirectionVO> mDirections;
+    private List<NextFlight> mNextFlight;
     private BusStopInfoContract.Presenter mPresenter;
 
     @Inject
     public BusStopInfoAdapter(BusStopInfoContract.Presenter presenter) {
         mPresenter = presenter;
         mDirections = new ArrayList<>();
+        mNextFlight = new ArrayList<>();
     }
 
     @Override
@@ -66,6 +69,12 @@ public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         notifyDataSetChanged();
     }
 
+    public void addTimeOfNextFlight(List<NextFlight> nextFlights) {
+        mNextFlight.clear();
+        mNextFlight.addAll(nextFlights);
+        notifyDataSetChanged();
+    }
+
     class StopInfoViewHolder extends BaseViewHolder {
 
         @BindView(R.id.textview_stopinfo_directionname)
@@ -73,6 +82,9 @@ public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @BindView(R.id.textview_stopinfo_flightnumber)
         TextView mFlightNumber;
+
+        @BindView(R.id.textview_stopinfo_departuretime)
+        TextView mDepartureTime;
 
         public StopInfoViewHolder(View itemView) {
             super(itemView);
@@ -83,6 +95,24 @@ public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         public void onBind(int position) {
             mDirectionName.setText(mDirections.get(position).getDirectionName());
             mFlightNumber.setText(mDirections.get(position).getFlightNumber());
+
+            if(!mNextFlight.isEmpty()) {
+                NextFlight next = mNextFlight.get(position);
+                String time;
+                if(next.isInitialized()) {
+                    int timeBefore = next.getTimeBeforeDeparture();
+                    int minute = timeBefore % 60;
+                    int hour = (timeBefore - minute) / 60;
+
+                    time = hour != 0 ? hour + "ч " : " ";
+                    time = minute != 0 ? time + minute + "м" : time + " ";
+                    mDepartureTime.setText(time);
+                } else {
+                    mDepartureTime.setText(" ");
+                }
+            } else {
+                mDepartureTime.setText(" ");
+            }
         }
     }
 }

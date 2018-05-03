@@ -2,15 +2,19 @@ package ru.tblsk.owlz.busschedule.ui.busstopinfoscreen;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
@@ -18,6 +22,7 @@ import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.BusStopInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
 import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
+import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
@@ -27,6 +32,10 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View>
         implements BusStopInfoContract.Presenter{
 
+    private static final int WORKDAY = 0;
+    private static final int WEEKEND = 1;
+
+    private DepartureTimeMapper mTimeMapper;
     private List<DirectionVO> mDirections;
     private List<DirectionVO> mFavoriteDirections;
     private List<DepartureTimeVO> mSchedule;
@@ -38,30 +47,37 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     public BusStopInfoPresenter(DataManager dataManager,
                                 CompositeDisposable compositeDisposable,
                                 SchedulerProvider schedulerProvider,
-                                RxEventBus eventBus) {
+                                RxEventBus eventBus,
+                                DepartureTimeMapper departureTimeMapper) {
         super(dataManager, compositeDisposable, schedulerProvider);
 
         mDirections = new ArrayList<>();
         mFavoriteDirections = new ArrayList<>();
         mSchedule = new ArrayList<>();
         mNextFlights = new ArrayList<>();
+        mTimeMapper = departureTimeMapper;
         mEventBus = eventBus;
     }
 
     @Override
     public void getDirectionsByStop(Long stopId, boolean isFavoriteStop) {
         mIsFavoriteStop = isFavoriteStop;
-        if(mDirections.isEmpty()) {
-            getDirection(stopId);
-        }
+
         if(isFavoriteStop) {
             if(mFavoriteDirections.isEmpty()) {
                 getFavoriteDirection(stopId);
+                getDirection(stopId);
             } else {
                 getMvpView().showDirectionsByStop(mFavoriteDirections);
+                setTimer();
             }
         } else {
-            getMvpView().showDirectionsByStop(mDirections);
+            if(mDirections.isEmpty()) {
+                getDirection(stopId);
+            } else {
+                getMvpView().showDirectionsByStop(mDirections);
+                setTimer();
+            }
         }
     }
 
@@ -171,7 +187,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 }));
     }
 
-    private void getDirection(long stopId) {
+    private void getDirection(final long stopId) {
 
         getCompositeDisposable().add(getDataManager().getDirectionsByStop(stopId)
                 .subscribeOn(getSchedulerProvider().io())
@@ -204,20 +220,22 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                     public void accept(List<DirectionVO> directionVOS) throws Exception {
                         mDirections.clear();
                         mDirections.addAll(directionVOS);
+
                         if(!mIsFavoriteStop) {
                             getMvpView().showDirectionsByStop(directionVOS);
+                            getSchedule(stopId);
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-
+                        throwable.printStackTrace();
                     }
                 }));
 
     }
 
-    private void getFavoriteDirection(long stopId) {
+    private void getFavoriteDirection(final long stopId) {
         getCompositeDisposable().add(getDataManager().getFavoriteDirection(stopId)
                 .subscribeOn(getSchedulerProvider().io())
                 .flatMap(new Function<List<Direction>, SingleSource<List<DirectionVO>>>() {
@@ -250,6 +268,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                         mFavoriteDirections.clear();
                         mFavoriteDirections.addAll(directionVOS);
                         getMvpView().showDirectionsByStop(directionVOS);
+                        getSchedule(stopId);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -260,27 +279,163 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     }
 
     @Override
-    public void getSchedule(long id) {
+    public void getSchedule(long stopId) {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
 
+        if(day == Calendar.SUNDAY || day == Calendar.SATURDAY) {
+            getScheduleByType(stopId, WEEKEND);
+        } else {
+            getScheduleByType(stopId, WORKDAY);
+        }
     }
 
     @Override
-    public void getDepartureTime(long id, int scheduleType) {
+    public void getScheduleByType(long stopId, int scheduleType) {
+        mSchedule.clear();
+        mNextFlights.clear();
+        getCompositeDisposable().clear();
 
+        if(mIsFavoriteStop) {
+            getScheduleByFavoriteStop(stopId, scheduleType);
+        } else {
+            getScheduleByStop(stopId, scheduleType);
+        }
+    }
+
+    private void getScheduleByStop(long stopId, int scheduleType) {
+        getCompositeDisposable().add(getDataManager().getScheduleByStop(stopId, scheduleType)
+                .subscribeOn(getSchedulerProvider().io())
+                .map(mTimeMapper)
+                .observeOn(getSchedulerProvider().ui())
+                .subscribeWith(new DisposableObserver<DepartureTimeVO>() {
+                    @Override
+                    public void onNext(DepartureTimeVO time) {
+                        mSchedule.add(time);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        setTimer();
+                    }
+                }));
+    }
+
+    private void getScheduleByFavoriteStop(long stopId, int scheduleType) {
+        getCompositeDisposable().add(getDataManager().getScheduleByFavoriteStop(stopId, scheduleType)
+                .subscribeOn(getSchedulerProvider().io())
+                .map(mTimeMapper)
+                .observeOn(getSchedulerProvider().ui())
+                .subscribeWith(new DisposableObserver<DepartureTimeVO>() {
+                    @Override
+                    public void onNext(DepartureTimeVO time) {
+                        mSchedule.add(time);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        setTimer();
+                    }
+                }));
     }
 
     @Override
     public void setTimer() {
+        mNextFlights.clear();
+        if(mIsFavoriteStop) {
+            for(int i = 0; i < mFavoriteDirections.size(); i ++) {
+                getNextFlight(i, false);
+            }
+        } else {
+            for(int i = 0; i < mDirections.size(); i ++) {
+                getNextFlight(i, false);
+            }
+        }
 
+        getMvpView().showTimeOfNextFlight(mNextFlights);
+
+        getCompositeDisposable().clear();
+        getCompositeDisposable().add(Observable.interval(1, TimeUnit.MINUTES)
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        for(int i = 0; i < mNextFlights.size(); i ++) {
+                            if(mNextFlights.get(i).isInitialized()) {
+                                int timeBefore = mNextFlights.get(i).getTimeBeforeDeparture() - 1;
+                                NextFlight next = newNextFlight(mNextFlights.get(i));
+                                mNextFlights.set(i, next);
+                                if(timeBefore < 0) {
+                                    getNextFlight(i, true);
+                                }
+                            }
+                        }
+                        getMvpView().showTimeOfNextFlight(mNextFlights);
+                    }
+                }));
     }
 
     @Override
     public NextFlight newNextFlight(NextFlight old) {
-        return null;
+        NextFlight next = new NextFlight();
+        next.setHour(old.getHour());
+        next.setMinute(old.getMinute());
+        next.setTimeBeforeDeparture(old.getTimeBeforeDeparture() - 1);
+        next.setInitialized(true);
+        return next;
     }
 
     @Override
     public void getNextFlight(int position, boolean set) {
+        DepartureTimeVO schedule = mSchedule.get(position);
+        NextFlight nextFlight = new NextFlight();
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        for(int hour : schedule.getHours()) {
+            if(currentHour == hour) {
+                for(int minute : schedule.getTime().get(hour)) {
+                    int currentMinute = calendar.get(Calendar.MINUTE);
+                    if(currentMinute <= minute) {
+                        nextFlight.setHour(hour);
+                        nextFlight.setMinute(minute);
+                        int timeBefore = minute - currentMinute;
+                        nextFlight.setTimeBeforeDeparture(timeBefore);
+                        nextFlight.setInitialized(true);
+                        if(set) {
+                            mNextFlights.set(position, nextFlight);
+                        } else {
+                            mNextFlights.add(nextFlight);
+                        }
+                        return;
+                    }
+                }
+            } else if(currentHour < hour) {
+                int currentMinute = calendar.get(Calendar.MINUTE);
+                int minute = schedule.getTime().get(hour).get(0);
 
+                nextFlight.setHour(hour);
+                nextFlight.setMinute(minute);
+                int timeBefore = (hour - currentHour)* 60 + (minute - currentMinute);
+                nextFlight.setTimeBeforeDeparture(timeBefore);
+                nextFlight.setInitialized(true);
+                if(set) {
+                    mNextFlights.set(position, nextFlight);
+                } else {
+                    mNextFlights.add(nextFlight);
+                }
+                return;
+            }
+        }
+        mNextFlights.add(nextFlight);
     }
 }

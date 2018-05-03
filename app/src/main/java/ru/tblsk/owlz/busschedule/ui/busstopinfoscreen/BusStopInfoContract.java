@@ -6,6 +6,7 @@ import java.util.List;
 import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.base.MvpView;
 import ru.tblsk.owlz.busschedule.ui.base.TimeUntilNextFlights;
+import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 
@@ -13,6 +14,7 @@ public interface BusStopInfoContract {
 
     interface View extends MvpView {
         void showDirectionsByStop(List<DirectionVO> directions);
+        void showTimeOfNextFlight(List<NextFlight> nextFlights);
         void openPreviousFragment();
         void openFavoritesDirectionsDialog(List<DirectionVO> directions);
         void openScheduleContainerFragment(FlightVO flight);
