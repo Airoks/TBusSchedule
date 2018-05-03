@@ -25,7 +25,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 @DirectionInfoScreen
 public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.View>
-        implements DirectionInfoContract.Presenter{
+        implements DirectionInfoContract.Presenter {
 
     private static final int DIRECT = 0;
     private static final int REVERSE = 1;
@@ -157,7 +157,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     private void setTimer() {
         mNextFlights.clear();
         for(int i = 0; i < mStops.size(); i ++) {
-            getNextFlight(i);
+            getNextFlight(i, false);
         }
 
         getMvpView().showTimeOfNextFlight(mNextFlights);
@@ -171,9 +171,10 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                         for(int i = 0; i < mNextFlights.size(); i ++) {
                             if(mNextFlights.get(i).isInitialized()) {
                                 int timeBefore = mNextFlights.get(i).getTimeBeforeDeparture() - 1;
-                                mNextFlights.get(i).setTimeBeforeDeparture(timeBefore);
+                                NextFlight next = newNextFlight(mNextFlights.get(i));
+                                mNextFlights.set(i, next);
                                 if(timeBefore < 0) {
-                                    getNextFlight(i);
+                                    getNextFlight(i, true);
                                 }
                             }
                         }
@@ -182,7 +183,16 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                 }));
     }
 
-    private void getNextFlight(int position) {
+    private NextFlight newNextFlight(NextFlight old) {
+        NextFlight next = new NextFlight();
+        next.setHour(old.getHour());
+        next.setMinute(old.getMinute());
+        next.setTimeBeforeDeparture(old.getTimeBeforeDeparture() - 1);
+        next.setInitialized(true);
+        return next;
+    }
+
+    private void getNextFlight(int position, boolean set) {
         DepartureTimeVO schedule = mSchedule.get(position);
         NextFlight nextFlight = new NextFlight();
         Calendar calendar = Calendar.getInstance();
@@ -194,9 +204,14 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                     if(currentMinute <= minute) {
                         nextFlight.setHour(hour);
                         nextFlight.setMinute(minute);
-                        nextFlight.setTimeBeforeDeparture(minute - currentMinute);
+                        int timeBefore = minute - currentMinute;
+                        nextFlight.setTimeBeforeDeparture(timeBefore);
                         nextFlight.setInitialized(true);
-                        mNextFlights.add(nextFlight);
+                        if(set) {
+                            mNextFlights.set(position, nextFlight);
+                        } else {
+                            mNextFlights.add(nextFlight);
+                        }
                         return;
                     }
                 }
@@ -209,7 +224,11 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                 int timeBefore = (hour - currentHour)* 60 + (minute - currentMinute);
                 nextFlight.setTimeBeforeDeparture(timeBefore);
                 nextFlight.setInitialized(true);
-                mNextFlights.add(nextFlight);
+                if(set) {
+                    mNextFlights.set(position, nextFlight);
+                } else {
+                    mNextFlights.add(nextFlight);
+                }
                 return;
             }
         }

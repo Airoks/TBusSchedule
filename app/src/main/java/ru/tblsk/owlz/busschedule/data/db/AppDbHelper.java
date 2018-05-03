@@ -262,15 +262,15 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<DepartureTime>> getScheduleByStop(final long stopId,
-                                                             final List<Long> directions,
-                                                             final int scheduleType) {
-        return Observable.create(new ObservableOnSubscribe<List<DepartureTime>>() {
+    public Observable<DepartureTime> getScheduleByStop(final long stopId,
+                                                       final List<Long> directions,
+                                                       final int scheduleType) {
+        return Observable.create(new ObservableOnSubscribe<DepartureTime>() {
             @Override
-            public void subscribe(ObservableEmitter<List<DepartureTime>> e) throws Exception {
+            public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
                 for(long directionId : directions) {
                     List<Schedule> schedules = new ArrayList<>();
-                    List<DepartureTime> departureTimes = new ArrayList<>();
+                    DepartureTime departureTimes = new DepartureTime();
 
                     StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                             .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
@@ -279,7 +279,7 @@ public class AppDbHelper implements DbHelper {
 
                     for(Schedule schedule : schedules) {
                         if(schedule.getScheduleType().id == scheduleType) {
-                            departureTimes = schedule.getDepartureTimes();
+                            departureTimes = schedule.getDepartureTimes().get(0);
                         }
                     }
                     e.onNext(departureTimes);

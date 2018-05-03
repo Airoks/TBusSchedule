@@ -19,7 +19,7 @@ import ru.tblsk.owlz.busschedule.ui.base.BaseViewHolder;
 import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
 
-public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
+public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private DirectionInfoContract.Presenter mPresenter;
     private List<StopVO> mStops;
@@ -56,14 +56,14 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     public void addItems(List<StopVO> stops) {
-        this.mStops.clear();
-        this.mStops.addAll(stops);
+        mStops.clear();
+        mStops.addAll(stops);
         notifyDataSetChanged();
     }
 
     public void addTimeOfNextFlight(List<NextFlight> nextFlights) {
-        this.mNextFlight.clear();
-        this.mNextFlight.addAll(nextFlights);
+        mNextFlight.clear();
+        mNextFlight.addAll(nextFlights);
         notifyDataSetChanged();
     }
 
@@ -103,7 +103,8 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                     int minute = timeBefore % 60;
                     int hour = (timeBefore - minute) / 60;
 
-                    time = hour != 0 ? hour + "ч " + minute + "м" : minute + "м";
+                    time = hour != 0 ? hour + "ч " : "";
+                    time = minute != 0 ? time + minute + "м" : time + "";
                     mDepartureTime.setText(time);
                 }
             }
