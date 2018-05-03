@@ -15,6 +15,7 @@ import io.reactivex.observers.DisposableObserver;
 import ru.tblsk.owlz.busschedule.data.DataManager;
 import ru.tblsk.owlz.busschedule.di.screens.directioninfo.DirectionInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.ui.base.TimeUntilNextFlights;
 import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.DepartureTimeMapper;
 import ru.tblsk.owlz.busschedule.utils.mappers.StopMapper;
@@ -115,7 +116,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                 }));
     }
 
-    private void getSchedule(long directionId) {
+    @Override
+    public void getSchedule(long directionId) {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -126,7 +128,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         }
     }
 
-    private void getDepartureTime(long directionId, int scheduleType) {
+    @Override
+    public void getDepartureTime(long directionId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
         getCompositeDisposable().clear();
@@ -154,7 +157,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
     }
 
-    private void setTimer() {
+    @Override
+    public void setTimer() {
         mNextFlights.clear();
         for(int i = 0; i < mStops.size(); i ++) {
             getNextFlight(i, false);
@@ -183,7 +187,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                 }));
     }
 
-    private NextFlight newNextFlight(NextFlight old) {
+    @Override
+    public NextFlight newNextFlight(NextFlight old) {
         NextFlight next = new NextFlight();
         next.setHour(old.getHour());
         next.setMinute(old.getMinute());
@@ -192,7 +197,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         return next;
     }
 
-    private void getNextFlight(int position, boolean set) {
+    @Override
+    public void getNextFlight(int position, boolean set) {
         DepartureTimeVO schedule = mSchedule.get(position);
         NextFlight nextFlight = new NextFlight();
         Calendar calendar = Calendar.getInstance();

@@ -103,10 +103,14 @@ public class DirectionInfoAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     int minute = timeBefore % 60;
                     int hour = (timeBefore - minute) / 60;
 
-                    time = hour != 0 ? hour + "ч " : "";
-                    time = minute != 0 ? time + minute + "м" : time + "";
+                    time = hour != 0 ? hour + "ч " : " ";
+                    time = minute != 0 ? time + minute + "м" : time + " ";
                     mDepartureTime.setText(time);
+                } else {
+                    mDepartureTime.setText(" ");
                 }
+            } else {
+                mDepartureTime.setText(" ");
             }
 
             mTopLine.setVisibility(View.VISIBLE);

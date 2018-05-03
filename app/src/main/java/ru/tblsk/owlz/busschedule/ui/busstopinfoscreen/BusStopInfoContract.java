@@ -5,6 +5,7 @@ import java.util.List;
 
 import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.base.MvpView;
+import ru.tblsk.owlz.busschedule.ui.base.TimeUntilNextFlights;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 
@@ -21,7 +22,7 @@ public interface BusStopInfoContract {
         void showSnackBarNotSelected();
     }
 
-    interface Presenter extends MvpPresenter<View> {
+    interface Presenter extends MvpPresenter<View>, TimeUntilNextFlights {
         void getDirectionsByStop(Long stopId, boolean isFavoriteStop);
         void clickedOnBackButton();
         void clickedOnButtonAddFavorites();

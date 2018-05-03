@@ -191,8 +191,16 @@ public class AppDbHelper implements DbHelper {
             @Override
             public List<Direction> call() throws Exception {
                 List<Direction> directions = new ArrayList<>();
-                List<StopsOnRouts> stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                        .where(StopsOnRoutsDao.Properties.StopId.eq(stopId)).list();
+                Stop stop = mDaoSession.getStopDao().load(stopId);
+                List<StopsOnRouts> stopsOnRouts = stop.getStopsOnRouts();
+
+                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
+                    @Override
+                    public int compare(StopsOnRouts left, StopsOnRouts right) {
+                        return (int) (left.getStopId() - right.getStopId());
+                    }
+                });
+
                 for(StopsOnRouts routs : stopsOnRouts) {
                     long directionId = routs.getDirectionId();
                     directions.add(mDaoSession.getDirectionDao().queryBuilder()
@@ -210,7 +218,7 @@ public class AppDbHelper implements DbHelper {
         return Single.fromCallable(new Callable<DepartureTime>() {
             @Override
             public DepartureTime call() throws Exception {
-                List<Schedule> schedules = new ArrayList<>();
+                List<Schedule> schedules;
                 DepartureTime departureTimes = new DepartureTime();
 
                 StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
@@ -219,7 +227,8 @@ public class AppDbHelper implements DbHelper {
                 schedules = stopOnRout.getSchedules();
 
                 for(Schedule schedule : schedules) {
-                    if(schedule.getScheduleType().id == scheduleType && !schedules.isEmpty()) {
+                    int type = schedule.getScheduleType().id;
+                    if(type == scheduleType && !schedule.getDepartureTimes().isEmpty()) {
                         departureTimes = schedule.getDepartureTimes().get(0);
                     }
                 }
@@ -234,8 +243,7 @@ public class AppDbHelper implements DbHelper {
         return Observable.create(new ObservableOnSubscribe<DepartureTime>() {
             @Override
             public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
-                Direction direction = mDaoSession.getDirectionDao().queryBuilder()
-                        .where(DirectionDao.Properties.Id.eq(directionId)).unique();
+                Direction direction = mDaoSession.getDirectionDao().load(directionId);
                 List<StopsOnRouts> stopsOnRouts = direction.getStopsOnRouts();
                 Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
                     @Override
@@ -245,7 +253,7 @@ public class AppDbHelper implements DbHelper {
                 });
 
                 for(StopsOnRouts onRouts : stopsOnRouts) {
-                    List<Schedule> schedules = new ArrayList<>();
+                    List<Schedule> schedules;
                     DepartureTime departureTimes = new DepartureTime();
 
                     schedules = onRouts.getSchedules();
@@ -263,20 +271,64 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Observable<DepartureTime> getScheduleByStop(final long stopId,
-                                                       final List<Long> directions,
                                                        final int scheduleType) {
         return Observable.create(new ObservableOnSubscribe<DepartureTime>() {
             @Override
             public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
-                for(long directionId : directions) {
-                    List<Schedule> schedules = new ArrayList<>();
+                Stop stop = mDaoSession.getStopDao().load(stopId);
+                List<StopsOnRouts> stopsOnRouts = stop.getStopsOnRouts();
+
+                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
+                    @Override
+                    public int compare(StopsOnRouts left, StopsOnRouts right) {
+                        return (int) (left.getStopId() - right.getStopId());
+                    }
+                });
+
+                for(StopsOnRouts onRouts : stopsOnRouts) {
+                    List<Schedule> schedules;
                     DepartureTime departureTimes = new DepartureTime();
 
-                    StopsOnRouts stopOnRout = mDaoSession.getStopsOnRoutsDao().queryBuilder()
-                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
-                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
-                    schedules = stopOnRout.getSchedules();
+                    schedules = onRouts.getSchedules();
+                    for(Schedule schedule : schedules) {
+                        if(schedule.getScheduleType().id == scheduleType) {
+                            departureTimes = schedule.getDepartureTimes().get(0);
+                        }
+                    }
+                    e.onNext(departureTimes);
+                }
+                e.onComplete();
+            }
+        });
+    }
 
+    @Override
+    public Observable<DepartureTime> getScheduleByFavoriteStop(final long stopId,
+                                                               final int scheduleType) {
+
+        return Observable.create(new ObservableOnSubscribe<DepartureTime>() {
+            @Override
+            public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
+                List<FavoriteStops> favoriteStops = mDaoSession.getFavoriteStopsDao().loadAll();
+                List<StopsOnRouts> stopsOnRouts = new ArrayList<>();
+                for(FavoriteStops favorite : favoriteStops) {
+                    if(favorite.getStopsOnRouts().getStopId().equals(stopId)) {
+                        stopsOnRouts.add(favorite.getStopsOnRouts());
+                    }
+                }
+
+                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
+                    @Override
+                    public int compare(StopsOnRouts left, StopsOnRouts right) {
+                        return (int) (left.getStopId() - right.getStopId());
+                    }
+                });
+
+                for(StopsOnRouts onRouts : stopsOnRouts) {
+                    List<Schedule> schedules;
+                    DepartureTime departureTimes = new DepartureTime();
+
+                    schedules = onRouts.getSchedules();
                     for(Schedule schedule : schedules) {
                         if(schedule.getScheduleType().id == scheduleType) {
                             departureTimes = schedule.getDepartureTimes().get(0);
@@ -425,9 +477,31 @@ public class AppDbHelper implements DbHelper {
             @Override
             public List<Direction> call() throws Exception {
                 List<Direction> directions = new ArrayList<>();
-                List<FavoriteStops> favorites = mDaoSession.getFavoriteStopsDao().loadAll();
+                List<FavoriteStops> favoriteStops = mDaoSession.getFavoriteStopsDao().loadAll();
+                List<StopsOnRouts> stopsOnRouts = new ArrayList<>();
 
-                for(FavoriteStops favorite : favorites) {
+                for(FavoriteStops favorite : favoriteStops) {
+                    if(favorite.getStopsOnRouts().getStopId().equals(stopId)) {
+                        stopsOnRouts.add(favorite.getStopsOnRouts());
+                    }
+                }
+
+                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
+                    @Override
+                    public int compare(StopsOnRouts left, StopsOnRouts right) {
+                        return (int) (left.getStopId() - right.getStopId());
+                    }
+                });
+
+                for(StopsOnRouts onRouts : stopsOnRouts) {
+                    if(onRouts.getStopId().equals(stopId)) {
+                        long directionId = onRouts.getDirectionId();
+                        directions.add(mDaoSession.getDirectionDao().queryBuilder()
+                                .where(DirectionDao.Properties.Id.eq(directionId)).unique());
+                    }
+                }
+
+                /*for(FavoriteStops favorite : favorites) {
 
                     StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                             .where(StopsOnRoutsDao.Properties.Id.eq(favorite.getStopsOnRoutsId()),
@@ -438,7 +512,7 @@ public class AppDbHelper implements DbHelper {
                         directions.add(mDaoSession.getDirectionDao().queryBuilder()
                                 .where(DirectionDao.Properties.Id.eq(directionId)).unique());
                     }
-                }
+                }*/
                 return directions;
             }
         });

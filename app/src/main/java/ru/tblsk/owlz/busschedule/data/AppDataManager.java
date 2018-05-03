@@ -156,9 +156,13 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<DepartureTime> getScheduleByStop(long stopId,
-                                                       List<Long> directions,
                                                        int scheduleType) {
-        return dbHelper.getScheduleByStop(stopId, directions, scheduleType);
+        return dbHelper.getScheduleByStop(stopId, scheduleType);
+    }
+
+    @Override
+    public Observable<DepartureTime> getScheduleByFavoriteStop(long stopId, int scheduleType) {
+        return dbHelper.getScheduleByFavoriteStop(stopId, scheduleType);
     }
 
     @Override

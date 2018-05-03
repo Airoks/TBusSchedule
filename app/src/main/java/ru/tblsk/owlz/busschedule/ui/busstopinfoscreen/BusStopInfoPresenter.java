@@ -16,7 +16,9 @@ import ru.tblsk.owlz.busschedule.data.db.model.Direction;
 import ru.tblsk.owlz.busschedule.data.db.model.Flight;
 import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.BusStopInfoScreen;
 import ru.tblsk.owlz.busschedule.ui.base.BasePresenter;
+import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.RxEventBus;
+import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DirectionVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
@@ -27,6 +29,8 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
     private List<DirectionVO> mDirections;
     private List<DirectionVO> mFavoriteDirections;
+    private List<DepartureTimeVO> mSchedule;
+    private List<NextFlight> mNextFlights;
     private RxEventBus mEventBus;
     private boolean mIsFavoriteStop;
 
@@ -39,6 +43,8 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
         mDirections = new ArrayList<>();
         mFavoriteDirections = new ArrayList<>();
+        mSchedule = new ArrayList<>();
+        mNextFlights = new ArrayList<>();
         mEventBus = eventBus;
     }
 
@@ -251,5 +257,30 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                         throwable.printStackTrace();
                     }
                 }));
+    }
+
+    @Override
+    public void getSchedule(long id) {
+
+    }
+
+    @Override
+    public void getDepartureTime(long id, int scheduleType) {
+
+    }
+
+    @Override
+    public void setTimer() {
+
+    }
+
+    @Override
+    public NextFlight newNextFlight(NextFlight old) {
+        return null;
+    }
+
+    @Override
+    public void getNextFlight(int position, boolean set) {
+
     }
 }
