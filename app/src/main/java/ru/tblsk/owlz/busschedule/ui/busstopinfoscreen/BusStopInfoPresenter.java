@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -41,7 +42,9 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     private List<DepartureTimeVO> mSchedule;
     private List<NextFlight> mNextFlights;
     private RxEventBus mEventBus;
+    private long mStopId;
     private boolean mIsFavoriteStop;
+    private Disposable mTimerDisposable;
 
     @Inject
     public BusStopInfoPresenter(DataManager dataManager,
@@ -62,11 +65,12 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     @Override
     public void getDirectionsByStop(Long stopId, boolean isFavoriteStop) {
         mIsFavoriteStop = isFavoriteStop;
+        mStopId = stopId;
 
         if(isFavoriteStop) {
             if(mFavoriteDirections.isEmpty()) {
+                //getDirection(stopId);
                 getFavoriteDirection(stopId);
-                getDirection(stopId);
             } else {
                 getMvpView().showDirectionsByStop(mFavoriteDirections);
                 setTimer();
@@ -170,9 +174,11 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                         getMvpView().setFavoriteIcon(isAdded);
                         if(isAdded) {
                             if(mIsFavoriteStop) {
+                                cancelTimer();
                                 mFavoriteDirections.clear();
                                 mFavoriteDirections.addAll(event.getFavorites());
                                 getMvpView().showDirectionsByStop(mFavoriteDirections);
+                                getSchedule(mStopId);
                             }
                             getMvpView().showSnackBarAdded(mIsFavoriteStop);
                         } else {
@@ -223,8 +229,8 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
                         if(!mIsFavoriteStop) {
                             getMvpView().showDirectionsByStop(directionVOS);
-                            getSchedule(stopId);
                         }
+                        getSchedule(stopId);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -268,7 +274,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                         mFavoriteDirections.clear();
                         mFavoriteDirections.addAll(directionVOS);
                         getMvpView().showDirectionsByStop(directionVOS);
-                        getSchedule(stopId);
+                        getDirection(stopId);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -294,13 +300,37 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     public void getScheduleByType(long stopId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
-        getCompositeDisposable().clear();
 
         if(mIsFavoriteStop) {
-            getScheduleByFavoriteStop(stopId, scheduleType);
+            getScheduleByFavoriteDirections(stopId, getFavoriteDirectionsId(), scheduleType);
         } else {
             getScheduleByStop(stopId, scheduleType);
         }
+    }
+
+    private void getScheduleByFavoriteDirections(long stopId, List<Long> direction, int scheduleType) {
+        getCompositeDisposable().add(
+                getDataManager().getScheduleByFavoriteDirections(stopId, direction, scheduleType)
+                .subscribeOn(getSchedulerProvider().io())
+                .map(mTimeMapper)
+                .observeOn(getSchedulerProvider().ui())
+                .subscribeWith(new DisposableObserver<DepartureTimeVO>() {
+                    @Override
+                    public void onNext(DepartureTimeVO timeVO) {
+                        mSchedule.add(timeVO);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        setTimer();
+                    }
+                }));
+
     }
 
     private void getScheduleByStop(long stopId, int scheduleType) {
@@ -326,32 +356,10 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 }));
     }
 
-    private void getScheduleByFavoriteStop(long stopId, int scheduleType) {
-        getCompositeDisposable().add(getDataManager().getScheduleByFavoriteStop(stopId, scheduleType)
-                .subscribeOn(getSchedulerProvider().io())
-                .map(mTimeMapper)
-                .observeOn(getSchedulerProvider().ui())
-                .subscribeWith(new DisposableObserver<DepartureTimeVO>() {
-                    @Override
-                    public void onNext(DepartureTimeVO time) {
-                        mSchedule.add(time);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        setTimer();
-                    }
-                }));
-    }
-
     @Override
     public void setTimer() {
         mNextFlights.clear();
+        cancelTimer();
         if(mIsFavoriteStop) {
             for(int i = 0; i < mFavoriteDirections.size(); i ++) {
                 getNextFlight(i, false);
@@ -364,8 +372,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
         getMvpView().showTimeOfNextFlight(mNextFlights);
 
-        getCompositeDisposable().clear();
-        getCompositeDisposable().add(Observable.interval(1, TimeUnit.MINUTES)
+        mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<Long>() {
                     @Override
@@ -382,7 +389,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                         }
                         getMvpView().showTimeOfNextFlight(mNextFlights);
                     }
-                }));
+                });
     }
 
     @Override
@@ -437,5 +444,25 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
             }
         }
         mNextFlights.add(nextFlight);
+    }
+
+    private void cancelTimer() {
+        if(mTimerDisposable != null && !mTimerDisposable.isDisposed()) {
+            mTimerDisposable.dispose();
+        }
+    }
+
+    @Override
+    public void unsubscribe() {
+        cancelTimer();
+        super.unsubscribe();
+    }
+
+    private List<Long> getFavoriteDirectionsId() {
+        List<Long> result = new ArrayList<>();
+        for(DirectionVO direction : mFavoriteDirections) {
+            result.add(direction.getId());
+        }
+        return result;
     }
 }

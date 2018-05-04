@@ -65,6 +65,7 @@ public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     public void addItems(List<DirectionVO> directions) {
         mDirections.clear();
+        mNextFlight.clear();
         mDirections.addAll(directions);
         notifyDataSetChanged();
     }

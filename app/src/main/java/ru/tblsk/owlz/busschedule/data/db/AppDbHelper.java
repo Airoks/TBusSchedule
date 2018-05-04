@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.data.db;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -310,32 +308,20 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<DepartureTime> getScheduleByFavoriteStop(final long stopId,
-                                                               final int scheduleType) {
-
+    public Observable<DepartureTime> getScheduleByFavoriteDirections(final long stopId,
+                                                                     final List<Long> directions,
+                                                                     final int scheduleType) {
         return Observable.create(new ObservableOnSubscribe<DepartureTime>() {
             @Override
             public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
-                List<FavoriteStops> favoriteStops = mDaoSession.getFavoriteStopsDao().loadAll();
-                List<StopsOnRouts> stopsOnRouts = new ArrayList<>();
-                for(FavoriteStops favorite : favoriteStops) {
-                    if(favorite.getStopsOnRouts().getStopId().equals(stopId)) {
-                        stopsOnRouts.add(favorite.getStopsOnRouts());
-                    }
-                }
+                List<Schedule> schedules;
+                DepartureTime departureTimes = new DepartureTime();
+                for(long directionId : directions) {
+                    StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
+                            .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
+                                    StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();
 
-                Collections.sort(stopsOnRouts, new Comparator<StopsOnRouts>() {
-                    @Override
-                    public int compare(StopsOnRouts left, StopsOnRouts right) {
-                        return (int) (left.getId() - right.getId());
-                    }
-                });
-
-                for(StopsOnRouts onRouts : stopsOnRouts) {
-                    List<Schedule> schedules;
-                    DepartureTime departureTimes = new DepartureTime();
-
-                    schedules = onRouts.getSchedules();
+                    schedules = stopsOnRouts.getSchedules();
                     for(Schedule schedule : schedules) {
                         int type = schedule.getScheduleType().id;
                         boolean check = !schedule.getDepartureTimes().isEmpty();
@@ -346,6 +332,7 @@ public class AppDbHelper implements DbHelper {
                     e.onNext(departureTimes);
                 }
                 e.onComplete();
+
             }
         });
     }

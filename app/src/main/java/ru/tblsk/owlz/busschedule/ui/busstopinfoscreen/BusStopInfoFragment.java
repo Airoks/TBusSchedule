@@ -128,8 +128,8 @@ public class BusStopInfoFragment extends BaseFragment
 
     @Override
     public void onDestroyView() {
-        mPresenter.detachView();
         mPresenter.unsubscribe();
+        mPresenter.detachView();
         super.onDestroyView();
     }
 
