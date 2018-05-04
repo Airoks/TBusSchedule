@@ -237,7 +237,12 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                 return;
             }
         }
-        mNextFlights.add(nextFlight);
+
+        if(set) {
+            mNextFlights.set(position, nextFlight);
+        } else {
+            mNextFlights.add(nextFlight);
+        }
     }
 
 

@@ -443,7 +443,12 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 return;
             }
         }
-        mNextFlights.add(nextFlight);
+
+        if(set) {
+            mNextFlights.set(position, nextFlight);
+        } else {
+            mNextFlights.add(nextFlight);
+        }
     }
 
     private void cancelTimer() {
