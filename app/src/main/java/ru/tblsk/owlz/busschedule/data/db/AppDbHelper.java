@@ -315,8 +315,8 @@ public class AppDbHelper implements DbHelper {
             @Override
             public void subscribe(ObservableEmitter<DepartureTime> e) throws Exception {
                 List<Schedule> schedules;
-                DepartureTime departureTimes = new DepartureTime();
                 for(long directionId : directions) {
+                    DepartureTime departureTimes = new DepartureTime();
                     StopsOnRouts stopsOnRouts = mDaoSession.getStopsOnRoutsDao().queryBuilder()
                             .where(StopsOnRoutsDao.Properties.StopId.eq(stopId),
                                     StopsOnRoutsDao.Properties.DirectionId.eq(directionId)).unique();

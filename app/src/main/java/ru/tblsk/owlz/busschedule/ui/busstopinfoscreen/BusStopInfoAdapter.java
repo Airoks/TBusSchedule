@@ -102,11 +102,16 @@ public class BusStopInfoAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 String time;
                 if(next.isInitialized()) {
                     int timeBefore = next.getTimeBeforeDeparture();
-                    int minute = timeBefore % 60;
-                    int hour = (timeBefore - minute) / 60;
+                    if(timeBefore == 0) {
+                        time = "0м";
+                    } else {
+                        int minute = timeBefore % 60;
+                        int hour = (timeBefore - minute) / 60;
 
-                    time = hour != 0 ? hour + "ч " : " ";
-                    time = minute != 0 ? time + minute + "м" : time + " ";
+                        time = hour != 0 ? hour + "ч " : " ";
+                        time = minute != 0 ? time + minute + "м" : time + " ";
+                    }
+
                     mDepartureTime.setText(time);
                 } else {
                     mDepartureTime.setText(" ");
