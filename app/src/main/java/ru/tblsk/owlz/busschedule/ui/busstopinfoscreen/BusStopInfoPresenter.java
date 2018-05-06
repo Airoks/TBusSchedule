@@ -1,8 +1,6 @@
 package ru.tblsk.owlz.busschedule.ui.busstopinfoscreen;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;

@@ -28,6 +28,8 @@ public interface DirectionInfoContract {
         void clickedOnBackButton();
         void setChangeButton();
         void clickedOnAdapterItem(int position);
+        void cancelTimer();
+        void startTimer();
     }
 
 }

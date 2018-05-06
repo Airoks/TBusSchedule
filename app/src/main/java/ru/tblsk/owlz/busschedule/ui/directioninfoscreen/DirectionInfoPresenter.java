@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import ru.tblsk.owlz.busschedule.data.DataManager;
@@ -38,6 +39,8 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     private List<StopVO> mStops;
     private List<DepartureTimeVO> mSchedule;
     private List<NextFlight> mNextFlights;
+    private Disposable mTimerDisposable;
+    private boolean mFirstStart;
 
     @Inject
     public DirectionInfoPresenter(DataManager dataManager,
@@ -51,18 +54,19 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         mTimeMapper = departureTimeMapper;
         mSchedule = new ArrayList<>();
         mNextFlights = new ArrayList<>();
+        mStops = new ArrayList<>();
+        mFirstStart = true;
     }
 
     @Override
     public void getStopsOnDirection(FlightVO flight) {
         mFlight = flight;
         getMvpView().setToolbarTitle(mFlight.getFlightNumber());
-        if(mStops != null) {
+        if(mStops.isEmpty()) {
+            updateStops();
+        } else {
             getMvpView().showStopsOnDirection(mStops);
             getMvpView().setDirectionTitle(mFlight.getCurrentDirection().getDirectionName());
-            setTimer();
-        } else {
-           updateStops();
         }
     }
 
@@ -91,6 +95,20 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     public void clickedOnAdapterItem(int position) {
         StopVO stop = mStops.get(position);
         getMvpView().openScheduleContainerFragment(stop, mFlight);
+    }
+
+    @Override
+    public void cancelTimer() {
+        if(mTimerDisposable != null && !mTimerDisposable.isDisposed()) {
+            mTimerDisposable.dispose();
+        }
+    }
+
+    @Override
+    public void startTimer() {
+        if(!mFirstStart) {
+            setTimer();
+        }
     }
 
     private void updateStops() {
@@ -131,7 +149,6 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     public void getScheduleByType(long directionId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
-        getCompositeDisposable().clear();
 
         getCompositeDisposable().add(getDataManager().getScheduleByDirection(directionId, scheduleType)
                 .subscribeOn(getSchedulerProvider().io())
@@ -158,16 +175,15 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
 
     @Override
     public void setTimer() {
-        mNextFlights.clear();
+        cancelTimer();
+
         for(int i = 0; i < mStops.size(); i ++) {
             getNextFlight(i, false);
         }
-
         getMvpView().showTimeOfNextFlight(mNextFlights);
+        mFirstStart = false;
 
-        getCompositeDisposable().clear();
-        getCompositeDisposable().add(Observable.interval(1, TimeUnit.MINUTES)
-                .observeOn(getSchedulerProvider().ui())
+        mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
@@ -183,7 +199,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
                         }
                         getMvpView().showTimeOfNextFlight(mNextFlights);
                     }
-                }));
+                });
     }
 
     @Override

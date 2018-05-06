@@ -104,6 +104,12 @@ public class DirectionInfoFragment extends BaseFragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mPresenter.startTimer();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setBackPressedListener();
@@ -120,6 +126,12 @@ public class DirectionInfoFragment extends BaseFragment
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong(FRAGMENT_ID, mFragmentId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop() {
+        mPresenter.cancelTimer();
+        super.onStop();
     }
 
     @Override
