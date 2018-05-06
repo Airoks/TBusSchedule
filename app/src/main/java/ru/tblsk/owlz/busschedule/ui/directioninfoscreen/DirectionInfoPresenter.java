@@ -176,7 +176,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
     @Override
     public void setTimer() {
         cancelTimer();
-
+        mNextFlights.clear();
         for(int i = 0; i < mStops.size(); i ++) {
             getNextFlight(i, false);
         }
@@ -184,6 +184,7 @@ public class DirectionInfoPresenter extends BasePresenter<DirectionInfoContract.
         mFirstStart = false;
 
         mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

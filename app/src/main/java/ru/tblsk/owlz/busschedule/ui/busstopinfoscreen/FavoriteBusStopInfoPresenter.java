@@ -187,6 +187,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
                     @Override
                     public SingleSource<List<DirectionVO>> apply(final List<Direction> directions) throws Exception {
                         return getDataManager().getFlightNumbers(directions)
+                                .observeOn(getSchedulerProvider().ui())
                                 .map(new Function<List<String>, List<DirectionVO>>() {
                                     @Override
                                     public List<DirectionVO> apply(List<String> flightNumber) throws Exception {
@@ -313,7 +314,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
     @Override
     public void setTimer() {
         cancelTimer();
-
+        mNextFlights.clear();
         for(int i = 0; i < mFavoriteDirections.size(); i ++) {
             getNextFlight(i, false);
         }
@@ -321,6 +322,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
         mFirstStart = false;
 
         mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

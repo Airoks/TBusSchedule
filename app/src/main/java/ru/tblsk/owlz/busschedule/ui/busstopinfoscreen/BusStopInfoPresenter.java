@@ -260,7 +260,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
     @Override
     public void setTimer() {
         cancelTimer();
-
+        mNextFlights.clear();
         for(int i = 0; i < mDirections.size(); i ++) {
             getNextFlight(i, false);
         }
@@ -268,6 +268,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
         mFirstStart = false;
 
         mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
