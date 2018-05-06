@@ -25,13 +25,15 @@ public interface BusStopInfoContract {
     }
 
     interface Presenter extends MvpPresenter<View>, TimeUntilNextFlights {
-        void getDirectionsByStop(Long stopId, boolean isFavoriteStop);
+        void getDirectionsByStop(Long stopId);
         void clickedOnBackButton();
         void clickedOnButtonAddFavorites();
         void isFavoriteStop(Long stopId);
         void deleteFavoriteStop(Long stopId);
         void clickedOnAdapterItem(long directionId, int directionType);
         void setClickListenerOnAddButtonInDialog();
+        void cancelTimer();
+        void startTimer();
     }
 
 }

@@ -16,7 +16,7 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.SchedulerProvider;
 
 @BusRoutesScreen
 public class SuburbanBusRoutesPresenter extends BasePresenter<BusRoutesContract.View>
-        implements  BusRoutesContract.Presenter {
+        implements BusRoutesContract.Presenter {
 
     private static final int SUBURBAN = 1;
 

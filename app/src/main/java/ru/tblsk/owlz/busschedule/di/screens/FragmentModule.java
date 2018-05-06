@@ -10,6 +10,8 @@ import dagger.Module;
 import dagger.Provides;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.SuburbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
+import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.BusStopInfo;
+import ru.tblsk.owlz.busschedule.di.screens.busstopinfo.FavoriteBusStopInfo;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.AllScreenPagerAdapter;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesAdapter;
 import ru.tblsk.owlz.busschedule.ui.busroutesscreen.busroutes.BusRoutesContract;
@@ -81,7 +83,16 @@ public class FragmentModule {
     }
 
     @Provides
-    BusStopInfoAdapter provideBusStopInfoAdapter(BusStopInfoContract.Presenter presenter) {
+    @BusStopInfo
+    BusStopInfoAdapter provideBusStopInfoAdapter(
+            @BusStopInfo BusStopInfoContract.Presenter presenter) {
+        return new BusStopInfoAdapter(presenter);
+    }
+
+    @Provides
+    @FavoriteBusStopInfo
+    BusStopInfoAdapter provideFavoriteBusStopInfoAdapter(
+            @FavoriteBusStopInfo BusStopInfoContract.Presenter presenter) {
         return new BusStopInfoAdapter(presenter);
     }
 

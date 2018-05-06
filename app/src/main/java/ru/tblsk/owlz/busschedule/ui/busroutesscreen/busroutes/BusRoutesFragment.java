@@ -25,7 +25,6 @@ import ru.tblsk.owlz.busschedule.di.screens.busroutes.UrbanBusRoutes;
 import ru.tblsk.owlz.busschedule.di.screens.busroutes.component.BusRoutesScreenComponent;
 import ru.tblsk.owlz.busschedule.ui.base.BaseFragment;
 import ru.tblsk.owlz.busschedule.ui.directioninfoscreen.DirectionInfoFragment;
-import ru.tblsk.owlz.busschedule.ui.main.MainActivity;
 import ru.tblsk.owlz.busschedule.utils.ComponentManager;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 
