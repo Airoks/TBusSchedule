@@ -150,6 +150,11 @@ public class BusScheduleFragment extends BaseFragment implements BusScheduleCont
 
     @Override
     public void setColorItem(int position) {
-        mAdapter.changeItem(position);
+        mAdapter.setCurrentSchedule(position);
+    }
+
+    @Override
+    public void resetColorItem() {
+        mAdapter.resetCurrentSchedule();
     }
 }

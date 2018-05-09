@@ -88,6 +88,8 @@ public class WeekendSchedulePresenter extends BasePresenter<BusScheduleContract.
         getNextFlight();
         if(mNextFlight.isInitialized()) {
             getMvpView().setColorItem(mCurrentHoursPosition);
+        } else {
+            getMvpView().resetColorItem();
         }
         mFirstStart = false;
 

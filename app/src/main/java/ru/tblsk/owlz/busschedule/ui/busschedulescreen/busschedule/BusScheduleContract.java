@@ -11,6 +11,7 @@ public interface BusScheduleContract {
         void showSchedule(DepartureTimeVO times);
         void showEmptyScreen();
         void setColorItem(int position);
+        void resetColorItem();
     }
 
     interface Presenter extends MvpPresenter<View> {

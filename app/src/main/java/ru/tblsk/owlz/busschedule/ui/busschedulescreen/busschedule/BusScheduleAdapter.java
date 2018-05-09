@@ -60,9 +60,14 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         notifyDataSetChanged();
     }
 
-    public void changeItem(int position) {
+    public void setCurrentSchedule(int position) {
         initializeCurrentTime();
         mCurrentTime.set(position, true);
+        notifyDataSetChanged();
+    }
+
+    public void resetCurrentSchedule() {
+        initializeCurrentTime();
         notifyDataSetChanged();
     }
 

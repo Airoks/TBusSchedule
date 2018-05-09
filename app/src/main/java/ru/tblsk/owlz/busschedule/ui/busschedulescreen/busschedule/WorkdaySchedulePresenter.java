@@ -88,6 +88,8 @@ public class WorkdaySchedulePresenter extends BasePresenter<BusScheduleContract.
         getNextFlight();
         if(mNextFlight.isInitialized()) {
             getMvpView().setColorItem(mCurrentHoursPosition);
+        } else {
+            getMvpView().resetColorItem();
         }
         mFirstStart = false;
 
@@ -103,12 +105,16 @@ public class WorkdaySchedulePresenter extends BasePresenter<BusScheduleContract.
                                 getNextFlight();
                                 if(mNextFlight.isInitialized()) {
                                     getMvpView().setColorItem(mCurrentHoursPosition);
+                                } else {
+                                    getMvpView().resetColorItem();
                                 }
                             }
                         } else {
                             getNextFlight();
                             if(mNextFlight.isInitialized()) {
                                 getMvpView().setColorItem(mCurrentHoursPosition);
+                            } else {
+                                getMvpView().resetColorItem();
                             }
                         }
                     }
