@@ -1,10 +1,12 @@
 package ru.tblsk.owlz.busschedule.ui.busschedulescreen.busschedule;
 
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,11 +23,13 @@ import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.DepartureTimeVO;
 public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<Integer> mKeyMap;
+    private List<Boolean> mCurrentTime;
     private Map<Integer, List<Integer>> mDepartureTime;
 
     public BusScheduleAdapter() {
         this.mKeyMap = new ArrayList<>();
         this.mDepartureTime = new HashMap<>();
+        this.mCurrentTime = new ArrayList<>();
     }
 
     @Override
@@ -52,7 +56,20 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         mKeyMap.clear();
         mKeyMap.addAll(departureTimes.getHours());
         mDepartureTime.putAll(departureTimes.getTime());
+        initializeCurrentTime();
         notifyDataSetChanged();
+    }
+
+    public void changeItem(int position) {
+        initializeCurrentTime();
+        mCurrentTime.set(position, true);
+        notifyItemChanged(position);
+    }
+
+    private void initializeCurrentTime() {
+        for(int i = 0; i < mKeyMap.size(); i ++) {
+            mCurrentTime.add(false);
+        }
     }
 
     class ScheduleViewHolder extends BaseViewHolder {
@@ -62,6 +79,12 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         @BindView(R.id.textview_schedule_minute)
         TextView mMinute;
+
+        @BindView(R.id.relativelayout_schedule_item)
+        RelativeLayout mLayout;
+
+        @BindView(R.id.view_schedule_horizontalline)
+        View mLine;
 
 
         public ScheduleViewHolder(View itemView) {
@@ -79,6 +102,14 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             }
             mHours.setText(hours);
             mMinute.setText(minute);
+
+            if(mCurrentTime.get(position)) {
+                String blueColor = "#1565C0";
+                mLine.setBackgroundColor(Color.parseColor(blueColor));
+                mLayout.setBackgroundColor(Color.parseColor(blueColor));
+                mHours.setTextColor(Color.WHITE);
+                mMinute.setTextColor(Color.WHITE);
+            }
         }
     }
 }

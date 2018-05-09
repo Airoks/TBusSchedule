@@ -6,6 +6,7 @@
       <w>allstops</w>
       <w>appbarlayout</w>
       <w>bottomline</w>
+      <w>busschedule</w>
       <w>busstop</w>
       <w>busstopinfo</w>
       <w>changehorizblack</w>
@@ -18,6 +19,7 @@
       <w>favoritesdirections</w>
       <w>favoritestops</w>
       <w>flightnumber</w>
+      <w>horizontalline</w>
       <w>imagebutton</w>
       <w>imageview</w>
       <w>littleoval</w>

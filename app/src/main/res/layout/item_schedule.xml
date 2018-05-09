@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout_schedule_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textview_schedule_hours"
@@ -34,6 +34,7 @@
         android:textColor="@color/black" />
 
     <View
+        android:id="@+id/view_schedule_horizontalline"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="56dp"

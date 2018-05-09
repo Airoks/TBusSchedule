@@ -267,8 +267,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
                 }));
     }
 
-    @Override
-    public void getSchedule(long stopId) {
+    private void getSchedule(long stopId) {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -279,8 +278,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
         }
     }
 
-    @Override
-    public void getScheduleByType(long stopId, int scheduleType) {
+    private void getScheduleByType(long stopId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
         getScheduleByFavoriteDirections(stopId, getFavoriteDirectionsId(), scheduleType);
@@ -311,8 +309,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
 
     }
 
-    @Override
-    public void setTimer() {
+    private void setTimer() {
         cancelTimer();
         mNextFlights.clear();
         for(int i = 0; i < mFavoriteDirections.size(); i ++) {
@@ -341,8 +338,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
                 });
     }
 
-    @Override
-    public NextFlight newNextFlight(NextFlight old) {
+    private NextFlight newNextFlight(NextFlight old) {
         NextFlight next = new NextFlight();
         next.setHour(old.getHour());
         next.setMinute(old.getMinute());
@@ -351,8 +347,7 @@ public class FavoriteBusStopInfoPresenter extends BasePresenter<BusStopInfoContr
         return next;
     }
 
-    @Override
-    public void getNextFlight(int position, boolean set) {
+    private void getNextFlight(int position, boolean set) {
         DepartureTimeVO schedule = mSchedule.get(position);
         NextFlight nextFlight = new NextFlight();
         Calendar calendar = Calendar.getInstance();

@@ -99,6 +99,18 @@ public class BusScheduleFragment extends BaseFragment implements BusScheduleCont
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mPresenter.startTimer();
+    }
+
+    @Override
+    public void onStop() {
+        mPresenter.cancelTimer();
+        super.onStop();
+    }
+
+    @Override
     public void onDestroyView() {
         mPresenter.detachView();
         mPresenter.unsubscribe();
@@ -134,5 +146,10 @@ public class BusScheduleFragment extends BaseFragment implements BusScheduleCont
         } else if(scheduleType == WEEKEND) {
             mEmptyTextView.setText(getString(R.string.schedule_empty_weekend));
         }
+    }
+
+    @Override
+    public void setColorItem(int position) {
+        mAdapter.changeItem(position);
     }
 }

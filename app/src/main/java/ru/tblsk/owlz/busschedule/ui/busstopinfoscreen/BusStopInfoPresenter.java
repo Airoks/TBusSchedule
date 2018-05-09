@@ -215,8 +215,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
 
     }
 
-    @Override
-    public void getSchedule(long stopId) {
+    private void getSchedule(long stopId) {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -227,8 +226,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
         }
     }
 
-    @Override
-    public void getScheduleByType(long stopId, int scheduleType) {
+    private void getScheduleByType(long stopId, int scheduleType) {
         mSchedule.clear();
         mNextFlights.clear();
         getScheduleByStop(stopId, scheduleType);
@@ -257,8 +255,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 }));
     }
 
-    @Override
-    public void setTimer() {
+    private void setTimer() {
         cancelTimer();
         mNextFlights.clear();
         for(int i = 0; i < mDirections.size(); i ++) {
@@ -287,8 +284,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
                 });
     }
 
-    @Override
-    public NextFlight newNextFlight(NextFlight old) {
+    private NextFlight newNextFlight(NextFlight old) {
         NextFlight next = new NextFlight();
         next.setHour(old.getHour());
         next.setMinute(old.getMinute());
@@ -297,8 +293,7 @@ public class BusStopInfoPresenter extends BasePresenter<BusStopInfoContract.View
         return next;
     }
 
-    @Override
-    public void getNextFlight(int position, boolean set) {
+    private void getNextFlight(int position, boolean set) {
         DepartureTimeVO schedule = mSchedule.get(position);
         NextFlight nextFlight = new NextFlight();
         Calendar calendar = Calendar.getInstance();

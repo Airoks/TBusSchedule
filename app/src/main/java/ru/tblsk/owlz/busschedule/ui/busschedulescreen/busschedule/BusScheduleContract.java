@@ -10,10 +10,13 @@ public interface BusScheduleContract {
     interface View extends MvpView {
         void showSchedule(DepartureTimeVO times);
         void showEmptyScreen();
+        void setColorItem(int position);
     }
 
     interface Presenter extends MvpPresenter<View> {
         void getSchedule(long stopId, long directionId, int scheduleType);
+        void cancelTimer();
+        void startTimer();
     }
 
 }

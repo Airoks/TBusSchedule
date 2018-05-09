@@ -5,7 +5,6 @@ import java.util.List;
 
 import ru.tblsk.owlz.busschedule.ui.base.MvpPresenter;
 import ru.tblsk.owlz.busschedule.ui.base.MvpView;
-import ru.tblsk.owlz.busschedule.ui.base.TimeUntilNextFlights;
 import ru.tblsk.owlz.busschedule.utils.NextFlight;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.FlightVO;
 import ru.tblsk.owlz.busschedule.utils.mappers.viewobject.StopVO;
@@ -22,7 +21,7 @@ public interface DirectionInfoContract {
         void showChangeButton(boolean flag);
     }
 
-    interface Presenter extends MvpPresenter<View>, TimeUntilNextFlights {
+    interface Presenter extends MvpPresenter<View> {
         void getStopsOnDirection(FlightVO flight);
         void clickedOnChangeDirectionButton();
         void clickedOnBackButton();
