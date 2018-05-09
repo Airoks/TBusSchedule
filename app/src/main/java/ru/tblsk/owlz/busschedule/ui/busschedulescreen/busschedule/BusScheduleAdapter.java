@@ -63,7 +63,7 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     public void changeItem(int position) {
         initializeCurrentTime();
         mCurrentTime.set(position, true);
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 
     private void initializeCurrentTime() {
@@ -109,6 +109,12 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 mLayout.setBackgroundColor(Color.parseColor(blueColor));
                 mHours.setTextColor(Color.WHITE);
                 mMinute.setTextColor(Color.WHITE);
+            } else {
+                String greyColor = "#EEEEEE";
+                mLine.setBackgroundColor(Color.parseColor(greyColor));
+                mLayout.setBackgroundColor(Color.WHITE);
+                mHours.setTextColor(Color.BLACK);
+                mMinute.setTextColor(Color.BLACK);
             }
         }
     }

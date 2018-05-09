@@ -86,7 +86,9 @@ public class WeekendSchedulePresenter extends BasePresenter<BusScheduleContract.
     private void setTimer() {
         cancelTimer();
         getNextFlight();
-        getMvpView().setColorItem(mCurrentHoursPosition);
+        if(mNextFlight.isInitialized()) {
+            getMvpView().setColorItem(mCurrentHoursPosition);
+        }
         mFirstStart = false;
 
         mTimerDisposable = Observable.interval(1, TimeUnit.MINUTES)
