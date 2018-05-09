@@ -67,6 +67,7 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     private void initializeCurrentTime() {
+        mCurrentTime.clear();
         for(int i = 0; i < mKeyMap.size(); i ++) {
             mCurrentTime.add(false);
         }
