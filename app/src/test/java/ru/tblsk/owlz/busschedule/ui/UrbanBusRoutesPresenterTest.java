@@ -23,6 +23,8 @@ import ru.tblsk.owlz.busschedule.utils.rxSchedulers.TestSchedulerProvider;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class UrbanBusRoutesPresenterTest {
@@ -75,10 +77,9 @@ public class UrbanBusRoutesPresenterTest {
         mTestScheduler.triggerActions();
         verify(mMockView).openDirectionInfoFragment(flightVOS.get(0));
 
-        System.out.println("Current direction: " + flightVOS.get(0).getCurrentDirectionType());
         mPresenter.clickedOnDirectionChangeButton(0, 1);
         mTestScheduler.triggerActions();
-        System.out.println("Current direction: " + flightVOS.get(0).getCurrentDirectionType());
+        assertThat(flightVOS.get(0).getCurrentDirectionType(), is(1));
 
         flights.clear();
         flightVOS.clear();
