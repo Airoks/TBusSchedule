@@ -53,8 +53,13 @@ public class SuburbanBusRoutesPresenterTest {
         mPresenter.attachView(mMockView);
     }
 
+    @After
+    public void tearDown() {
+        mPresenter.detachView();
+    }
+
     @Test
-    public void testUrbanBusRoutesPresenter() throws Exception {
+    public void testSuburbanBusRoutesPresenter() throws Exception {
 
         List<Flight> flights = new ArrayList<>();
         flights.add(new Flight());
@@ -88,8 +93,4 @@ public class SuburbanBusRoutesPresenterTest {
 
     }
 
-    @After
-    public void clear() {
-        mPresenter.detachView();
-    }
 }

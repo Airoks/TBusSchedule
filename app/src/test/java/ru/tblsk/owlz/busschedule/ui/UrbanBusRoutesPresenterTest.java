@@ -54,6 +54,11 @@ public class UrbanBusRoutesPresenterTest {
         mPresenter.attachView(mMockView);
     }
 
+    @After
+    public void tearDown() {
+        mPresenter.detachView();
+    }
+
     @Test
     public void testUrbanBusRoutesPresenter() throws Exception {
 
@@ -89,8 +94,4 @@ public class UrbanBusRoutesPresenterTest {
 
     }
 
-    @After
-    public void clear() {
-        mPresenter.detachView();
-    }
 }
